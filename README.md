@@ -65,10 +65,10 @@ This repository curates runnable templates and high-quality references so you ca
 > ✅ = Verified (link & description), 🔗 = External link, 📁 = Local template
 
 | Template | Category | Link | Status | Description |
-|---|---|---|---:|---|
-| 📁 Starter Agent (Python) | Agents SDK (Python) | `agents-sdk-python/starter-agent-python.md` | ✅ | Minimal “hello agent” with tools and tracing. |
-| 📁 Tool-calling Agent | Agents SDK (Python) | `agents-sdk-python/tool-calling-agent.md` | ✅ | Demonstrates function tools + input validation. |
-| 📁 ChatKit UI Embed | ChatKit | `chatkit/chatkit-ui-template.md` | ✅ | Drop-in ChatKit with hosted integrations. |
+|---|---|---:|---|---|
+| [📁 Starter Agent (Python)](templates/starter-agent-python.md) | Agents SDK (Python) | [templates/starter-agent-python.md](templates/starter-agent-python.md) | ✅ | Minimal “hello agent” with tools and tracing. |
+| [📁 Tool-calling Agent](templates/tool-calling-agent.md) | Agents SDK (Python) | [templates/tool-calling-agent.md](templates/tool-calling-agent.md) | ✅ | Demonstrates function tools + input validation. |
+| [📁 ChatKit UI Embed](templates/chatkit-ui-template.md) | ChatKit | [templates/chatkit-ui-template.md](templates/chatkit-ui-template.md) | ✅ | Drop-in ChatKit with hosted integrations. |
 | 🔗 Realtime Voice Agents Demo | Agents SDK + Realtime | https://github.com/openai/openai-realtime-agents | ✅ | Advanced patterns for low-latency voice agents. |
 | 🔗 Agents SDK Python Examples | Agents SDK (Python) | https://openai.github.io/openai-agents-python/examples/ | ✅ | Category-organized examples from OpenAI. |
 | 🔗 Agents SDK TypeScript | Agents SDK (TS) | https://openai.github.io/openai-agents-js/ | ✅ | TypeScript SDK docs & examples. |
