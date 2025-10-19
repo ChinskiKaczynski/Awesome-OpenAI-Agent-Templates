@@ -1,76 +1,55 @@
-# Awesome-OpenAI-Agent-Templates
+# Awesome OpenAI Agent Templates (Reworked)
 
-> Production-ready templates, tutorials, and patterns for building agents with **OpenAI Agent Builder**, **Agents SDK (Python)**, and **ChatKit**.
+[![Stars](https://img.shields.io/github/stars/ChinskiKaczynski/Awesome-OpenAI-Agent-Templates?style=flat)](https://github.com/ChinskiKaczynski/Awesome-OpenAI-Agent-Templates)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![CI](https://github.com/ChinskiKaczynski/Awesome-OpenAI-Agent-Templates/actions/workflows/ci.yml/badge.svg)](./.github/workflows/ci.yml)
 
-![Project Logo](./assets/logo.svg)
+> Produkcyjne szablony, tutoriale i wzorce do budowy agentów w oparciu o **OpenAI Agent Builder**, **Agents SDK (Python)** i **ChatKit**.
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=ChinskiKaczynski/Awesome-OpenAI-Agent-Templates)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ChinskiKaczynski/Awesome-OpenAI-Agent-Templates)
+## Spis treści
+- [Co jest w środku](#co-jest-w-środku)
+- [Szybki start](#szybki-start)
+- [Kategorie](#kategorie)
+- [Szablony](#szablony)
+- [Tutoriale i przewodniki](#tutoriale-i-przewodniki)
+- [Wkład / Kontrybucje](#wkład--kontrybucje)
+- [Licencja](#licencja)
 
-A curated, hands-on collection to go from idea to deployed agentic apps fast. Every template includes clear setup, runnable code (just add `OPENAI_API_KEY`), and links to official docs.
+## Co jest w środku
+- **templates/** – uruchamialne szablony:
+  - 🐍 `starter-agent-python/` – minimalny agent CLI (OpenAI Python SDK).
+  - 🧰 `tool-calling-agent/` – funkcje narzędzi (calculator/web_search stub) + pętla.
+  - 💬 `chatkit-ui-template/` – lekki frontend (Vite React) + prosty backend proxy do OpenAI.
+- **agent-builder/** – README z instrukcją eksportu/importu workflowów z Agent Buildera.
+- **guides/** – krótkie przewodniki (architektura, deploy, evals/guardrails).
+- **.github/** – CI (lint/test/build), szablony PR/Issue.
+- **.env.example** – przykład zmiennych środowiskowych.
 
-## Table of Contents
-- [What’s Inside](#whats-inside)
-- [Quick Start](#quick-start)
-- [Categories](#categories)
-- [Templates](#templates)
-- [Tutorials](#tutorials)
-- [Guides](#guides)
-- [Resources](#resources)
-- [Contributing](#contributing)
-- [License](#license)
+> Źródła i najświeższe materiały: oficjalne dokumentacje OpenAI (Agents SDK, Agent Builder, ChatKit).
 
-## What’s Inside
-- **Templates:** starter Agents SDK (Python), tool-calling agent, and a ChatKit UI embed wired to Agent Builder.
-- **Tutorials:** quickstart for Agent Builder, advanced workflows (handoffs, guardrails), step-by-step tool integration.
-- **Guides:** deploy ChatKit on Vercel; architecture patterns for production agents.
-- **Resources:** official docs, community showcases.
+## Szybki start
+1. Sklonuj repo i skopiuj `.env.example` → `.env`; ustaw `OPENAI_API_KEY`.
+2. Wejdź do wybranego szablonu i uruchom zgodnie z instrukcją w jego `README.md`.
+3. (Opcjonalnie) Odpal CI lokalnie: `ruff`, `black`, `pytest`.
 
-## Quick Start
-1. **Clone** this repo.
-2. Copy `.env.example` to `.env` and set your secrets:
-   ```bash
-   OPENAI_API_KEY=sk-...
-   NEXT_PUBLIC_WORKFLOW_ID=wf_...   # for ChatKit + Agent Builder
-   VECTOR_STORE_ID=vs_...           # optional (File Search)
-   ```
-3. Run examples:
-   - Python: see [`examples/python`](./examples/python)
-   - Next.js + ChatKit: see [`examples/next-chatkit`](./examples/next-chatkit)
+## Kategorie
+- **Agents SDK (Python)** – pętle, handoffy, narzędzia (function tools), sesje.
+- **Agent Builder** – workflowy no‑code/low‑code; publikacja i integracja z ChatKit.
+- **ChatKit** – osadzany interfejs czatu; hosting sesji i integracja z Agent Builderem.
 
-> Compatibility: Python >= 3.9, `openai>=1.*`, `openai-agents>=0.4.0`.
+## Szablony
+| Szablon | Kiedy użyć | Jak uruchomić |
+|---|---|---|
+| `starter-agent-python` | Gdy chcesz minimalny, czytelny kod startowy | `cd templates/starter-agent-python && uv venv || python -m venv .venv && pip install -r requirements.txt && python app.py` |
+| `tool-calling-agent` | Gdy chcesz użyć *function calling* i prostych narzędzi | `cd templates/tool-calling-agent && pip install -r requirements.txt && python app.py` |
+| `chatkit-ui-template` | Gdy potrzebujesz UI + backend proxy | `cd templates/chatkit-ui-template && npm i && npm run dev` (backend: `npm run server`) |
 
-## Categories
-- **Agents SDK (Python):** function tools, hosted tools (Web Search, File Search), sessions, handoffs, guardrails.
-- **Agent Builder:** visual workflows, publishing, integrating with ChatKit.
-- **ChatKit:** embeddable chat UI (hosted integration), session auth, theming, production tips.
+## Tutoriale i przewodniki
+Zajrzyj do katalogów **tutorials/** oraz **guides/** – krótkie materiały do startu i dobrych praktyk.
 
-## Templates
-- [`templates/starter-agent-python.md`](./templates/starter-agent-python.md)
-- [`templates/tool-calling-agent.md`](./templates/tool-calling-agent.md)
-- [`templates/chatkit-ui-template.md`](./templates/chatkit-ui-template.md)
+## Wkład / Kontrybucje
+Zapraszamy do issue/PR — patrz [CONTRIBUTING.md](./CONTRIBUTING.md) i [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
 
-## Tutorials
-- [`tutorials/quickstart-agent-builder.md`](./tutorials/quickstart-agent-builder.md)
-- [`tutorials/advanced-agent-workflows.md`](./tutorials/advanced-agent-workflows.md)
-- [`tutorials/integrating-tools-step-by-step.md`](./tutorials/integrating-tools-step-by-step.md)
-
-## Guides
-- [`guides/deploying-on-vercel.md`](./guides/deploying-on-vercel.md)
-- [`guides/agent-architecture-patterns.md`](./guides/agent-architecture-patterns.md)
-
-## Resources
-- [`resources/official-docs-links.md`](./resources/official-docs-links.md)
-- [`resources/community-showcases.md`](./resources/community-showcases.md)
-
-## Contributing
-We welcome issues and PRs. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for the workflow.
-
-## License
-MIT — see [`LICENSE`](./LICENSE).
-
-## Official Resources (selected)
-- Agents SDK (Python) docs: https://openai.github.io/openai-agents-python/ and https://platform.openai.com/docs/guides/agents-sdk
-- Built-in Tools: Web Search https://platform.openai.com/docs/guides/tools-web-search and File Search / Vector Stores https://platform.openai.com/docs/api-reference/vector-stores
-- ChatKit docs: https://platform.openai.com/docs/guides/chatkit and JS repo https://github.com/openai/chatkit-js
-- OpenAI Python SDK (PyPI): https://pypi.org/project/openai/ ; Agents SDK (PyPI): https://pypi.org/project/openai-agents/
+## Licencja
+MIT. Zob. [LICENSE](./LICENSE).
