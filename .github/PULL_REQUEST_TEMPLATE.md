@@ -1,7 +1,8 @@
-## Zmiany
-- [ ] opis co zostało dodane/zmienione
+## Summary
+What does this PR change?
 
-## Checklista
-- [ ] działa lokalnie według README
-- [ ] dodałem `.env.example` (jeśli potrzeba)
-- [ ] testy „smoke”/build przechodzą
+## Testing
+Steps or screenshots.
+
+## Notes
+Anything else reviewers should know.

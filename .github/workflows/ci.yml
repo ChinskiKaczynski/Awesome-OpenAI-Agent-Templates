@@ -1,29 +1,24 @@
 name: CI
-on: [push, pull_request]
+
+on:
+  push:
+  pull_request:
 
 jobs:
-  python:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: --no-progress --verbose **/*.md
+
+  python-smoke:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: pip install -r templates/starter-agent-python/requirements.txt || true
-      - run: pip install -r templates/tool-calling-agent/requirements.txt || true
-      - run: pip install ruff black pytest || true
-      - run: ruff check . || true
-      - run: black --check . || true
-      - run: pytest -q || true
-
-  chatkit_build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - run: |
-          cd templates/chatkit-ui-template
-          npm ci || npm i
-          npm run -s build || true
+          python-version: '3.12'
+      - run: pip install -U openai openai-agents
+      - run: python examples/python/starter.py || true

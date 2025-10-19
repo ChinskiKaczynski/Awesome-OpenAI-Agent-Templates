@@ -1,18 +1,24 @@
 # Contributing
 
-Dziękujemy za chęć pomocy! Każdy nowy **template** powinien zawierać:
-- uruchamialny kod + `README.md`,
-- `.env.example`,
-- screenshot/GIF (jeśli UI),
-- prosty **smoke test** (`pytest` dla Pythona, `build` dla frontendu),
-- zgodność z `ruff`/`black` (albo `eslint` dla JS).
+Thanks for your interest! This repo aims to provide **runnable, production-minded** templates for OpenAI Agent Builder, Agents SDK, and ChatKit.
 
-## Jak zacząć
-1. Fork > branch feature > commit (konwencja: `feat: ...`, `fix: ...`).
-2. Uruchom lokalnie CI (`pre-commit`).
-3. Otwórz PR i linkuj do Issue (jeśli jest).
+## How to contribute
+1. **Open an Issue** describing your change or template idea.
+2. **Fork** and create a feature branch:
+   ```bash
+   git checkout -b feat/my-template
+   ```
+3. Add docs and runnable examples. Validate that:
+   - `OPENAI_API_KEY` is the only secret required.
+   - Code runs locally with minimal steps.
+4. Run linters/tests if present, then open a PR with:
+   - Clear description, scope, and testing steps.
+   - Screenshots or terminal output if helpful.
 
-## Definition of Done
-- Template uruchamia się „z pudełka” po podaniu `OPENAI_API_KEY`.
-- README jest zwięzły (setup, run, co robi).
-- Testy „smoke” przechodzą.
+## Style
+- Technical, concise, consistent headings.
+- Use placeholders for secrets and IDs (e.g., `WORKFLOW_ID`, `VECTOR_STORE_ID`).
+- Include links to official OpenAI docs/blog/GitHub where relevant.
+
+## Code of Conduct
+Be respectful and constructive. No sensitive data in PRs or issues.
