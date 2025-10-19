@@ -1,8 +1,11 @@
-# Deprecated / Archived
+# Deprecated Templates
 
-- **OpenAI Swarm (experimental)** — Replaced by the production‑ready **Agents SDK**.  
-  - Swarm repo: https://github.com/openai/swarm  
-  - Replacement (Agents SDK): https://openai.github.io/openai-agents-python/  
-  - Notes: OpenAI explicitly recommends migrating to the Agents SDK for production use.
+This folder contains deprecated templates and migration notes.
 
-> If you find a broken or archived template, add it here with a short reason.
+## Swarm-based templates
+**Status:** Deprecated.  
+**Migrate to:** OpenAI Agents SDK (Python/TypeScript).
+
+## Assistants API-based templates
+**Status:** Deprecated (planned sunset Aug 26, 2026).  
+**Migrate to:** Responses API + Agents SDK / Agent Builder.

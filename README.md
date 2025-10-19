@@ -1,67 +1,95 @@
 <p align="center">
-  <img src="logo.png" alt="Awesome OpenAI Agent Templates" width="180"/>
+  <img src="./logo.svg" alt="Awesome OpenAI Agent Templates" width="640" />
 </p>
 
-# Awesome OpenAI Agent Templates
+<h1 align="center">Awesome OpenAI Agent Templates</h1>
 
-[![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
-![Status](https://img.shields.io/badge/curated-active-brightgreen)
-![Updated](https://img.shields.io/badge/last%20updated-2025-10-19-blue)
-![PRs](https://img.shields.io/badge/PRs-welcome-orange)
+<p align="center">
+  <a href="https://awesome.re"><img src="https://awesome.re/badge.svg" alt="Awesome"></a>
+  <a href="https://github.com/ChinskiKaczynski/Awesome-OpenAI-Agent-Templates/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/ChinskiKaczynski/Awesome-OpenAI-Agent-Templates?style=social"></a>
+  <img alt="Last Commit" src="https://img.shields.io/github/last-commit/ChinskiKaczynski/Awesome-OpenAI-Agent-Templates">
+  <a href="https://github.com/ChinskiKaczynski/Awesome-OpenAI-Agent-Templates/pulls"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
+</p>
 
-Production-ready **templates**, **starters**, and **workflows** for building OpenAI agents with **Agent Builder**, the **Agents SDK**, **ChatKit**, and the **Realtime API**.  
-Structure inspired by the clean layout of the community project *awesome-n8n-templates*.
-
-> **Scope:** English-only. Links are verified where possible. Deprecated or unmaintained items are clearly marked.
+> Production-ready templates, tutorials, and patterns for building agents with **OpenAI Agent Builder**, **Agents SDK** (Python/TypeScript), and **ChatKit**.
 
 ---
 
 ## Table of Contents
+
 - [Overview](#overview)
 - [How to Use](#how-to-use)
 - [Categories](#categories)
+- [Template Registry](#template-registry)
+- [Deprecated Templates](#deprecated-templates)
 - [Contribute](#contribute)
 - [Changelog](#changelog)
-- [Deprecated Templates](#deprecated-templates)
 
 ## Overview
-This repository collects high-quality resources for building **agentic** applications using OpenAI’s latest tooling:
-- **Agent Builder** for visual workflows
-- **Agents SDK** (Python & JS/TS) for code-first agents
-- **ChatKit** for embeddable chat UIs
-- **Realtime API** for voice and live multimodal agents
-- **Durable execution** patterns for production reliability
 
-Each category folder contains a short **README** with curated links. Avoid deep nesting — just one folder level under the root.
+This repository curates runnable templates and high-quality references so you can go from idea to deployed agentic apps fast. Each template includes:
+- **Clear setup** and **run** instructions,
+- Pointers to **official docs** for deeper learning,
+- Minimal placeholders (`OPENAI_API_KEY`, `VECTOR_STORE_ID`, etc.).
 
 ## How to Use
-1. Browse a category folder below.
-2. Open any template link and follow its instructions (they typically run with your `OPENAI_API_KEY`).
-3. Prefer **official** docs/examples for core patterns; community templates help you ship faster.
+
+1. **Pick a category** under the repo root:
+   - `agent-builder/` – visual workflows (nodes, MCP, guardrails),
+   - `agents-sdk-python/` – Python SDK templates,
+   - `chatkit/` – embeddable UI templates (hosted file search, web search, auth).
+
+2. **Install dependencies** as described by each template (Python venv / Node, etc.).
+
+3. **Create a `.env`** (when needed) and set:
+   ```bash
+   OPENAI_API_KEY=sk-...
+   ```
+
+4. **Run** the template (instructions inside each template’s README).
+
+> Official docs (recommended):  
+> - Agents SDK (Python): https://openai.github.io/openai-agents-python/  
+> - Agents SDK (TypeScript): https://openai.github.io/openai-agents-js/  
+> - Agent Builder: https://platform.openai.com/docs/guides/agent-builder  
+> - ChatKit (Guide & API): https://platform.openai.com/docs/guides/chatkit
 
 ## Categories
-- [`Agent-Builder/`](Agent-Builder/) – Visual workflows, how‑tos, and templates.
-- [`Agents-SDK-Python/`](Agents-SDK-Python/) – Python agents, tools, sessions, guardrails.
-- [`Agents-SDK-JS/`](Agents-SDK-JS/) – JavaScript/TypeScript agents and realtime examples.
-- [`ChatKit/`](ChatKit/) – Embeddable chat UI, starter apps, advanced samples.
-- [`Realtime-Voice/`](Realtime-Voice/) – Realtime API + telephony integrations.
-- [`Durable-Execution/`](Durable-Execution/) – Temporal & production reliability recipes.
-- [`Collections/`](Collections/) – Larger curated lists of agents & use cases.
-- [`Resources/`](Resources/) – Official docs & learning materials.
-- [`Deprecated/`](Deprecated/) – Archived/broken/legacy items.
 
-## Contribute
-- Use concise names (max ~60 chars) and **1–2 line** descriptions.
-- Keep categories consistent; avoid duplicates.
-- Verify links. If broken/unmaintained, move to **Deprecated** with a note.
-- Open a PR or issue; see [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- **Agents SDK (Python)** – primitives, tools, handoffs, guardrails, sessions/tracing.  
+- **Agent Builder** – visual workflows, publishing, MCP servers, guardrails.  
+- **ChatKit** – rapid, embeddable chat experiences with hosted tools and document search.
 
-## Changelog
-- **2025-10-19** — Full restructure, categories, logo, badges; many new templates and official links added; deprecated items moved to `/Deprecated`.
+## Template Registry
+
+> ✅ = Verified (link & description), 🔗 = External link, 📁 = Local template
+
+| Template | Category | Link | Status | Description |
+|---|---|---|---:|---|
+| 📁 Starter Agent (Python) | Agents SDK (Python) | `agents-sdk-python/starter-agent-python.md` | ✅ | Minimal “hello agent” with tools and tracing. |
+| 📁 Tool-calling Agent | Agents SDK (Python) | `agents-sdk-python/tool-calling-agent.md` | ✅ | Demonstrates function tools + input validation. |
+| 📁 ChatKit UI Embed | ChatKit | `chatkit/chatkit-ui-template.md` | ✅ | Drop-in ChatKit with hosted integrations. |
+| 🔗 Realtime Voice Agents Demo | Agents SDK + Realtime | https://github.com/openai/openai-realtime-agents | ✅ | Advanced patterns for low-latency voice agents. |
+| 🔗 Agents SDK Python Examples | Agents SDK (Python) | https://openai.github.io/openai-agents-python/examples/ | ✅ | Category-organized examples from OpenAI. |
+| 🔗 Agents SDK TypeScript | Agents SDK (TS) | https://openai.github.io/openai-agents-js/ | ✅ | TypeScript SDK docs & examples. |
+| 🔗 Temporal Durable Agents Demos | Advanced patterns | https://github.com/temporal-community/openai-agents-demos | ✅ | Durable execution patterns with Agents SDK. |
+
+**Verification date:** 2025-10-20.
 
 ## Deprecated Templates
-See [`Deprecated/`](Deprecated/) for items like **OpenAI Swarm** (replaced by Agents SDK) and other outdated templates.
 
----
+- **Swarm-based templates** → **Deprecated**. Use the **OpenAI Agents SDK** (the production-ready evolution of Swarm).  
 
-> _Branding:_ Logo included at the repo root and referenced at the top of this README.
+- **Assistants API-based templates** → **Deprecated** (planned sunset **Aug 26, 2026**).  
+  *Prefer:* **Responses API** + **Agents SDK/Agent Builder**, or corresponding updated templates.
+
+> See `deprecated/` for migration notes and links.
+
+## Contribute
+
+We welcome high-signal templates, guides, and updates. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a PR.  
+All content must be **English-only**. Add a minimal README for every template and include run instructions.
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md).
