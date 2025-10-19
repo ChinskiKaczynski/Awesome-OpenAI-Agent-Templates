@@ -1,7 +1,7 @@
 # Community Showcases & Starters
 
-- ChatKit starter (Next.js) integrating hosted workflows and session endpoint.
-- Blog tutorials: ChatKit sessions, authentication patterns, embedding steps.
+- ChatKit starter apps (see repo README in https://github.com/openai/chatkit-js).
+- Blog tutorials about sessions/auth patterns for ChatKit.
 - Agents SDK tutorial series with function tools and orchestration.
 
-> Always validate blog posts against official docs; ChatKit endpoints and headers may change while in beta.
+> Validate community posts against official docs. ChatKit headers/flows may change.

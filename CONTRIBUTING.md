@@ -17,7 +17,6 @@ Thanks for your interest! This repo aims to provide **runnable, production-minde
 
 ## Style
 - Technical, concise, consistent headings.
-- All files in **Markdown**.
 - Use placeholders for secrets and IDs (e.g., `WORKFLOW_ID`, `VECTOR_STORE_ID`).
 - Include links to official OpenAI docs/blog/GitHub where relevant.
 
