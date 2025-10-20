@@ -1,0 +1,33 @@
+--- a/README.md
++++ b/README.md
+@@
+-<p align="center">
+-  <img alt="Awesome OpenAI Agent Templates" src="logo.svg" width="160">
+-</p>
++<p align="center">
++  <img alt="Awesome OpenAI Agent Templates" src="logo.png" width="160">
++</p>
+
+@@
+-1. Choose a category from the repo:
+-
+-   * `agent-builder` – visual workflows (nodes, MCP, guardrails),
+-   * `agents-sdk-python` – Python SDK templates,
+-   * `chatkit` – embeddable UI templates (hosted file search, web search, auth).
++1. Choose a category from the repo:
++
++   * [Agent-Builder/](Agent-Builder/) – visual workflows (nodes, MCP, guardrails),
++   * [Agents-SDK-Python/](Agents-SDK-Python/) – Python SDK templates,
++   * [ChatKit/](ChatKit/) – embeddable UI templates (hosted file search, web search, auth).
+
+@@
+-| Template | Category | Link | Status | Description |
+-|---|---|---|---:|---|
+-| [📁 Starter Agent (Python)](templates/starter-agent-python.md) | Agents SDK (Python) | [templates/starter-agent-python.md](templates/starter-agent-python.md) | ✅ | Minimal “hello agent” with tools and tracing. |
+-| [📁 Tool-calling Agent](templates/tool-calling-agent.md) | Agents SDK (Python) | [templates/tool-calling-agent.md](templates/tool-calling-agent.md) | ✅ | Demonstrates function tools + input validation. |
+-| [📁 ChatKit UI Embed](templates/chatkit-ui-template.md) | ChatKit | [templates/chatkit-ui-template.md](templates/chatkit-ui-template.md) | ✅ | Drop-in ChatKit with hosted integrations. |
++| Template | Category | Link | Status | Description |
++|---|---|---:|---|---|
++| 📁 Starter Agent (Python) | Agents SDK (Python) | [Agents-SDK-Python/](Agents-SDK-Python/) | ✅ | Minimal “hello agent” with tools and tracing. |
++| 📁 Tool-calling Agent | Agents SDK (Python) | [Agents-SDK-Python/](Agents-SDK-Python/) | ✅ | Function tools + input validation. |
++| 📁 ChatKit UI Embed | ChatKit | [ChatKit/](ChatKit/) | ✅ | Drop-in ChatKit with hosted integrations. |
