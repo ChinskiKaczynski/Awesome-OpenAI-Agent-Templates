@@ -11,6 +11,8 @@ Templates using **Responses API built-in tools** - powerful capabilities availab
 | [web-search-agent](./web-search-agent/) | `web_search` | Real-time internet search | Beginner |
 | [file-search-agent](./file-search-agent/) | `file_search` | RAG with vector stores | Intermediate |
 | [code-interpreter-agent](./code-interpreter-agent/) | `code_interpreter` | Sandboxed code execution | Intermediate |
+| [computer-use-agent](./computer-use-agent/) | `computer_use` | Browser/desktop automation | Advanced |
+| [remote-mcp-agent](./remote-mcp-agent/) | `mcp` | External MCP tool servers | Intermediate |
 
 ## Built-in Tools Overview
 

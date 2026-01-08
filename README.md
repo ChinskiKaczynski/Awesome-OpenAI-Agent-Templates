@@ -79,12 +79,12 @@ This repository curates runnable templates and high-quality references so you ca
 | Category | Description | Templates |
 |----------|-------------|-----------|
 | **Responses API** | Next-gen API for agents | 3 starters |
-| **Built-in Tools** | Web search, file search, code interpreter | 3 templates |
+| **Built-in Tools** | Web search, file search, code interpreter, computer use, MCP | 5 templates |
 | **Agent Patterns** | Routing, guardrails, composition | 4 patterns |
 | **Realtime Voice** | Low-latency voice agents | 2 templates |
 | **Migration** | API migration guides | 1 guide |
 | **Observability** | Tracing and monitoring | 1 template |
-| **Agents SDK** | Python/TypeScript SDK | 2 templates |
+| **Agents SDK** | Python/TypeScript SDK | 8 templates |
 | **ChatKit** | Embeddable chat UI | 1 template |
 
 ## Template Registry

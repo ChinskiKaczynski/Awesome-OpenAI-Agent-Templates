@@ -2,22 +2,37 @@ name: Link Check
 
 on:
   push:
+    branches: [main]
   pull_request:
+    branches: [main]
   schedule:
-    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+    - cron: '0 0 * * 0'  # Weekly on Sunday
 
 jobs:
-  linkcheck:
+  link-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run lychee link checker
+      
+      - name: Check links in Markdown files
         uses: lycheeverse/lychee-action@v1
         with:
           args: >
-            --verbose --no-progress
-            --exclude '(localhost|127\.0\.0\.1)'
-            --timeout 20
-            .
+            --verbose
+            --no-progress
+            --accept 200,204,206
+            --timeout 30
+            --max-retries 3
+            --exclude-path node_modules
+            --exclude-path .git
+            '**/*.md'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create Issue on Failure
+        if: failure()
+        uses: peter-evans/create-issue-from-file@v4
+        with:
+          title: 🔗 Link Check Failed
+          content-filepath: ./lychee/out.md
+          labels: documentation, automated

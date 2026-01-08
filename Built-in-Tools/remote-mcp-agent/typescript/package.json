@@ -1,0 +1,16 @@
+{
+    "name": "remote-mcp-agent",
+    "version": "1.0.0",
+    "description": "Remote MCP agent for external tool integration",
+    "type": "module",
+    "scripts": {
+        "start": "tsx main.ts"
+    },
+    "dependencies": {
+        "openai": "^4.80.0"
+    },
+    "devDependencies": {
+        "tsx": "^4.7.0",
+        "typescript": "^5.3.0"
+    }
+}
