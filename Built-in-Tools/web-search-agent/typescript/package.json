@@ -1,0 +1,16 @@
+{
+    "name": "web-search-agent",
+    "version": "1.0.0",
+    "description": "Web search agent using Responses API built-in tool",
+    "type": "module",
+    "scripts": {
+        "start": "tsx main.ts"
+    },
+    "dependencies": {
+        "openai": "^4.80.0"
+    },
+    "devDependencies": {
+        "tsx": "^4.7.0",
+        "typescript": "^5.3.0"
+    }
+}

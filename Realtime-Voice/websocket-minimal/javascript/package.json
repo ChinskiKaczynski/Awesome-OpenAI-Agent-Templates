@@ -1,0 +1,14 @@
+{
+    "name": "realtime-websocket-minimal",
+    "version": "1.0.0",
+    "description": "Minimal WebSocket connection to Realtime API GA",
+    "type": "module",
+    "main": "main.js",
+    "scripts": {
+        "start": "node main.js"
+    },
+    "dependencies": {
+        "ws": "^8.14.0",
+        "dotenv": "^16.3.0"
+    }
+}

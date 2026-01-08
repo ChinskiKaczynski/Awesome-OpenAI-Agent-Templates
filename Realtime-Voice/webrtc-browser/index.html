@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realtime Voice Agent - WebRTC</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎙️ Realtime Voice Agent</h1>
+        <p class="subtitle">WebRTC connection to OpenAI Realtime API</p>
+        
+        <div class="status" id="status">Ready to connect</div>
+        
+        <div class="controls">
+            <button id="startBtn" class="btn btn-primary">▶️ Start</button>
+            <button id="stopBtn" class="btn btn-secondary" disabled>⏹️ Stop</button>
+        </div>
+        
+        <div class="transcript-container">
+            <h3>Transcript</h3>
+            <div id="transcript" class="transcript">
+                <p class="placeholder">Start a conversation to see the transcript...</p>
+            </div>
+        </div>
+        
+        <div class="info">
+            <p>⚠️ <strong>Demo Mode</strong>: In production, use ephemeral tokens instead of API keys.</p>
+            <p>📖 <a href="https://platform.openai.com/docs/guides/realtime-webrtc" target="_blank">WebRTC Documentation</a></p>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

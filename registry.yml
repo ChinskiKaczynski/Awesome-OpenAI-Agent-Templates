@@ -1,0 +1,345 @@
+# Awesome OpenAI Agent Templates Registry
+# Central source of truth for all templates
+# Generated README table comes from this file
+
+schema_version: "1.0"
+last_updated: "2026-01-08"
+
+# Template Categories
+categories:
+  - id: responses-api
+    name: Responses API
+    description: OpenAI Responses API starters and patterns
+    
+  - id: built-in-tools
+    name: Built-in Tools
+    description: Templates using Responses API built-in tools
+    
+  - id: agents-sdk-python
+    name: Agents SDK (Python)
+    description: Python Agents SDK templates
+    
+  - id: agents-sdk-js
+    name: Agents SDK (TypeScript)
+    description: TypeScript/JavaScript Agents SDK templates
+    
+  - id: realtime-voice
+    name: Realtime Voice
+    description: Voice agents using Realtime API GA
+    
+  - id: agent-patterns
+    name: Agent Patterns
+    description: Common agentic design patterns
+    
+  - id: migration
+    name: Migration
+    description: Migration guides and examples
+    
+  - id: observability
+    name: Observability
+    description: Tracing and monitoring templates
+    
+  - id: chatkit
+    name: ChatKit
+    description: Embeddable UI templates
+
+# Difficulty levels
+difficulties:
+  - beginner
+  - intermediate
+  - advanced
+
+# Template definitions
+templates:
+  # ============================================
+  # RESPONSES API
+  # ============================================
+  - id: responses-minimal
+    name: Responses API Minimal
+    category: responses-api
+    path: Responses-API/responses-minimal
+    languages: [python, typescript]
+    difficulty: beginner
+    tools: []
+    status: verified
+    description: Basic Responses API starter with simple input/output
+    
+  - id: responses-streaming
+    name: Responses API Streaming
+    category: responses-api
+    path: Responses-API/responses-streaming
+    languages: [python, typescript]
+    difficulty: beginner
+    tools: []
+    status: verified
+    description: Streaming responses with SSE events
+    
+  - id: responses-store-conversation
+    name: Stateful Conversations
+    category: responses-api
+    path: Responses-API/responses-store-conversation
+    languages: [python, typescript]
+    difficulty: intermediate
+    tools: []
+    status: verified
+    description: Multi-turn conversations with store=true and previous_response_id
+
+  # ============================================
+  # BUILT-IN TOOLS
+  # ============================================
+  - id: web-search-agent
+    name: Web Search Agent
+    category: built-in-tools
+    path: Built-in-Tools/web-search-agent
+    languages: [python, typescript]
+    difficulty: beginner
+    tools: [web_search]
+    status: verified
+    description: Real-time web search using built-in web_search tool
+    
+  - id: file-search-agent
+    name: File Search Agent
+    category: built-in-tools
+    path: Built-in-Tools/file-search-agent
+    languages: [python, typescript]
+    difficulty: intermediate
+    tools: [file_search]
+    status: verified
+    description: Document search with vector stores
+    
+  - id: code-interpreter-agent
+    name: Code Interpreter Agent
+    category: built-in-tools
+    path: Built-in-Tools/code-interpreter-agent
+    languages: [python, typescript]
+    difficulty: intermediate
+    tools: [code_interpreter]
+    status: verified
+    description: Code execution in sandbox environment
+
+  # ============================================
+  # REALTIME VOICE
+  # ============================================
+  - id: realtime-websocket-minimal
+    name: Realtime WebSocket Minimal
+    category: realtime-voice
+    path: Realtime-Voice/websocket-minimal
+    languages: [python, javascript]
+    difficulty: intermediate
+    tools: []
+    status: verified
+    description: Minimal WebSocket voice agent with gpt-realtime
+    
+  - id: realtime-webrtc-browser
+    name: Realtime WebRTC Browser
+    category: realtime-voice
+    path: Realtime-Voice/webrtc-browser
+    languages: [javascript]
+    difficulty: advanced
+    tools: []
+    status: verified
+    description: Browser-based voice agent using WebRTC
+
+  # ============================================
+  # AGENT PATTERNS
+  # ============================================
+  - id: routing-agent
+    name: Routing Agent
+    category: agent-patterns
+    path: Agent-Patterns/routing-agent
+    languages: [python]
+    difficulty: intermediate
+    tools: []
+    status: verified
+    description: Multi-agent routing and delegation pattern
+    
+  - id: guardrails-io
+    name: Input/Output Guardrails
+    category: agent-patterns
+    path: Agent-Patterns/guardrails-io
+    languages: [python]
+    difficulty: intermediate
+    tools: []
+    status: verified
+    description: Input validation and output safety checks
+    
+  - id: agents-as-tools
+    name: Agents as Tools
+    category: agent-patterns
+    path: Agent-Patterns/agents-as-tools
+    languages: [python]
+    difficulty: advanced
+    tools: []
+    status: verified
+    description: Agent composition - using agents as tools
+    
+  - id: parallel-agents
+    name: Parallel Agents
+    category: agent-patterns
+    path: Agent-Patterns/parallel-agents
+    languages: [python]
+    difficulty: advanced
+    tools: []
+    status: verified
+    description: Concurrent agent execution with result aggregation
+
+  # ============================================
+  # MIGRATION
+  # ============================================
+  - id: assistants-to-responses
+    name: Assistants → Responses Migration
+    category: migration
+    path: Migration/assistants-to-responses
+    languages: [python]
+    difficulty: intermediate
+    tools: []
+    status: verified
+    description: Before/after examples migrating from Assistants API
+
+  # ============================================
+  # OBSERVABILITY
+  # ============================================
+  - id: tracing-otlp
+    name: Tracing with OTLP
+    category: observability
+    path: Observability/tracing-otlp
+    languages: [python]
+    difficulty: intermediate
+    tools: []
+    status: verified
+    description: OpenTelemetry integration for agent tracing
+
+  # ============================================
+  # LEGACY (existing templates)
+  # ============================================
+  - id: starter-agent-python
+    name: Starter Agent (Python)
+    category: agents-sdk-python
+    path: Agents-SDK-Python
+    languages: [python]
+    difficulty: beginner
+    tools: []
+    status: verified
+    description: Minimal "hello agent" with tools and tracing
+    
+  - id: tool-calling-agent
+    name: Tool-calling Agent
+    category: agents-sdk-python
+    path: Agents-SDK-Python
+    languages: [python]
+    difficulty: beginner
+    tools: []
+    status: verified
+    description: Demonstrates function tools + input validation
+
+  # ============================================
+  # EXAMPLE AGENTS
+  # ============================================
+  - id: research-agent
+    name: Research Agent
+    category: agents-sdk-python
+    path: Agents-SDK-Python/research-agent
+    languages: [python]
+    difficulty: intermediate
+    tools: [web_search]
+    status: verified
+    description: Searches and synthesizes information into reports
+
+  - id: customer-support-agent
+    name: Customer Support Agent
+    category: agents-sdk-python
+    path: Agents-SDK-Python/customer-support-agent
+    languages: [python]
+    difficulty: intermediate
+    tools: []
+    status: verified
+    description: Handles support tickets with intelligent routing
+
+  - id: data-analyst-agent
+    name: Data Analyst Agent
+    category: agents-sdk-python
+    path: Agents-SDK-Python/data-analyst-agent
+    languages: [python]
+    difficulty: advanced
+    tools: [code_interpreter]
+    status: verified
+    description: Analyzes data and generates insights
+
+  - id: content-writer-agent
+    name: Content Writer Agent
+    category: agents-sdk-python
+    path: Agents-SDK-Python/content-writer-agent
+    languages: [python]
+    difficulty: intermediate
+    tools: []
+    status: verified
+    description: Writes blog posts, emails, and marketing copy
+
+  - id: personal-assistant-agent
+    name: Personal Assistant Agent
+    category: agents-sdk-python
+    path: Agents-SDK-Python/personal-assistant-agent
+    languages: [python]
+    difficulty: advanced
+    tools: []
+    status: verified
+    description: Task management and scheduling agent
+
+  - id: code-review-agent
+    name: Code Review Agent
+    category: agents-sdk-python
+    path: Agents-SDK-Python/code-review-agent
+    languages: [python]
+    difficulty: advanced
+    tools: []
+    status: verified
+    description: Reviews code and suggests improvements
+    
+  - id: chatkit-ui-embed
+    name: ChatKit UI Embed
+    category: chatkit
+    path: ChatKit
+    languages: [javascript]
+    difficulty: beginner
+    tools: []
+    status: verified
+    description: Drop-in ChatKit with hosted integrations
+
+# External resources (links only)
+external_resources:
+  - name: Realtime Voice Agents Demo
+    url: https://github.com/openai/openai-realtime-agents
+    category: realtime-voice
+    description: Advanced patterns for low-latency voice agents
+    
+  - name: Agents SDK Python Examples
+    url: https://openai.github.io/openai-agents-python/examples/
+    category: agents-sdk-python
+    description: Category-organized examples from OpenAI
+    
+  - name: Agents SDK TypeScript
+    url: https://openai.github.io/openai-agents-js/
+    category: agents-sdk-js
+    description: TypeScript SDK docs & examples
+    
+  - name: Temporal Durable Agents Demos
+    url: https://github.com/temporal-community/openai-agents-demos
+    category: agent-patterns
+    description: Durable execution patterns with Agents SDK
+
+# Deprecation notices
+deprecations:
+  - api: Assistants API
+    shutdown_date: "2026-08-26"
+    replacement: Responses API
+    migration_guide: Migration/assistants-to-responses
+    
+  - api: Realtime API Beta
+    shutdown_date: "2026-02-27"
+    replacement: Realtime API GA (gpt-realtime)
+    migration_guide: Realtime-Voice/
+    
+  - api: gpt-4o-realtime-preview
+    shutdown_date: "2026-03-24"
+    replacement: gpt-realtime
+    migration_guide: Realtime-Voice/
