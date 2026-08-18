@@ -1,3 +1,5 @@
+
+
 <p align="center">
   <img src="./logo.png" alt="Awesome OpenAI Agent Templates" width="640" />
 </p>
@@ -48,7 +50,7 @@ This repository curates runnable templates and high-quality references so you ca
 
 1. **Pick a category** under the repo root:
    - `Responses-API/` – Responses API starters (stateful, streaming, tools),
-   - `Built-in-Tools/` – web search, file search, code interpreter,
+   - `Built-in-Tools/` – web search, file search, code interpreter, computer use, MCP,
    - `Agent-Patterns/` – routing, guardrails, parallel agents,
    - `Realtime-Voice/` – WebSocket and WebRTC voice agents,
    - `Migration/` – migration guides (Assistants → Responses),
