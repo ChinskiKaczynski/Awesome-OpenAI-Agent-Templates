@@ -11,9 +11,10 @@ async function searchWeb(query: string): Promise<string> {
     console.log("🌐 Searching the web...");
 
     const response = await openai.responses.create({
-        model: "gpt-4o-mini",
+        model: "gpt-4.1-mini",
         input: query,
-        tools: [{ type: "web_search_preview" }],
+        tools: [{ type: "web_search" }],
+        tool_choice: "required",
     });
 
     return response.output_text;

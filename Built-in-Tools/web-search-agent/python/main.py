@@ -17,9 +17,10 @@ def search_web(query: str) -> str:
     print("🌐 Searching the web...")
     
     response = client.responses.create(
-        model="gpt-4o-mini",
+        model="gpt-4.1-mini",
         input=query,
-        tools=[{"type": "web_search_preview"}]
+        tools=[{"type": "web_search"}],
+        tool_choice="required"
     )
     
     return response.output_text
