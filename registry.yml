@@ -3,7 +3,7 @@
 # Generated README table comes from this file
 
 schema_version: "1.0"
-last_updated: "2026-01-08"
+last_updated: "2026-10-24"
 
 # Template Categories
 categories:
@@ -296,14 +296,14 @@ templates:
     description: Reviews code and suggests improvements
     
   - id: chatkit-ui-embed
-    name: ChatKit UI Embed
+    name: ChatKit UI References
     category: chatkit
     path: ChatKit
-    languages: [javascript]
+    languages: []
     difficulty: beginner
     tools: []
-    status: verified
-    description: Drop-in ChatKit with hosted integrations
+    status: reference
+    description: Links to official ChatKit docs and starters; no local runnable embed
 
 # External resources (links only)
 external_resources:

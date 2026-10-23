@@ -11,7 +11,7 @@
   <a href="https://github.com/ChinskiKaczynski/Awesome-OpenAI-Agent-Templates/pulls"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 </p>
 
-> Production-ready templates, tutorials, and patterns for building agents with the **Responses API**, **Agents SDK**, **Realtime API**, and more.
+> Curated templates, tutorials, and references for building agents with the **Responses API**, **Agents SDK**, **Realtime API**, and more.
 
 ---
 
@@ -54,7 +54,7 @@ This repository curates runnable templates and high-quality references so you ca
    - `Migration/` – migration guides (Assistants → Responses),
    - `Observability/` – tracing and monitoring,
    - `Agents-SDK-Python/` – Python SDK templates,
-   - `ChatKit/` – embeddable UI templates.
+   - `ChatKit/` – links to official ChatKit UI starters and documentation.
 
 2. **Install dependencies** as described by each template (Python venv / Node, etc.).
 
@@ -85,11 +85,11 @@ This repository curates runnable templates and high-quality references so you ca
 | **Migration** | API migration guides | 1 guide |
 | **Observability** | Tracing and monitoring | 1 template |
 | **Agents SDK** | Python/TypeScript SDK | 8 templates |
-| **ChatKit** | Embeddable chat UI | 1 template |
+| **ChatKit** | Official UI examples and docs | 1 reference |
 
 ## Template Registry
 
-> ✅ = Verified, 📁 = Local template, 🔗 = External link
+> ✅ = Historically marked verified (not re-tested here), 🔄 = Reference / not verified, 📁 = Local directory, 🔗 = External link
 
 <!-- REGISTRY_TABLE_START -->
 
@@ -110,7 +110,7 @@ This repository curates runnable templates and high-quality references so you ca
 | 📁 [Assistants → Responses](Migration/assistants-to-responses/) | Migration | python | Intermediate | ✅ | Migration guide & examples |
 | 📁 [Tracing OTLP](Observability/tracing-otlp/) | Observability | python | Intermediate | ✅ | OpenTelemetry tracing |
 | 📁 [Starter Agent](Agents-SDK-Python/) | Agents SDK | python | Beginner | ✅ | Minimal "hello agent" |
-| 📁 [ChatKit UI](ChatKit/) | ChatKit | javascript | Beginner | ✅ | Drop-in ChatKit embed |
+| 📁 [ChatKit UI References](ChatKit/) | ChatKit | — | Beginner | 🔄 | Official ChatKit docs and starters; no local runnable embed |
 
 ### External Resources
 
