@@ -1,57 +1,24 @@
-# Computer Use Agent
+# Computer Use Agent (incomplete scaffold)
 
-Browser and desktop automation using the `computer_use_preview` built-in tool.
+> **Not a working computer-use agent.** The included Python and TypeScript scripts send a single Responses API request, but do not launch a browser/desktop, execute returned actions, capture screenshots, or continue the tool loop. They cannot complete the advertised tasks. Do not treat their output as verified task success or use them in production.
 
-> ⚠️ **Preview Feature**: Computer use is currently in preview and may change.
+## Current API
 
-## Usage
+These examples still use the older `computer_use_preview` tool with `gpt-4o-mini`. They have **not** been migrated or integration-tested against the current computer-use API. The current OpenAI guide uses the `computer` tool with a supported model and requires an environment driver that executes actions and returns screenshots.
 
-```bash
-pip install -r requirements.txt
-python main.py
-```
+For a working integration, follow the [official Computer Use guide](https://developers.openai.com/api/docs/guides/tools-computer-use), including the action/screenshot loop, or start from its linked sample app. Do not run these scripts expecting them to automate a browser; their API calls may incur charges.
 
-## What it does
+## What is missing
 
-1. Launches a secure browser environment
-2. Navigates to websites, clicks elements, fills forms
-3. Takes screenshots and extracts information
-4. Returns structured results
+1. A sandboxed, persistent browser or desktop driver.
+2. Execution of each returned `computer_call` action in order.
+3. A `computer_call_output` screenshot returned with the matching `call_id`, followed by additional Responses turns until completion.
+4. Step limits, user confirmation for consequential actions, and verification of the final UI state.
 
-## Example Tasks
+## Safety
 
-- "Go to Wikipedia and find the population of France"
-- "Open Hacker News and get the top 5 headlines"
-- "Search for 'OpenAI' on Google and summarize results"
+- Run computer actions only in an isolated environment with restricted access.
+- Never expose sensitive credentials or permit unapproved purchases, submissions, or destructive changes.
+- Treat page content as untrusted; verify actual UI state before reporting success.
 
-## How It Works
-
-```
-User Task
-    ↓
-┌─────────────────┐
-│  computer_use   │ ← Navigate, click, type, screenshot
-│  preview        │
-└────────┬────────┘
-         ↓
-   Extracted Data
-```
-
-## Safety Considerations
-
-- ⚠️ Only use in sandboxed/isolated environments
-- ⚠️ Never use with sensitive credentials
-- ⚠️ Monitor all automated actions
-
-## Environment Types
-
-| Type | Description |
-|------|-------------|
-| `browser` | Web browser automation |
-| `computer` | Full desktop environment |
-
-## Limitations
-
-- Preview feature, API may change
-- Rate limited compared to other tools
-- Complex UIs may require multiple attempts
+**Status:** Historical illustrative scaffold only. No successful end-to-end smoke test is claimed.
