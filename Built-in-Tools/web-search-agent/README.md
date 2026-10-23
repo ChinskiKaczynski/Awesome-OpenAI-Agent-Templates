@@ -18,9 +18,13 @@ npm install
 npx tsx main.ts
 ```
 
+The examples use `gpt-4.1-mini` and require `OPENAI_API_KEY`. Live API calls and web searches may incur usage charges.
+
+See the [official web search guide](https://developers.openai.com/api/docs/guides/tools-web-search) for supported options.
+
 ## What it does
 
-1. Sends a query to the model with `web_search_preview` tool enabled
+1. Sends a query to the model with `web_search` tool enabled
 2. Model automatically searches the internet for current information
 3. Returns answer synthesized from web results
 
@@ -34,13 +38,13 @@ npx tsx main.ts
 
 | Tool Name | Description |
 |-----------|-------------|
-| `web_search_preview` | Standard web search (recommended) |
-| `web_search` | Legacy web search |
+| `web_search` | Stable web search (recommended) |
+| `web_search_preview` | Legacy web search (for existing integrations) |
 
 ## Expected Output
 
 ```
 🔍 Query: Who is the current president of France?
 🌐 Searching the web...
-🤖 Answer: As of January 2026, Emmanuel Macron is the President of France...
+🤖 Answer: <answer with source citations>...
 ```
