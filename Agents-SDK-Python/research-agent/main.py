@@ -17,7 +17,7 @@ client = OpenAI()
 class ResearchAgent:
     """Agent that conducts research and generates reports."""
     
-    def __init__(self, model: str = "gpt-4o-mini"):
+    def __init__(self, model: str = "gpt-4.1-mini"):
         self.model = model
         self.research_results = []
     
@@ -28,7 +28,8 @@ class ResearchAgent:
         response = client.responses.create(
             model=self.model,
             input=f"Search for: {query}. Provide detailed findings with sources.",
-            tools=[{"type": "web_search_preview"}]
+            tools=[{"type": "web_search"}],
+            tool_choice="required"
         )
         
         return response.output_text
