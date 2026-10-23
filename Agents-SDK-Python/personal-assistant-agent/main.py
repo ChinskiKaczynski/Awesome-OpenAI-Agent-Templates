@@ -26,6 +26,7 @@ class Task:
     priority: str = "medium"  # low, medium, high
     status: str = "pending"  # pending, completed
     created_at: str = None
+    completed_at: Optional[str] = None
     
     def __post_init__(self):
         if self.created_at is None:
@@ -106,7 +107,10 @@ def complete_task(task_id: str) -> str:
     """
     for task in tasks:
         if task.id == task_id:
+            if task.status == "completed":
+                return f"Task already completed: '{task.title}'"
             task.status = "completed"
+            task.completed_at = datetime.now().isoformat()
             save_data()
             return f"✅ Completed: '{task.title}'"
     
@@ -200,7 +204,10 @@ def daily_summary() -> str:
     high_priority = [t for t in pending if t.priority == "high"]
     
     # Completed today
-    completed_today = [t for t in tasks if t.status == "completed"]
+    completed_today = [
+        t for t in tasks
+        if t.status == "completed" and t.completed_at and t.completed_at[:10] == today
+    ]
     
     lines = [
         f"📅 Daily Summary - {today}",
@@ -209,7 +216,7 @@ def daily_summary() -> str:
         f"  • Pending tasks: {len(pending)}",
         f"  • Due today: {len(due_today)}",
         f"  • High priority: {len(high_priority)}",
-        f"  • Completed: {len(completed_today)}",
+        f"  • Completed today: {len(completed_today)}",
     ]
     
     if due_today:
