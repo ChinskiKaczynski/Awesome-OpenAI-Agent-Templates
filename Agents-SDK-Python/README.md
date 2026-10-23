@@ -1,6 +1,6 @@
 # Agents SDK Python - Example Agents
 
-Production-ready example agents built with the **OpenAI Agents SDK**.
+Example agents using the **OpenAI Agents SDK** and **Responses API**. These are learning starters, not production-ready integrations.
 
 > 📚 **Official Docs**: [Agents SDK Python](https://openai.github.io/openai-agents-python/)
 
@@ -48,7 +48,7 @@ agent = Agent(
 )
 
 # Run the agent
-result = await Runner.run(agent, "What's the weather in Paris?")
+result = Runner.run_sync(agent, "What's the weather in Paris?")
 print(result.final_output)
 ```
 
