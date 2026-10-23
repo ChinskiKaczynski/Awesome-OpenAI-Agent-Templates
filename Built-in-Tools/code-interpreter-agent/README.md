@@ -34,10 +34,10 @@ npx tsx main.ts
 
 ## Container Types
 
-| Type | Description |
+| Mode | Description |
 |------|-------------|
 | `auto` | Automatic container management (recommended) |
-| `reuse` | Reuse existing container for session |
+| `explicit` | Create a container via the Containers API and pass its ID as `container` |
 
 ## Expected Output
 
@@ -59,11 +59,18 @@ npx tsx main.ts
 
 ## Advanced: Accessing Generated Files
 
-The code interpreter can generate files (charts, CSVs, etc.) that you can download:
+Code Interpreter-generated files are referenced by `container_file_citation` annotations on assistant messages (not by `code_interpreter_output` items). This example lists their IDs:
 
 ```python
-for output in response.output:
-    if output.type == "code_interpreter_output":
-        for file in output.files:
-            print(f"Generated: {file.name}")
+for item in response.output:
+    if item.type != "message":
+        continue
+    for part in item.content:
+        if part.type != "output_text":
+            continue
+        for annotation in part.annotations:
+            if annotation.type == "container_file_citation":
+                print(f"Generated: {annotation.filename} (container: {annotation.container_id}, file: {annotation.file_id})")
 ```
+
+To download the file bytes, use the [Containers file content API](https://developers.openai.com/api/docs/guides/tools-code-interpreter#work-with-files) while the container is active; the snippet above only prints file metadata. Containers expire after 20 minutes of inactivity.
