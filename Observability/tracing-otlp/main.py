@@ -60,7 +60,7 @@ def traced_response_create(model: str, prompt: str) -> str:
     
     This wraps the OpenAI call with a span that captures:
     - Model used
-    - Prompt (truncated)
+    - No raw user inputs or tool arguments in span attributes
     - Token usage
     - Duration
     """
@@ -68,7 +68,7 @@ def traced_response_create(model: str, prompt: str) -> str:
         # Add GenAI semantic attributes
         span.set_attribute("gen_ai.system", "openai")
         span.set_attribute("gen_ai.request.model", model)
-        span.set_attribute("gen_ai.prompt", prompt[:100])  # Truncate for safety
+        # Avoid exporting raw prompts, which may contain sensitive data.
         
         try:
             response = client.responses.create(
@@ -97,8 +97,7 @@ def traced_tool_call(tool_name: str, args: dict = None):
     """
     with tracer.start_as_current_span(f"tool_call.{tool_name}") as span:
         span.set_attribute("tool.name", tool_name)
-        if args:
-            span.set_attribute("tool.arguments", str(args))
+        # Tool arguments may contain sensitive data; do not export them.
         
         # Simulate tool execution
         import time
@@ -117,7 +116,7 @@ def run_traced_agent(user_query: str):
     Run an agent with full tracing.
     """
     with tracer.start_as_current_span("agent_run") as span:
-        span.set_attribute("agent.query", user_query)
+        # Keep the user query out of exported span attributes.
         
         print(f"🔍 Processing: {user_query}")
         
