@@ -32,7 +32,7 @@ node main.js
 | `session.created` | Server → Client | Connection established |
 | `session.update` | Client → Server | Configure session |
 | `input_audio_buffer.append` | Client → Server | Send audio data |
-| `response.audio.delta` | Server → Client | Receive audio chunk |
+| `response.output_audio.delta` | Server → Client | Receive audio chunk |
 
 ## GA vs Beta
 
