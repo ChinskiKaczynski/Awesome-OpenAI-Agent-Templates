@@ -68,7 +68,8 @@ Use markdown formatting.""",
                     "type": "code_interpreter",
                     "container": {"type": "auto"}
                 }
-            ]
+            ],
+            tool_choice="required"
         )
         
         return response.output_text
@@ -93,7 +94,8 @@ Use code interpreter for accurate calculations. Format as a clear table.""",
                     "type": "code_interpreter",
                     "container": {"type": "auto"}
                 }
-            ]
+            ],
+            tool_choice="required"
         )
         
         return response.output_text
@@ -120,7 +122,8 @@ Use code interpreter for calculations. Provide specific numbers.""",
                     "type": "code_interpreter",
                     "container": {"type": "auto"}
                 }
-            ]
+            ],
+            tool_choice="required"
         )
         
         return response.output_text
