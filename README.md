@@ -11,7 +11,7 @@
   <a href="https://github.com/ChinskiKaczynski/Awesome-OpenAI-Agent-Templates/pulls"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 </p>
 
-> Production-ready templates, tutorials, and patterns for building agents with the **Responses API**, **Agents SDK**, **Realtime API**, and more.
+> Starter templates, tutorials, and patterns for building agents with the **Responses API**, **Agents SDK**, **Realtime API**, and more. Examples are educational and require testing and review before production use.
 
 ---
 
