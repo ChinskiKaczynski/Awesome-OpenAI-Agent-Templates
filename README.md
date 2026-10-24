@@ -106,7 +106,7 @@ This repository curates runnable templates and high-quality references so you ca
 | 📁 [Agents as Tools](Agent-Patterns/agents-as-tools/) | Agent Patterns | python | Advanced | ✅ | Agent composition |
 | 📁 [Parallel Agents](Agent-Patterns/parallel-agents/) | Agent Patterns | python | Advanced | ✅ | Concurrent execution |
 | 📁 [WebSocket Minimal](Realtime-Voice/websocket-minimal/) | Realtime Voice | python, javascript | Intermediate | ✅ | WebSocket voice agent |
-| 📁 [WebRTC Browser](Realtime-Voice/webrtc-browser/) | Realtime Voice | javascript | Advanced | ✅ | Browser-based voice |
+| 📁 [WebRTC Browser](Realtime-Voice/webrtc-browser/) | Realtime Voice | javascript | Advanced | 🔄 | SDP-offer scaffold; session handshake not implemented |
 | 📁 [Assistants → Responses](Migration/assistants-to-responses/) | Migration | python | Intermediate | ✅ | Migration guide & examples |
 | 📁 [Tracing OTLP](Observability/tracing-otlp/) | Observability | python | Intermediate | ✅ | OpenTelemetry tracing |
 | 📁 [Starter Agent](Agents-SDK-Python/) | Agents SDK | python | Beginner | ✅ | Minimal "hello agent" |
