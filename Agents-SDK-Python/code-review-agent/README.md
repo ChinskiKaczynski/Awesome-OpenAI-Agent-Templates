@@ -31,11 +31,15 @@ python main.py
 ## Example
 
 ```python
-review = agent.review(
-    code=open("my_file.py").read(),
+from main import CodeReviewAgent, ReviewRequest, ReviewType
+
+agent = CodeReviewAgent()
+review = agent.review(ReviewRequest(
+    code="def add(a, b): return a + b",
     language="python",
-    review_type="full"
-)
+    review_type=ReviewType.FULL,
+))
+print(review)
 ```
 
 ## Output Format
