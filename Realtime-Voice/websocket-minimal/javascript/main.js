@@ -33,9 +33,7 @@ ws.on("open", function open() {
         session: {
             type: "realtime", // REQUIRED in GA (not needed in beta)
             instructions: "You are a friendly voice assistant. Respond concisely.",
-            voice: "alloy", // Options: alloy, cedar, marin, etc.
-            input_audio_format: "pcm16",
-            output_audio_format: "pcm16",
+            audio: { output: { voice: "alloy" } }, // GA session schema
         },
     };
 
@@ -57,7 +55,7 @@ ws.on("message", function incoming(message) {
             console.log("✅ Session updated successfully");
             break;
 
-        case "response.audio.delta":
+        case "response.output_audio.delta":
             // In a real app, you'd play this audio
             console.log("🔊 Received audio chunk");
             break;
