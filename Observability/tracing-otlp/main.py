@@ -78,9 +78,10 @@ def traced_response_create(model: str, prompt: str) -> str:
             
             # Record response attributes
             span.set_attribute("gen_ai.response.id", response.id)
-            span.set_attribute("gen_ai.usage.total_tokens", response.usage.total_tokens)
-            span.set_attribute("gen_ai.usage.prompt_tokens", response.usage.input_tokens)
-            span.set_attribute("gen_ai.usage.completion_tokens", response.usage.output_tokens)
+            if response.usage is not None:
+                span.set_attribute("gen_ai.usage.total_tokens", response.usage.total_tokens)
+                span.set_attribute("gen_ai.usage.prompt_tokens", response.usage.input_tokens)
+                span.set_attribute("gen_ai.usage.completion_tokens", response.usage.output_tokens)
             
             return response.output_text
             
