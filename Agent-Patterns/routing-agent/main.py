@@ -5,7 +5,7 @@ Route incoming requests to specialized agents based on intent.
 Uses the OpenAI Agents SDK handoff feature for seamless transfer.
 """
 import asyncio
-from agents import Agent, Runner
+from agents import Agent, ModelSettings, Runner
 
 
 # Define specialized agents
@@ -57,6 +57,7 @@ triage_agent = Agent(
     Example: "I'll connect you with our sales team for that."
     """,
     handoffs=[sales_agent, tech_support_agent, general_agent],
+    model_settings=ModelSettings(tool_choice="required"),
 )
 
 
