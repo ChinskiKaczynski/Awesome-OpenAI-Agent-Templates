@@ -65,7 +65,9 @@ def traced_response_create(model: str, prompt: str) -> str:
 
     Raw prompt, query, and tool arguments are not explicitly added to spans.
     """
-    with tracer.start_as_current_span("llm_generation") as span:
+    with tracer.start_as_current_span(
+        "llm_generation", record_exception=False, set_status_on_exception=False
+    ) as span:
         # Add GenAI semantic attributes
         span.set_attribute("gen_ai.system", "openai")
         span.set_attribute("gen_ai.request.model", model)
@@ -86,9 +88,9 @@ def traced_response_create(model: str, prompt: str) -> str:
             
             return response.output_text
             
-        except Exception as e:
-            span.record_exception(e)
-            span.set_status(trace.StatusCode.ERROR, str(e))
+        except Exception:
+            # Mark failure without exporting exception text or stack traces.
+            span.set_status(trace.StatusCode.ERROR)
             raise
 
 
@@ -116,7 +118,9 @@ def run_traced_agent(user_query: str):
     """
     Run an agent with full tracing.
     """
-    with tracer.start_as_current_span("agent_run") as span:
+    with tracer.start_as_current_span(
+        "agent_run", record_exception=False, set_status_on_exception=False
+    ) as span:
         # Keep the user query out of exported span attributes.
         
         print(f"🔍 Processing: {user_query}")
