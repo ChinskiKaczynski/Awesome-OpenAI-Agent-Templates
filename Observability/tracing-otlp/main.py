@@ -60,9 +60,10 @@ def traced_response_create(model: str, prompt: str) -> str:
     
     This wraps the OpenAI call with a span that captures:
     - Model used
-    - No raw user inputs or tool arguments in span attributes
     - Token usage
     - Duration
+
+    Raw prompt, query, and tool arguments are not explicitly added to spans.
     """
     with tracer.start_as_current_span("llm_generation") as span:
         # Add GenAI semantic attributes
