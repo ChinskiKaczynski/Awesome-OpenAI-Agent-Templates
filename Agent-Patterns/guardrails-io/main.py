@@ -7,7 +7,9 @@ Uses the OpenAI Agents SDK guardrails feature.
 import asyncio
 import re
 from pydantic import BaseModel
-from agents import Agent, Runner, InputGuardrail, OutputGuardrail, GuardrailFunctionOutput, RunContextWrapper
+from agents import (Agent, Runner, InputGuardrail, OutputGuardrail, GuardrailFunctionOutput,
+                    RunContextWrapper, InputGuardrailTripwireTriggered,
+                    OutputGuardrailTripwireTriggered)
 
 
 # ============================================
@@ -116,13 +118,13 @@ guarded_agent = Agent(
 
 async def handle_request(user_message: str):
     """Process a request through the guarded agent."""
-    print(f"\n👤 User: {user_message}")
+    print("\n👤 User input received (content not logged)")
     
     try:
         result = await Runner.run(guarded_agent, user_message)
         print(f"✅ Response: {result.final_output}")
-    except Exception as e:
-        print(f"🛡️ Blocked by guardrail: {e}")
+    except (InputGuardrailTripwireTriggered, OutputGuardrailTripwireTriggered):
+        print("🛡️ Blocked by guardrail")
 
 
 async def main():
