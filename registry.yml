@@ -229,8 +229,8 @@ templates:
     languages: [python]
     difficulty: beginner
     tools: []
-    status: verified
-    description: Demonstrates function tools + input validation
+    status: reference
+    description: Reference to Agents SDK function tools; no runnable script
 
   # ============================================
   # EXAMPLE AGENTS
