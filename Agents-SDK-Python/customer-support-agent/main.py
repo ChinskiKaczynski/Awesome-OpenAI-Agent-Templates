@@ -53,8 +53,10 @@ billing_agent = Agent(
     3. Provide actionable next steps
     4. Offer additional help
     
-    Be empathetic and solution-focused. If you need to process a refund
-    or make account changes, explain what you'll do and the timeline.""",
+    Be empathetic and solution-focused. You cannot access billing systems,
+    issue refunds, or change accounts. Never claim a refund was processed,
+    approved, or scheduled, and do not promise an outcome or timeline.
+    Explain how the customer can request help from the billing team.""",
 )
 
 technical_agent = Agent(
