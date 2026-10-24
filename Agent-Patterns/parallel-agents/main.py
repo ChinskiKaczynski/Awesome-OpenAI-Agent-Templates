@@ -6,7 +6,27 @@ This pattern is useful when you need to perform independent
 analysis or queries that can run in parallel.
 """
 import asyncio
+import json
+from dataclasses import dataclass, asdict
 from agents import Agent, Runner
+
+@dataclass
+class SentimentResult:
+    sentiment: str
+    confidence: float
+    key_phrases: list[str]
+
+@dataclass
+class TopicResult:
+    main_topic: str
+    subtopics: list[str]
+    keywords: list[str]
+
+@dataclass
+class SummaryResult:
+    one_sentence: str
+    key_points: list[str]
+    word_count: int
 
 
 # ============================================
@@ -23,6 +43,7 @@ sentiment_agent = Agent(
     - key_phrases: list of phrases that influenced your analysis
     
     Be precise and objective.""",
+    output_type=SentimentResult,
 )
 
 topic_agent = Agent(
@@ -35,6 +56,7 @@ topic_agent = Agent(
     - keywords: important terms
     
     Focus on substance, not style.""",
+    output_type=TopicResult,
 )
 
 summary_agent = Agent(
@@ -47,6 +69,7 @@ summary_agent = Agent(
     - word_count: original text word count
     
     Be concise but complete.""",
+    output_type=SummaryResult,
 )
 
 
@@ -78,9 +101,9 @@ async def analyze_in_parallel(text: str) -> dict:
     
     # Aggregate results
     return {
-        "sentiment": results[0].final_output,
-        "topics": results[1].final_output,
-        "summary": results[2].final_output,
+        "sentiment": asdict(results[0].final_output),
+        "topics": asdict(results[1].final_output),
+        "summary": asdict(results[2].final_output),
     }
 
 
@@ -114,13 +137,13 @@ async def analyze_with_aggregation(text: str) -> str:
     Please synthesize these analysis results into a unified report:
     
     SENTIMENT ANALYSIS:
-    {parallel_results['sentiment']}
+    {json.dumps(parallel_results['sentiment'])}
     
     TOPIC EXTRACTION:
-    {parallel_results['topics']}
+    {json.dumps(parallel_results['topics'])}
     
     SUMMARY:
-    {parallel_results['summary']}
+    {json.dumps(parallel_results['summary'])}
     """
     
     print("📊 Aggregating results...")
