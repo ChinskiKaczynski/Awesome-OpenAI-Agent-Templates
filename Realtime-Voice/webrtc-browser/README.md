@@ -1,65 +1,43 @@
 # Realtime WebRTC Browser
 
-Browser-based voice agent using WebRTC for lowest latency.
+**Status: signaling scaffold, not a working voice agent.** The browser code creates
+a WebRTC SDP offer but does not exchange it with OpenAI or apply a remote SDP
+answer. Opening the page alone cannot establish a voice session or show a live
+transcript.
 
-## Usage
+## Inspect the scaffold
 
-1. Create `.env` with your API key
-2. Open `index.html` in browser (or serve with local server)
-3. Click "Start" to begin voice interaction
+1. Serve this directory on localhost (microphone access requires a secure context):
 
-> ⚠️ **Security Note**: In production, use ephemeral tokens instead of exposing API keys in the browser.
+   ```bash
+   python -m http.server 8000
+   ```
 
-## What it does
+2. Open `http://localhost:8000` and click **Start**.
+3. Allow microphone access and inspect the SDP offer in the browser console.
+   Click **Stop** to release the microphone and close the local peer connection.
 
-1. Requests microphone access
-2. Establishes WebRTC connection to Realtime API
-3. Streams audio bidirectionally in real-time
-4. Displays transcript of conversation
+There is no backend in this directory. The page does not read a `.env` file,
+use an API key, or make a request to the Realtime API.
 
-## Why WebRTC over WebSocket?
+## What is missing for a real conversation
 
-| Feature | WebRTC | WebSocket |
-|---------|--------|-----------|
-| Latency | Very low | Low |
-| Browser support | ✅ Native | ✅ Native |
-| NAT traversal | ✅ Built-in | ❌ Requires setup |
-| Audio handling | ✅ Native | Manual encoding |
+- Add a trusted backend to exchange the browser's SDP offer for an answer
+  through the Realtime WebRTC API (or mint an ephemeral client secret).
+  Keep the standard OpenAI API key on the backend, never in browser code.
+- Send the offer, receive the SDP answer, and call
+  `peerConnection.setRemoteDescription(...)` in `app.js`.
+- Update the session configuration and transcript event handler in `app.js`
+  to the current Realtime GA schema before connecting. The existing
+  top-level `session.voice` and `response.audio_transcript.delta` are outdated.
+
+See the [official OpenAI WebRTC guide](https://developers.openai.com/api/docs/guides/voice-webrtc?voice-api=realtime)
+for a complete connection flow.
 
 ## Files
 
 | File | Description |
 |------|-------------|
-| `index.html` | Main HTML page |
-| `app.js` | WebRTC logic |
+| `index.html` | Browser UI |
+| `app.js` | Microphone, peer connection, SDP offer, and event scaffold |
 | `style.css` | Styling |
-
-## Browser Compatibility
-
-- ✅ Chrome 90+
-- ✅ Firefox 80+
-- ✅ Safari 15+
-- ✅ Edge 90+
-
-## Expected Flow
-
-```
-1. User clicks "Start"
-2. Browser requests microphone access
-3. WebRTC connection established
-4. User speaks → Audio sent to API
-5. API responds → Audio plays in browser
-6. Transcript appears on screen
-```
-
-## For Production
-
-Replace API key with ephemeral tokens:
-
-```javascript
-// Get ephemeral token from your backend
-const response = await fetch('/api/get-realtime-token');
-const { token } = await response.json();
-
-// Use token for WebRTC connection
-```
