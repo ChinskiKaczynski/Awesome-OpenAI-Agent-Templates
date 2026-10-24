@@ -254,31 +254,28 @@ async def chat(message: str) -> str:
 
 
 async def main():
-    """Interactive demo of the personal assistant."""
+    """Run the interactive personal assistant."""
     load_data()
-    
-    print("="*50)
+
+    print("=" * 50)
     print("🤖 PERSONAL ASSISTANT AGENT")
-    print("="*50)
+    print("=" * 50)
     print("Type 'quit' to exit\n")
-    
-    # Demo conversation
-    demo_messages = [
-        "Add a task: Review quarterly report, due 2026-01-15, high priority",
-        "Add a task: Send follow-up emails, medium priority",
-        "Add a task: Book team lunch, low priority",
-        "Show me my tasks",
-        "Give me today's summary",
-        "Take a note: Remember to update the documentation",
-    ]
-    
-    for message in demo_messages:
-        print(f"\n👤 You: {message}")
+
+    while True:
+        try:
+            message = input("👤 You: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
+
+        if message.lower() in {"quit", "exit"}:
+            break
+        if not message:
+            continue
+
         response = await chat(message)
         print(f"🤖 Assistant: {response}")
-    
-    print("\n" + "="*50)
-    print("Demo complete! Data saved to assistant_data.json")
 
 
 if __name__ == "__main__":
