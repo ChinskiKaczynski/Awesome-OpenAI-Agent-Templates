@@ -17,10 +17,10 @@ research_agent = Agent(
     name="Research Agent",
     instructions="""You are a research specialist. When given a topic:
     1. Identify key concepts and facts
-    2. Find relevant data and statistics
-    3. Return a structured summary of findings
+    2. Use only the provided context and model knowledge; no external retrieval tools are available
+    3. Return a structured summary, flagging claims that require external verification
     
-    Be thorough but concise. Focus on accuracy and relevance.""",
+    Do not invent statistics, sources, or citations. State when external verification is needed.""",
 )
 
 writer_agent = Agent(
@@ -51,7 +51,7 @@ editor_agent = Agent(
 @function_tool
 async def research_topic(topic: str) -> str:
     """
-    Research a topic and return key findings.
+    Summarize background knowledge without external fact-checking.
     
     Args:
         topic: The topic to research
@@ -102,7 +102,7 @@ orchestrator_agent = Agent(
     instructions="""You are a content orchestrator. Your job is to coordinate
     the creation of high-quality content by using your specialist tools:
     
-    1. Use research_topic to gather information
+    1. Use research_topic for unsourced background context, not verified research
     2. Use write_content to create the initial draft
     3. Use edit_text to polish the final version
     
