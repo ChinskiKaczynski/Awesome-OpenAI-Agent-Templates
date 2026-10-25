@@ -1,0 +1,21 @@
+name: Customer Support Offline Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Agents-SDK-Python/customer-support-agent/**'
+      - '.github/workflows/customer-support-offline.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Agents-SDK-Python/customer-support-agent/**'
+      - '.github/workflows/customer-support-offline.yml'
+
+jobs:
+  support-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run offline support regression tests
+        run: python3 -m unittest discover -s Agents-SDK-Python/customer-support-agent -p test_support.py -v
