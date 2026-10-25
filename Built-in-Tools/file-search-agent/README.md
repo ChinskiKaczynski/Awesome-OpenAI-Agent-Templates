@@ -48,15 +48,15 @@ export VECTOR_STORE_ID=vs_abc123...
 
 ## Expected Output
 
-```
-📚 Searching documents: What is our refund policy?
-🔍 Searching vector store vs_abc123...
-🤖 Answer: According to our documentation, the refund policy states...
+The Python and TypeScript examples print the query, vector store ID, and the model's answer. For example (answer text is illustrative):
 
-📄 Sources:
-   - refund-policy.pdf (relevance: 0.92)
-   - faq.md (relevance: 0.85)
+```text
+📚 Query: What are the main topics covered in the documents?
+🔍 Searching vector store vs_abc123...
+🤖 Answer: [Model-generated summary of the documents]
 ```
+
+These examples return only `response.output_text`; they do **not** print a separate list of source filenames or relevance scores. To access ranked file-search results, add `include=["file_search_call.results"]` (Python) or `include: ["file_search_call.results"]` (TypeScript) to the Responses request and inspect `response.output`. See the [official file search guide](https://developers.openai.com/api/docs/guides/tools-file-search).
 
 ## Creating a Vector Store
 
