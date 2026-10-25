@@ -1,0 +1,23 @@
+name: Research Agent Offline Tests
+
+on:
+  pull_request:
+    paths:
+      - 'Agents-SDK-Python/research-agent/**'
+      - '.github/workflows/research-agent-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'Agents-SDK-Python/research-agent/**'
+      - '.github/workflows/research-agent-tests.yml'
+
+jobs:
+  research-agent-offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run offline Research Agent regression tests
+        run: python -m unittest discover -s Agents-SDK-Python/research-agent -p 'test_sources.py' -v
