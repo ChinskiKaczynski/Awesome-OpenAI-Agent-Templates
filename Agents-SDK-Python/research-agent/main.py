@@ -33,6 +33,13 @@ class ResearchAgent:
             tool_choice="required"
         )
 
+        # A requested tool call does not prove that web search completed.
+        if not any(
+            item.type == "web_search_call" and item.status == "completed"
+            for item in response.output
+        ):
+            raise RuntimeError("Web search did not complete; refusing to use unverified findings.")
+
         # Retain citation URLs supplied by the API, rather than inferred by synthesis.
         for item in response.output:
             if item.type == "message":
