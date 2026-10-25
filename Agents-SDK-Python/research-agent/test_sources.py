@@ -6,10 +6,10 @@ from types import SimpleNamespace as Obj
 from unittest import TestCase, main, mock
 
 
-def response(text, urls=()):
+def response(text, urls=(), search_status="completed"):
     annotations = [Obj(type="url_citation", url=url) for url in urls]
     annotations.append(Obj(type="file_citation", url="https://ignored.example"))
-    return Obj(output_text=text, output=[Obj(type="web_search_call"), Obj(type="message", content=[
+    return Obj(output_text=text, output=[Obj(type="web_search_call", status=search_status), Obj(type="message", content=[
         Obj(type="output_text", annotations=annotations), Obj(type="refusal")
     ])])
 
@@ -48,6 +48,20 @@ class ResearchSourcesTests(TestCase):
         self.assertNotIn("https://source.example/a", second)
         self.assertIn("No source URLs were returned", second)
         self.assertIn("Do not invent citations", self.client.responses.create.call_args.kwargs["input"])
+
+
+    def test_search_rejects_missing_or_incomplete_web_search(self):
+        for status in ("in_progress", "failed"):
+            with self.subTest(status=status):
+                self.client.responses.create.return_value = response("Unsourced answer", search_status=status)
+                with self.assertRaisesRegex(RuntimeError, "Web search did not complete"):
+                    self.agent.search("query")
+
+        self.client.responses.create.return_value = Obj(
+            output_text="Unsourced answer", output=[Obj(type="message", content=[])]
+        )
+        with self.assertRaisesRegex(RuntimeError, "Web search did not complete"):
+            self.agent.search("query")
 
 
 if __name__ == "__main__":
