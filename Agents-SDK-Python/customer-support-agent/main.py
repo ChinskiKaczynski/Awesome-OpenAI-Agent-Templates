@@ -7,7 +7,7 @@ Uses the Agents SDK for multi-agent handoffs.
 import asyncio
 from dataclasses import dataclass
 from enum import Enum
-from agents import Agent, Runner, RunConfig
+from agents import Agent, ModelSettings, Runner, RunConfig
 
 
 class TicketCategory(Enum):
@@ -109,6 +109,8 @@ triage_agent = Agent(
     Example: "Thanks for reaching out! I'm connecting you with our billing team."
     """,
     handoffs=[billing_agent, technical_agent, general_agent],
+    # Only handoffs are available here; require choosing a specialist.
+    model_settings=ModelSettings(tool_choice="required"),
 )
 
 
