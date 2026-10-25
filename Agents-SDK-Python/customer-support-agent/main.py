@@ -7,7 +7,7 @@ Uses the Agents SDK for multi-agent handoffs.
 import asyncio
 from dataclasses import dataclass
 from enum import Enum
-from agents import Agent, Runner
+from agents import Agent, Runner, RunConfig
 
 
 class TicketCategory(Enum):
@@ -114,9 +114,7 @@ async def handle_ticket(ticket: Ticket) -> str:
     """Process a support ticket through the agent system."""
     print(f"\n{'='*50}")
     print(f"🎫 Ticket #{ticket.id}")
-    print(f"👤 From: {ticket.customer_name} <{ticket.email}>")
     print(f"{'='*50}")
-    print(f"📝 Message:\n{ticket.message}")
     print(f"{'='*50}\n")
     
     # Format ticket for agent
@@ -129,7 +127,11 @@ async def handle_ticket(ticket: Ticket) -> str:
     """
     
     # Process through triage
-    result = await Runner.run(triage_agent, agent_input)
+    # Avoid capturing customer details in the SDK's default traces.
+    result = await Runner.run(
+        triage_agent, agent_input,
+        run_config=RunConfig(trace_include_sensitive_data=False),
+    )
     
     print(f"🔀 Routed to: {result.last_agent.name}")
     print(f"\n📧 Response:\n{result.final_output}")
