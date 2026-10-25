@@ -20,6 +20,7 @@ class ResearchAgent:
     def __init__(self, model: str = "gpt-4.1-mini"):
         self.model = model
         self.research_results = []
+        self.source_urls = []
     
     def search(self, query: str) -> str:
         """Search the web for information."""
@@ -31,7 +32,18 @@ class ResearchAgent:
             tools=[{"type": "web_search"}],
             tool_choice="required"
         )
-        
+
+        # Retain citation URLs supplied by the API, rather than inferred by synthesis.
+        for item in response.output:
+            if item.type == "message":
+                for part in item.content:
+                    if part.type == "output_text":
+                        for annotation in part.annotations:
+                            if annotation.type == "url_citation":
+                                url = annotation.url
+                                if url.startswith(("https://", "http://")) and url not in self.source_urls:
+                                    self.source_urls.append(url)
+
         return response.output_text
     
     def plan_research(self, topic: str) -> list[str]:
@@ -71,8 +83,9 @@ class ResearchAgent:
             1. Executive Summary (2-3 sentences)
             2. Key Findings (bullet points)
             3. Detailed Analysis (organized by theme)
-            4. Sources (list all mentioned sources)
-            
+
+            Do not invent citations or a Sources section; source URLs are appended
+            separately from web search API annotations.
             Use markdown formatting."""
         )
         
@@ -80,6 +93,7 @@ class ResearchAgent:
     
     def research(self, topic: str) -> str:
         """Conduct full research on a topic."""
+        self.source_urls = []
         print(f"\n{'='*50}")
         print(f"🔬 Starting Research: {topic}")
         print(f"{'='*50}\n")
@@ -101,7 +115,13 @@ class ResearchAgent:
         # Step 3: Synthesize
         print()
         report = self.synthesize(topic, findings)
-        
+        if self.source_urls:
+            report += "\n\n## Sources cited by web search\n\n" + "\n".join(
+                f"- <{url}>" for url in self.source_urls
+            )
+        else:
+            report += "\n\n> No source URLs were returned by web search; verify claims independently."
+
         return report
 
 
