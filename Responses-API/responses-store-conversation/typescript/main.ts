@@ -2,7 +2,14 @@
  * Responses API - Stateful Conversations
  * Multi-turn conversations with store=true and previous_response_id.
  */
+import { existsSync } from "node:fs";
+import { loadEnvFile } from "node:process";
 import OpenAI from "openai";
+
+// Load the optional .env file before the SDK reads OPENAI_API_KEY.
+if (existsSync(".env")) {
+    loadEnvFile(".env");
+}
 
 const openai = new OpenAI();
 
