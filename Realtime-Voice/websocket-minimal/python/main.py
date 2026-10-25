@@ -16,7 +16,6 @@ OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 MODEL = "gpt-realtime"  # GA model (replaces gpt-4o-realtime-preview)
 
 URL = f"wss://api.openai.com/v1/realtime?model={MODEL}"
-HEADERS = ["Authorization: Bearer " + OPENAI_API_KEY]
 
 
 def on_open(ws):
@@ -87,7 +86,7 @@ def main():
     
     ws = websocket.WebSocketApp(
         URL,
-        header=HEADERS,
+        header=[f"Authorization: Bearer {OPENAI_API_KEY}"],
         on_open=on_open,
         on_message=on_message,
         on_error=on_error,
