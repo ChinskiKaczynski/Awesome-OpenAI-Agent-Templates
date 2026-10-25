@@ -74,8 +74,11 @@ class ResearchSourcesTests(TestCase):
         """Exercise SDK request serialization and typed response parsing offline."""
         import json
 
-        import httpx
         from openai import OpenAI
+        try:
+            import httpx2 as httpx  # OpenAI SDK 3.x transport
+        except ImportError:
+            import httpx  # OpenAI SDK 2.x transport
 
         requests = []
 
