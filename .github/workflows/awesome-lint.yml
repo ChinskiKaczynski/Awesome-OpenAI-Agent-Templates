@@ -1,4 +1,4 @@
-name: Awesome Lint
+name: Template Checks
 
 on:
   push:
@@ -7,20 +7,29 @@ on:
     branches: [main]
 
 jobs:
-  awesome-lint:
+  python-syntax:
+    name: Python syntax (priority agents)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+      - name: Compile priority Python examples
+        run: |
+          python3 -m py_compile \
+            Agents-SDK-Python/research-agent/main.py \
+            Agents-SDK-Python/customer-support-agent/main.py \
+            Built-in-Tools/computer-use-agent/python/main.py
+
+  readme-lint-advisory:
+    name: README lint (advisory; known existing failures)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
       - name: Install awesome-lint
         run: npm install -g awesome-lint
-      
-      - name: Lint README
-        run: awesome-lint README.md || true
-        # Note: Using || true because awesome-lint may flag 
-        # items that are intentional in this repo structure
+      - name: Lint README (advisory until existing issues are fixed)
+        continue-on-error: true
+        run: awesome-lint README.md
