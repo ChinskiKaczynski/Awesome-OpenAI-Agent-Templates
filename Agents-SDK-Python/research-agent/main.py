@@ -33,10 +33,12 @@ class ResearchAgent:
             tool_choice="required"
         )
 
-        # A requested tool call does not prove that web search completed.
-        if not any(
-            item.type == "web_search_call" and item.status == "completed"
-            for item in response.output
+        # One successful search does not excuse a failed call or incomplete response.
+        search_calls = [item for item in response.output if item.type == "web_search_call"]
+        if (
+            response.status != "completed"
+            or not search_calls
+            or any(item.status != "completed" for item in search_calls)
         ):
             raise RuntimeError("Web search did not complete; refusing to use unverified findings.")
 
