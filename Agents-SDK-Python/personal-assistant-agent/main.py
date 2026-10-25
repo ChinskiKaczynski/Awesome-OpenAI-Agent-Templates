@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from dataclasses import dataclass, asdict
 from typing import Optional
-from agents import Agent, Runner, function_tool
+from agents import Agent, Runner, SQLiteSession, function_tool
 
 
 # Data file for persistence
@@ -247,15 +247,16 @@ assistant_agent = Agent(
 )
 
 
-async def chat(message: str) -> str:
+async def chat(message: str, session: SQLiteSession) -> str:
     """Process a message through the assistant."""
-    result = await Runner.run(assistant_agent, message)
+    result = await Runner.run(assistant_agent, message, session=session)
     return result.final_output
 
 
 async def main():
     """Run the interactive personal assistant."""
     load_data()
+    session = SQLiteSession("personal-assistant")
 
     print("=" * 50)
     print("🤖 PERSONAL ASSISTANT AGENT")
@@ -274,7 +275,7 @@ async def main():
         if not message:
             continue
 
-        response = await chat(message)
+        response = await chat(message, session)
         print(f"🤖 Assistant: {response}")
 
 
