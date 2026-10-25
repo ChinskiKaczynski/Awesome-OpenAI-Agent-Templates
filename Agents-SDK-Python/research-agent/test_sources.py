@@ -50,6 +50,12 @@ class ResearchSourcesTests(TestCase):
         self.assertIn("Do not invent citations", self.client.responses.create.call_args.kwargs["input"])
 
 
+    def test_research_rejects_empty_plan_without_synthesizing(self):
+        self.client.responses.create.return_value = response("  \n")
+        with self.assertRaisesRegex(RuntimeError, "Research plan produced no questions"):
+            self.agent.research("Topic")
+        self.assertEqual(self.client.responses.create.call_count, 1)
+
     def test_search_rejects_missing_or_incomplete_web_search(self):
         for status in ("in_progress", "failed"):
             with self.subTest(status=status):

@@ -107,6 +107,8 @@ class ResearchAgent:
         
         # Step 1: Plan research
         questions = self.plan_research(topic)
+        if not questions:
+            raise RuntimeError("Research plan produced no questions; refusing to synthesize without web search.")
         print(f"  Questions to explore: {len(questions)}")
         for q in questions:
             print(f"    • {q}")
