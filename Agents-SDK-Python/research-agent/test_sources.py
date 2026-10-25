@@ -6,10 +6,10 @@ from types import SimpleNamespace as Obj
 from unittest import TestCase, main, mock
 
 
-def response(text, urls=(), search_status="completed"):
+def response(text, urls=(), search_status="completed", response_status="completed"):
     annotations = [Obj(type="url_citation", url=url) for url in urls]
     annotations.append(Obj(type="file_citation", url="https://ignored.example"))
-    return Obj(output_text=text, output=[Obj(type="web_search_call", status=search_status), Obj(type="message", content=[
+    return Obj(status=response_status, output_text=text, output=[Obj(type="web_search_call", status=search_status), Obj(type="message", content=[
         Obj(type="output_text", annotations=annotations), Obj(type="refusal")
     ])])
 
@@ -64,10 +64,21 @@ class ResearchSourcesTests(TestCase):
                     self.agent.search("query")
 
         self.client.responses.create.return_value = Obj(
-            output_text="Unsourced answer", output=[Obj(type="message", content=[])]
+            status="completed", output_text="Unsourced answer", output=[Obj(type="message", content=[])]
         )
         with self.assertRaisesRegex(RuntimeError, "Web search did not complete"):
             self.agent.search("query")
+
+
+    def test_search_rejects_partial_search_failure_or_incomplete_response(self):
+        mixed = response("Partial findings", ["https://source.example/partial"])
+        mixed.output.insert(1, Obj(type="web_search_call", status="failed"))
+        for result in (mixed, response("Partial findings", response_status="incomplete")):
+            with self.subTest(result=result):
+                self.client.responses.create.return_value = result
+                with self.assertRaisesRegex(RuntimeError, "Web search did not complete"):
+                    self.agent.search("query")
+                self.assertEqual(self.agent.source_urls, [])
 
 
     def test_real_openai_sdk_with_mock_http_transport(self):
