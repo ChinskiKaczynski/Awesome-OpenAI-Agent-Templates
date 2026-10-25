@@ -10,9 +10,6 @@ import os
 
 load_dotenv()
 
-client = OpenAI()
-
-
 class RemoteMCPAgent:
     """Agent that connects to remote MCP servers for external tools."""
     
@@ -58,6 +55,7 @@ class RemoteMCPAgent:
         print(f"🤖 Executing: {prompt}")
         print(f"   MCP servers: {len(self.mcp_servers)}")
         
+        client = OpenAI()
         response = client.responses.create(
             model=self.model,
             input=prompt,
