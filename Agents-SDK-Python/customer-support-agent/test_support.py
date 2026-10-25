@@ -15,6 +15,7 @@ class SupportDemoTests(unittest.IsolatedAsyncioTestCase):
         fake_sdk = ModuleType("agents")
         fake_sdk.Agent = lambda **kwargs: SimpleNamespace(**kwargs)
         fake_sdk.RunConfig = lambda **kwargs: SimpleNamespace(**kwargs)
+        fake_sdk.ModelSettings = lambda **kwargs: SimpleNamespace(**kwargs)
         fake_sdk.Runner = SimpleNamespace(run=AsyncMock())
         with patch.dict(sys.modules, {"agents": fake_sdk}):
             spec = importlib.util.spec_from_file_location("support_demo_under_test", Path(__file__).with_name("main.py"))
@@ -66,6 +67,8 @@ class SupportDemoTests(unittest.IsolatedAsyncioTestCase):
             [agent.name for agent in self.demo.triage_agent.handoffs],
             ["Billing Specialist", "Technical Support Specialist", "General Support Agent"],
         )
+        self.assertEqual(self.demo.triage_agent.model_settings.tool_choice, "required")
+        self.assertEqual(getattr(self.demo.triage_agent, "tools", []), [])
         instructions = self.demo.billing_agent.instructions
         self.assertIn("cannot access billing systems", instructions)
         self.assertIn("Never claim a refund was processed", instructions)
