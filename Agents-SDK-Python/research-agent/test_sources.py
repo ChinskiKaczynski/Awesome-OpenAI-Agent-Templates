@@ -70,5 +70,64 @@ class ResearchSourcesTests(TestCase):
             self.agent.search("query")
 
 
+    def test_real_openai_sdk_with_mock_http_transport(self):
+        """Exercise SDK request serialization and typed response parsing offline."""
+        import json
+
+        import httpx
+        from openai import OpenAI
+
+        requests = []
+
+        def respond(request):
+            requests.append((request.url.path, json.loads(request.content)))
+            return httpx.Response(200, json={
+                "id": "resp_test",
+                "object": "response",
+                "created_at": 1,
+                "model": "gpt-4.1-mini",
+                "status": "completed",
+                "parallel_tool_calls": True,
+                "tool_choice": "required",
+                "tools": [{"type": "web_search"}],
+                "output": [
+                    {
+                        "id": "ws_test",
+                        "type": "web_search_call",
+                        "status": "completed",
+                        "action": {"type": "search", "query": "query"},
+                    },
+                    {
+                        "id": "msg_test",
+                        "type": "message",
+                        "role": "assistant",
+                        "status": "completed",
+                        "content": [{
+                            "type": "output_text",
+                            "text": "Answer",
+                            "annotations": [{
+                                "type": "url_citation",
+                                "url": "https://example.org/source",
+                                "title": "Example",
+                                "start_index": 0,
+                                "end_index": 6,
+                            }],
+                        }],
+                    },
+                ],
+            })
+
+        with httpx.Client(transport=httpx.MockTransport(respond)) as http_client:
+            self.module.client = OpenAI(api_key="sk-test", http_client=http_client)
+            self.assertEqual(self.agent.search("query"), "Answer")
+        self.assertEqual(self.agent.source_urls, ["https://example.org/source"])
+        self.assertEqual(len(requests), 1)
+        path, payload = requests[0]
+        self.assertEqual(path, "/v1/responses")
+        self.assertEqual(payload["tools"], [{"type": "web_search"}])
+        self.assertEqual(payload["tool_choice"], "required")
+
+
+
 if __name__ == "__main__":
     main()
