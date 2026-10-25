@@ -26,7 +26,7 @@ python main.py
 
 ## How It Works
 
-The triage agent can hand off to a billing, technical, or general support agent using the Agents SDK. A handoff is model-selected, not guaranteed; the triage agent may answer directly.
+The triage agent is configured with `tool_choice="required"` and exposes only three specialist handoffs, so a successful model turn must select a billing, technical, or general specialist. The model still chooses which specialist; routing accuracy and real API behavior have not been tested.
 
 ```text
 Support ticket
