@@ -3,10 +3,11 @@
  * Real-time internet search using the web_search built-in tool.
  */
 import OpenAI from "openai";
+import { validateWebSearchResponse, type SearchResult } from "./validation.ts";
 
 const openai = new OpenAI();
 
-async function searchWeb(query: string): Promise<string> {
+async function searchWeb(query: string): Promise<SearchResult> {
     console.log(`🔍 Query: ${query}`);
     console.log("🌐 Searching the web...");
 
@@ -17,7 +18,7 @@ async function searchWeb(query: string): Promise<string> {
         tool_choice: "required",
     });
 
-    return response.output_text;
+    return validateWebSearchResponse(response);
 }
 
 async function main() {
@@ -27,10 +28,14 @@ async function main() {
     ];
 
     for (const query of queries) {
-        const answer = await searchWeb(query);
+        const { answer, sources } = await searchWeb(query);
         console.log(`🤖 Answer: ${answer}\n`);
+        console.log("Sources:\n" + sources.map(url => `- ${url}`).join("\n"));
         console.log("-".repeat(50) + "\n");
     }
 }
 
-main();
+main().catch(error => {
+    console.error("Web search failed:", error);
+    process.exitCode = 1;
+});
