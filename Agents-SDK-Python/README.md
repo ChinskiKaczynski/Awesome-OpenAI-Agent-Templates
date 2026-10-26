@@ -48,7 +48,7 @@ agent = Agent(
 )
 
 # Run the agent
-result = await Runner.run(agent, "What's the weather in Paris?")
+result = Runner.run_sync(agent, "What's the weather in Paris?")
 print(result.final_output)
 ```
 
