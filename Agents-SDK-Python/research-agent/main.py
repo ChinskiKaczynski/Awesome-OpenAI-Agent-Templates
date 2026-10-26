@@ -41,6 +41,8 @@ class ResearchAgent:
             or any(item.status != "completed" for item in search_calls)
         ):
             raise RuntimeError("Web search did not complete; refusing to use unverified findings.")
+        if not response.output_text or not response.output_text.strip():
+            raise RuntimeError("Web search returned no findings; refusing to synthesize.")
 
         # Retain citation URLs supplied by the API, rather than inferred by synthesis.
         for item in response.output:
