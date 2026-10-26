@@ -82,7 +82,7 @@ class ResearchSourcesTests(TestCase):
 
 
     def test_search_rejects_empty_findings_after_completed_search(self):
-        for text in ("", "  \\n  "):
+        for text in ("", "  \n  "):
             with self.subTest(text=text):
                 self.client.responses.create.return_value = response(
                     text, ["https://source.example/empty"]
