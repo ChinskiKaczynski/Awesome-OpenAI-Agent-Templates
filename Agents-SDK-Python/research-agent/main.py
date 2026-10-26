@@ -71,7 +71,11 @@ class ResearchAgent:
             Return just the questions, one per line, no numbering."""
         )
         
-        questions = [q.strip() for q in response.output_text.strip().split('\n') if q.strip()]
+        if response.status != "completed":
+            raise RuntimeError("Research plan did not complete; refusing to use a partial plan.")
+        if not response.output_text:
+            return []
+        questions = [q.strip() for q in response.output_text.split('\n') if q.strip()]
         return questions[:4]  # Limit to 4 sub-questions
     
     def synthesize(self, topic: str, findings: list[str]) -> str:
