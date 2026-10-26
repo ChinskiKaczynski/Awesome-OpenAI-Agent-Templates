@@ -65,6 +65,22 @@ class ResearchSourcesTests(TestCase):
                     self.agent.search("query")
                 self.assertEqual(self.agent.source_urls, [])
 
+    def test_research_keeps_sources_with_each_original_search(self):
+        url = "https://source.example/shared"
+        self.client.responses.create.side_effect = [
+            response("First question?\nSecond question?"),
+            response("Finding one", [url]),
+            response("Finding two", [url]),
+            response("Synthesis without claim-level citations"),
+        ]
+        report = self.agent.research("Topic")
+        appendix = report.split("## Original search findings and citations", 1)[1]
+        self.assertIn("### First question?\n\nFinding one\n\nCited URLs for this search:\n- <" + url + ">", appendix)
+        self.assertIn("### Second question?\n\nFinding two\n\nCited URLs for this search:\n- <" + url + ">", appendix)
+        self.assertEqual(appendix.count("<" + url + ">"), 2)
+        self.assertEqual(self.agent.source_urls, [url])
+        self.assertEqual(self.client.responses.create.call_count, 4)
+
     def test_research_rejects_empty_plan_without_synthesizing(self):
         self.client.responses.create.return_value = response("  \n")
         with self.assertRaisesRegex(RuntimeError, "Research plan produced no questions"):
