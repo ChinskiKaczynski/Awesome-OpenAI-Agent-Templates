@@ -54,7 +54,7 @@ This repository curates runnable templates and high-quality references so you ca
    - `Migration/` – migration guides (Assistants → Responses),
    - `Observability/` – tracing and monitoring,
    - `Agents-SDK-Python/` – Python SDK templates,
-   - `ChatKit/` – embeddable UI templates.
+   - `ChatKit/` – links to official ChatKit UI starters and documentation.
 
 2. **Install dependencies** as described by each template (Python venv / Node, etc.).
 
@@ -85,11 +85,11 @@ This repository curates runnable templates and high-quality references so you ca
 | **Migration** | API migration guides | 1 guide |
 | **Observability** | Tracing and monitoring | 1 template |
 | **Agents SDK** | Python/TypeScript SDK | 8 templates |
-| **ChatKit** | Embeddable chat UI | 1 template |
+| **ChatKit** | Official UI examples and docs | 1 reference |
 
 ## Template Registry
 
-> ✅ = Legacy `verified` registry label (not evidence of live testing or production readiness), 📁 = Local template, 🔗 = External link
+> ✅ = Legacy `verified` registry label (not evidence of live testing or production readiness), 🔄 = Reference or unverified, 📁 = Local template, 🔗 = External link
 
 <!-- REGISTRY_TABLE_START -->
 
@@ -110,7 +110,7 @@ This repository curates runnable templates and high-quality references so you ca
 | 📁 [Assistants → Responses](Migration/assistants-to-responses/) | Migration | python | Intermediate | ✅ | Migration guide & examples |
 | 📁 [Tracing OTLP](Observability/tracing-otlp/) | Observability | python | Intermediate | ✅ | OpenTelemetry tracing |
 | 📁 [Starter Agent](Agents-SDK-Python/) | Agents SDK | python | Beginner | ✅ | Minimal "hello agent" |
-| 📁 [ChatKit UI](ChatKit/) | ChatKit | javascript | Beginner | ✅ | Drop-in ChatKit embed |
+| 📁 [ChatKit UI References](ChatKit/) | ChatKit |  | Beginner | 🔄 | Links to official ChatKit docs and starters; no local runnable embed |
 
 ### External Resources
 
@@ -123,7 +123,7 @@ This repository curates runnable templates and high-quality references so you ca
 
 <!-- REGISTRY_TABLE_END -->
 
-**Registry table snapshot:** 2026-01-08 (not a runtime verification date; consult `registry.yml` for the current template inventory).
+**Registry table updated:** 2026-10-26 (not a runtime verification date; consult `registry.yml` for the current template inventory).
 
 ## Deprecated Templates
 
