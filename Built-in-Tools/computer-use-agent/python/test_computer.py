@@ -1,6 +1,5 @@
 """Local browser/driver regression tests. No OpenAI account or network required."""
 import importlib.util
-import os
 from pathlib import Path
 from types import SimpleNamespace
 import unittest
@@ -15,11 +14,9 @@ spec.loader.exec_module(demo)
 class BrowserDriverTests(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
         self.playwright = await async_playwright().start()
-        kwargs = {"headless": True, "env": {}}
-        executable = os.environ.get("PLAYWRIGHT_CHROMIUM_EXECUTABLE")
-        if executable:
-            kwargs["executable_path"] = executable
-        self.browser = await self.playwright.chromium.launch(**kwargs)
+        self.browser = await self.playwright.chromium.launch(
+            **demo.browser_launch_options(False)
+        )
         self.page = await self.browser.new_page(viewport={"width": 1024, "height": 768})
         await self.page.route("**/*", lambda route: route.abort())
         await self.page.set_content(demo.PAGE_HTML)
@@ -54,6 +51,12 @@ class BrowserDriverTests(unittest.IsolatedAsyncioTestCase):
             await self.driver.type(SimpleNamespace(type="type", text="private"))
         with self.assertRaisesRegex(RuntimeError, "outside the permitted"):
             await self.driver.click(SimpleNamespace(type="click", button="left", keys=[], x=900, y=700))
+
+    async def test_live_actions_require_chromium_sandbox(self):
+        # Offline fixtures can run on CI hosts without unprivileged user namespaces.
+        self.assertFalse(demo.browser_launch_options(False)["chromium_sandbox"])
+        self.assertTrue(demo.browser_launch_options(True)["chromium_sandbox"])
+        self.assertEqual(demo.browser_launch_options(True)["env"], {})
 
     async def test_unopened_state_is_not_reported_as_success(self):
         with self.assertRaisesRegex(RuntimeError, "not opened"):
