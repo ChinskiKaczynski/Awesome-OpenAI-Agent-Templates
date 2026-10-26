@@ -20,7 +20,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Test task state and interactive CLI without OpenAI API
+      - name: Install real Agents SDK for offline tool contract
+        run: python -m pip install 'openai-agents==0.24.0'
+      - name: Test task state and CLI with mocked model boundary
         env:
           OPENAI_API_KEY: ''
         run: python -m unittest discover -s Agents-SDK-Python/personal-assistant-agent -p 'test_offline.py' -v
+      - name: Test actual SDK function-tool invocation (no model/API)
+        env:
+          OPENAI_API_KEY: ''
+        run: python -m unittest discover -s Agents-SDK-Python/personal-assistant-agent -p 'test_sdk_contract.py' -v
