@@ -7,8 +7,8 @@ import unittest
 from unittest.mock import Mock, patch
 
 
-def fake_response(*, status="completed", calls=("completed",), text="Answer [1]", cited=True):
-    annotations = [Obj(type="url_citation", url="https://example.org/source")] if cited else []
+def fake_response(*, status="completed", calls=("completed",), text="Answer [1]", cited=True, citation_url="https://example.org/source"):
+    annotations = [Obj(type="url_citation", url=citation_url)] if cited else []
     return Obj(
         status=status,
         output_text=text,
@@ -63,6 +63,25 @@ class WebSearchOfflineTests(unittest.TestCase):
                 self.mock_client.responses.create.return_value = response
                 with self.assertRaisesRegex(RuntimeError, expected):
                     self.module.search_web("question")
+
+
+    def test_malformed_source_urls_are_rejected(self):
+        for url in (
+            None,
+            "",
+            "javascript:alert(1)",
+            "https://",
+            "https://bad domain.test",
+            "https://example.org:99999/article",
+        ):
+            with self.subTest(url=url):
+                self.mock_client.responses.create.return_value = fake_response(citation_url=url)
+                with self.assertRaisesRegex(RuntimeError, "no source citations"):
+                    self.module.search_web("question")
+
+    def test_http_source_url_is_accepted(self):
+        self.mock_client.responses.create.return_value = fake_response(citation_url="http://example.org/article")
+        self.assertEqual(self.module.search_web("question"), "Answer [1]")
 
 
 if __name__ == "__main__":
