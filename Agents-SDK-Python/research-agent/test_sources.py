@@ -96,7 +96,7 @@ class ResearchSourcesTests(TestCase):
     def test_research_rejects_incomplete_or_empty_synthesis(self):
         for final_response in (
             response("Partial report", response_status="incomplete"),
-            response("  \\n  "),
+            response("  \n  "),
         ):
             with self.subTest(final_response=final_response):
                 self.client.responses.create.side_effect = [
