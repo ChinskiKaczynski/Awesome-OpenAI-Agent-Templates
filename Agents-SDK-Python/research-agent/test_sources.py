@@ -51,7 +51,14 @@ class ResearchSourcesTests(TestCase):
 
 
     def test_search_rejects_missing_or_invalid_citations_per_query(self):
-        for urls in ([], ["file:///tmp/not-a-web-source"]):
+        for urls in (
+            [],
+            ["file:///tmp/not-a-web-source"],
+            ["https://"],
+            ["http:///missing-host"],
+            ["https://space in host/path"],
+            ["https://source.example:badport/path"],
+        ):
             with self.subTest(urls=urls):
                 self.client.responses.create.return_value = response("Unsourced findings", urls)
                 with self.assertRaisesRegex(RuntimeError, "no cited source URLs"):
