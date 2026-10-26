@@ -56,6 +56,14 @@ class ResearchSourcesTests(TestCase):
             self.agent.research("Topic")
         self.assertEqual(self.client.responses.create.call_count, 1)
 
+    def test_research_rejects_incomplete_plan_before_web_search(self):
+        self.client.responses.create.return_value = response(
+            "Partial question?", response_status="incomplete"
+        )
+        with self.assertRaisesRegex(RuntimeError, "Research plan did not complete"):
+            self.agent.research("Topic")
+        self.assertEqual(self.client.responses.create.call_count, 1)
+
     def test_search_rejects_missing_or_incomplete_web_search(self):
         for status in ("in_progress", "failed"):
             with self.subTest(status=status):
