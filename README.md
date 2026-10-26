@@ -102,7 +102,7 @@ This repository curates runnable templates and high-quality references so you ca
 | 📁 [File Search Agent](Built-in-Tools/file-search-agent/) | Built-in Tools | python, typescript | Intermediate | ✅ | Document search with vector stores |
 | 📁 [Code Interpreter Agent](Built-in-Tools/code-interpreter-agent/) | Built-in Tools | python, typescript | Intermediate | ✅ | Code execution in sandbox environment |
 | 📁 [Realtime WebSocket Minimal](Realtime-Voice/websocket-minimal/) | Realtime Voice | python, javascript | Intermediate | ✅ | Minimal WebSocket voice agent with gpt-realtime |
-| 📁 [Realtime WebRTC Browser](Realtime-Voice/webrtc-browser/) | Realtime Voice | javascript | Advanced | ✅ | Browser-based voice agent using WebRTC |
+| 📁 [Realtime WebRTC Browser](Realtime-Voice/webrtc-browser/) | Realtime Voice | javascript | Advanced | 🔄 | SDP-offer scaffold; session handshake not implemented |
 | 📁 [Routing Agent](Agent-Patterns/routing-agent/) | Agent Patterns | python | Intermediate | ✅ | Multi-agent routing and delegation pattern |
 | 📁 [Input/Output Guardrails](Agent-Patterns/guardrails-io/) | Agent Patterns | python | Intermediate | ✅ | Input validation and output safety checks |
 | 📁 [Agents as Tools](Agent-Patterns/agents-as-tools/) | Agent Patterns | python | Advanced | ✅ | Agent composition - using agents as tools |
