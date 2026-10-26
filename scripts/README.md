@@ -36,7 +36,7 @@ python scripts/generate-readme.py
      languages: [python]
      difficulty: beginner
      tools: []
-     status: verified
+     status: unverified
      description: Short description
    ```
 
