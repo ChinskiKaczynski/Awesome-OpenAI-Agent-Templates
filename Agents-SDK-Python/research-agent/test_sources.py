@@ -81,6 +81,17 @@ class ResearchSourcesTests(TestCase):
                 self.assertEqual(self.agent.source_urls, [])
 
 
+    def test_search_rejects_empty_findings_after_completed_search(self):
+        for text in ("", "  \\n  "):
+            with self.subTest(text=text):
+                self.client.responses.create.return_value = response(
+                    text, ["https://source.example/empty"]
+                )
+                with self.assertRaisesRegex(RuntimeError, "no findings"):
+                    self.agent.search("query")
+                self.assertEqual(self.agent.source_urls, [])
+
+
     def test_real_openai_sdk_with_mock_http_transport(self):
         """Exercise SDK request serialization and typed response parsing offline."""
         import json
