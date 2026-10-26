@@ -40,15 +40,23 @@ class ResearchSourcesTests(TestCase):
     def test_research_appends_api_sources_and_resets_between_runs(self):
         self.client.responses.create.side_effect = [
             response("Question?"), response("Found", ["https://source.example/a"]), response("Summary"),
-            response("Question?"), response("Found", []), response("Summary 2")
+            response("Question?"), response("Found", [])
         ]
         first = self.agent.research("Topic")
         self.assertIn("## Sources cited by web search\n\n- <https://source.example/a>", first)
-        second = self.agent.research("Other topic")
-        self.assertNotIn("https://source.example/a", second)
-        self.assertIn("No source URLs were returned", second)
-        self.assertIn("Do not invent citations", self.client.responses.create.call_args.kwargs["input"])
+        with self.assertRaisesRegex(RuntimeError, "no cited source URLs"):
+            self.agent.research("Other topic")
+        self.assertEqual(self.agent.source_urls, [])
+        self.assertEqual(self.client.responses.create.call_count, 5)
 
+
+    def test_search_rejects_missing_or_invalid_citations_per_query(self):
+        for urls in ([], ["file:///tmp/not-a-web-source"]):
+            with self.subTest(urls=urls):
+                self.client.responses.create.return_value = response("Unsourced findings", urls)
+                with self.assertRaisesRegex(RuntimeError, "no cited source URLs"):
+                    self.agent.search("query")
+                self.assertEqual(self.agent.source_urls, [])
 
     def test_research_rejects_empty_plan_without_synthesizing(self):
         self.client.responses.create.return_value = response("  \n")
