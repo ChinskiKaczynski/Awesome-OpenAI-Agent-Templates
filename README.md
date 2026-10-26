@@ -89,7 +89,7 @@ This repository curates runnable templates and high-quality references so you ca
 
 ## Template Registry
 
-> ✅ = Verified, 📁 = Local template, 🔗 = External link
+> ✅ = Legacy `verified` registry label (not evidence of live testing or production readiness), 📁 = Local template, 🔗 = External link
 
 <!-- REGISTRY_TABLE_START -->
 
@@ -123,7 +123,7 @@ This repository curates runnable templates and high-quality references so you ca
 
 <!-- REGISTRY_TABLE_END -->
 
-**Verification date:** 2026-01-08
+**Registry table snapshot:** 2026-01-08 (not a runtime verification date; consult `registry.yml` for the current template inventory).
 
 ## Deprecated Templates
 
