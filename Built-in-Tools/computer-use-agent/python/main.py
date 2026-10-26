@@ -66,16 +66,22 @@ async def verify_details(page):
     return await page.locator("details p").inner_text()
 
 
+def browser_launch_options(live: bool) -> dict:
+    """Fail closed on live computer actions if Chromium sandboxing is unavailable."""
+    kwargs = {"headless": True, "env": {}, "chromium_sandbox": live}
+    executable = os.environ.get("PLAYWRIGHT_CHROMIUM_EXECUTABLE")
+    if executable:
+        kwargs["executable_path"] = executable
+    return kwargs
+
+
 async def run_demo(live=False):
     if live and not os.environ.get("OPENAI_API_KEY"):
         raise RuntimeError("Set OPENAI_API_KEY before explicitly using --live")
 
     async with async_playwright() as playwright:
-        kwargs = {"headless": True, "env": {}}
-        executable = os.environ.get("PLAYWRIGHT_CHROMIUM_EXECUTABLE")
-        if executable:
-            kwargs["executable_path"] = executable
-        browser = await playwright.chromium.launch(**kwargs)
+        # Offline tests use a trusted fixture; model-driven actions require Chromium's sandbox.
+        browser = await playwright.chromium.launch(**browser_launch_options(live))
         try:
             page = await browser.new_page(viewport={"width": 1024, "height": 768})
             # All attempted page/subresource requests are blocked.
