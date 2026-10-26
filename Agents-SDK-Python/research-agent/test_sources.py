@@ -132,6 +132,40 @@ class ResearchSourcesTests(TestCase):
                 self.assertEqual(self.client.responses.create.call_count, 3)
                 self.client.reset_mock()
 
+    def test_cli_without_topic_never_initializes_client(self):
+        self.module.client = None
+        with mock.patch.object(sys, "argv", ["main.py"]), \
+             mock.patch.object(self.module, "OpenAI") as sdk, \
+             mock.patch.object(self.module, "ResearchAgent") as agent_cls, \
+             mock.patch("builtins.print") as printer:
+            self.module.main()
+        sdk.assert_not_called()
+        agent_cls.assert_not_called()
+        self.assertIn("Usage: python main.py", str(printer.call_args_list))
+
+    def test_cli_uses_explicit_topic(self):
+        fake_agent = mock.Mock()
+        fake_agent.research.return_value = "# Test report"
+        with mock.patch.object(sys, "argv", ["main.py", "Fusion", "energy"]), \
+             mock.patch.object(self.module, "ResearchAgent", return_value=fake_agent), \
+             mock.patch("builtins.open", mock.mock_open()) as opened, \
+             mock.patch("builtins.print"):
+            self.module.main()
+        fake_agent.research.assert_called_once_with("Fusion energy")
+        opened.assert_called_once()
+        opened().write.assert_called_once_with("# Test report")
+
+    def test_client_is_lazy_and_reused_for_search(self):
+        self.module.client = None
+        self.client.responses.create.return_value = response(
+            "Findings", ["https://source.example/a"]
+        )
+        with mock.patch.object(self.module, "OpenAI", return_value=self.client) as sdk:
+            self.agent.search("First")
+            self.agent.search("Second")
+        sdk.assert_called_once()
+        self.assertEqual(self.client.responses.create.call_count, 2)
+
     def test_real_openai_sdk_with_mock_http_transport(self):
         """Exercise SDK request serialization and typed response parsing offline."""
         import json
