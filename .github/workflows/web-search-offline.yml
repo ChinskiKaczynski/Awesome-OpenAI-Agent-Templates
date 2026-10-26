@@ -5,11 +5,13 @@ on:
     branches: [main]
     paths:
       - 'Built-in-Tools/web-search-agent/python/**'
+      - 'Built-in-Tools/web-search-agent/typescript/**'
       - '.github/workflows/web-search-offline.yml'
   push:
     branches: [main]
     paths:
       - 'Built-in-Tools/web-search-agent/python/**'
+      - 'Built-in-Tools/web-search-agent/typescript/**'
       - '.github/workflows/web-search-offline.yml'
 
 jobs:
@@ -26,3 +28,12 @@ jobs:
         run: |
           python -m py_compile Built-in-Tools/web-search-agent/python/main.py
           python -m unittest discover -s Built-in-Tools/web-search-agent/python -p 'test_search.py' -v
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check TypeScript search contract without API calls
+        env:
+          OPENAI_API_KEY: ''
+        run: |
+          node --experimental-strip-types --check Built-in-Tools/web-search-agent/typescript/main.ts
+          node --experimental-strip-types --test Built-in-Tools/web-search-agent/typescript/test_validation.ts
