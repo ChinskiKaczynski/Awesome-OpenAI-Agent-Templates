@@ -30,10 +30,12 @@ class ResearchAgent:
         self.model = model
         self.research_results = []
         self.source_urls = []
+        self.last_search_urls = []
     
     def search(self, query: str) -> str:
         """Search the web for information."""
         print(f"  🔍 Searching: {query}")
+        self.last_search_urls = []
         
         response = get_client().responses.create(
             model=self.model,
@@ -77,6 +79,7 @@ class ResearchAgent:
 
         if not cited_urls:
             raise RuntimeError("Web search returned no cited source URLs; refusing to synthesize unsupported findings.")
+        self.last_search_urls = cited_urls
         for url in cited_urls:
             if url not in self.source_urls:
                 self.source_urls.append(url)
@@ -152,10 +155,15 @@ class ResearchAgent:
         
         # Step 2: Research each question
         findings = []
+        evidence = []
         for i, question in enumerate(questions, 1):
             print(f"\n[{i}/{len(questions)}] Researching...")
             result = self.search(question)
             findings.append(f"## {question}\n\n{result}")
+            evidence.append(
+                f"### {question}\n\n{result}\n\nCited URLs for this search:\n"
+                + "\n".join(f"- <{url}>" for url in self.last_search_urls)
+            )
         
         # Step 3: Synthesize
         print()
@@ -167,6 +175,7 @@ class ResearchAgent:
         else:
             report += "\n\n> No source URLs were returned by web search; verify claims independently."
 
+        report += "\n\n## Original search findings and citations\n\n" + "\n\n".join(evidence)
         return report
 
 
