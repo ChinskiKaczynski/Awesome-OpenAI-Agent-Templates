@@ -100,6 +100,8 @@ class ResearchAgent:
             Use markdown formatting."""
         )
         
+        if response.status != "completed" or not response.output_text or not response.output_text.strip():
+            raise RuntimeError("Report synthesis did not complete; refusing to publish an incomplete report.")
         return response.output_text
     
     def research(self, topic: str) -> str:

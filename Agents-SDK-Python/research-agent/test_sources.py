@@ -92,6 +92,23 @@ class ResearchSourcesTests(TestCase):
                 self.assertEqual(self.agent.source_urls, [])
 
 
+
+    def test_research_rejects_incomplete_or_empty_synthesis(self):
+        for final_response in (
+            response("Partial report", response_status="incomplete"),
+            response("  \\n  "),
+        ):
+            with self.subTest(final_response=final_response):
+                self.client.responses.create.side_effect = [
+                    response("Question?"),
+                    response("Found", ["https://source.example/a"]),
+                    final_response,
+                ]
+                with self.assertRaisesRegex(RuntimeError, "Report synthesis did not complete"):
+                    self.agent.research("Topic")
+                self.assertEqual(self.client.responses.create.call_count, 3)
+                self.client.reset_mock()
+
     def test_real_openai_sdk_with_mock_http_transport(self):
         """Exercise SDK request serialization and typed response parsing offline."""
         import json
