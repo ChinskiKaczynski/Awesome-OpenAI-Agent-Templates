@@ -3,7 +3,7 @@
 # Generated README table comes from this file
 
 schema_version: "1.0"
-last_updated: "2026-01-08"
+last_updated: "2026-10-26"
 
 # Template Categories
 categories:
@@ -242,8 +242,8 @@ templates:
     languages: [python]
     difficulty: intermediate
     tools: [web_search]
-    status: verified
-    description: Searches and synthesizes information into reports
+    status: unverified
+    description: Responses web search and API citation URLs; live search not verified
 
   - id: customer-support-agent
     name: Customer Support Agent
