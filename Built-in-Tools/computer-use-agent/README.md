@@ -4,7 +4,7 @@
 
 ## Current API
 
-These examples still use the older `computer_use_preview` tool with `gpt-4o-mini`. They have **not** been migrated or integration-tested against the current computer-use API. The current OpenAI guide uses the `computer` tool with a supported model and requires an environment driver that executes actions and returns screenshots.
+These examples still pair the legacy `computer_use_preview` tool with `gpt-4o-mini`. This is **not a supported, working computer-use integration**: OpenAI lists the `computer-use-preview` model as [shut down](https://developers.openai.com/api/docs/models/computer-use-preview), and these scripts have **not** been migrated or integration-tested. The [current guide](https://developers.openai.com/api/docs/guides/tools-computer-use) uses the `computer` tool with a supported model and requires an environment driver that executes actions and returns screenshots.
 
 For a working integration, follow the [official Computer Use guide](https://developers.openai.com/api/docs/guides/tools-computer-use), including the action/screenshot loop, or start from its linked sample app. Do not run these scripts expecting them to automate a browser; their API calls may incur charges.
 
