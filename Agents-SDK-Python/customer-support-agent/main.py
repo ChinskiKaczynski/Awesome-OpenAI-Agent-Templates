@@ -7,7 +7,7 @@ Uses the Agents SDK for multi-agent handoffs.
 import asyncio
 from dataclasses import dataclass
 from enum import Enum
-from agents import Agent, Runner
+from agents import Agent, ModelSettings, Runner, RunConfig
 
 
 class TicketCategory(Enum):
@@ -53,8 +53,10 @@ billing_agent = Agent(
     3. Provide actionable next steps
     4. Offer additional help
     
-    Be empathetic and solution-focused. If you need to process a refund
-    or make account changes, explain what you'll do and the timeline.""",
+    Be empathetic and solution-focused. You cannot access billing systems,
+    issue refunds, or change accounts. Never claim a refund was processed,
+    approved, or scheduled, and do not promise an outcome or timeline.
+    Explain how the customer can request help from the billing team.""",
 )
 
 technical_agent = Agent(
@@ -107,6 +109,8 @@ triage_agent = Agent(
     Example: "Thanks for reaching out! I'm connecting you with our billing team."
     """,
     handoffs=[billing_agent, technical_agent, general_agent],
+    # Only handoffs are available here; require choosing a specialist.
+    model_settings=ModelSettings(tool_choice="required"),
 )
 
 
@@ -114,9 +118,7 @@ async def handle_ticket(ticket: Ticket) -> str:
     """Process a support ticket through the agent system."""
     print(f"\n{'='*50}")
     print(f"🎫 Ticket #{ticket.id}")
-    print(f"👤 From: {ticket.customer_name} <{ticket.email}>")
     print(f"{'='*50}")
-    print(f"📝 Message:\n{ticket.message}")
     print(f"{'='*50}\n")
     
     # Format ticket for agent
@@ -129,7 +131,11 @@ async def handle_ticket(ticket: Ticket) -> str:
     """
     
     # Process through triage
-    result = await Runner.run(triage_agent, agent_input)
+    # Avoid capturing customer details in the SDK's default traces.
+    result = await Runner.run(
+        triage_agent, agent_input,
+        run_config=RunConfig(trace_include_sensitive_data=False),
+    )
     
     print(f"🔀 Routed to: {result.last_agent.name}")
     print(f"\n📧 Response:\n{result.final_output}")
