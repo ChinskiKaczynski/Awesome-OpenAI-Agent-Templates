@@ -3,12 +3,28 @@ Web Search Agent
 Real-time internet search using the web_search built-in tool.
 """
 import os
+from urllib.parse import urlsplit
 from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
 
 client = OpenAI()
+
+
+def has_valid_citation(annotation) -> bool:
+    """Accept only HTTP(S) URLs in source annotations, not just the type label."""
+    if annotation.type != "url_citation":
+        return False
+    url = getattr(annotation, "url", None)
+    if not isinstance(url, str) or any(char.isspace() for char in url):
+        return False
+    try:
+        parsed = urlsplit(url)
+        _ = parsed.port  # Reject invalid ports.
+        return parsed.scheme in ("http", "https") and bool(parsed.hostname)
+    except ValueError:
+        return False
 
 
 def search_web(query: str) -> str:
@@ -35,7 +51,7 @@ def search_web(query: str) -> str:
         raise RuntimeError("Web search returned an empty answer.")
 
     cited = any(
-        annotation.type == "url_citation"
+        has_valid_citation(annotation)
         for item in response.output if item.type == "message"
         for part in item.content if part.type == "output_text"
         for annotation in part.annotations
