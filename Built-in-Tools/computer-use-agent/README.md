@@ -1,24 +1,45 @@
-# Computer Use Agent (incomplete scaffold)
+# Computer Use Agent — restricted Python browser demo
 
-> **Not a working computer-use agent.** The included Python and TypeScript scripts send a single Responses API request, but do not launch a browser/desktop, execute returned actions, capture screenshots, or continue the tool loop. They cannot complete the advertised tasks. Do not treat their output as verified task success or use them in production.
+**Python:** A bounded Playwright example based on the [current OpenAI computer-tool guide](https://developers.openai.com/api/docs/guides/tools-computer-use). It uses a fictional parcel-pickup page, blocks page network access and permits *only screenshots and left-clicks on one specific disclosure control*. It verifies actual DOM state before reporting success. The \`--live\` mode uses the SDK's \`AsyncComputerToolset\` to execute computer actions and return screenshots across Responses turns, with \`max_steps=6\` and \`store=False\`.
 
-## Current API
+**TypeScript:** \`typescript/main.ts\` remains a **legacy, non-working scaffold** using \`computer_use_preview\` and has not been migrated. Do not execute it expecting browser automation.
 
-These examples still pair the legacy `computer_use_preview` tool with `gpt-4o-mini`. This is **not a supported, working computer-use integration**: OpenAI lists the `computer-use-preview` model as [shut down](https://developers.openai.com/api/docs/models/computer-use-preview), and these scripts have **not** been migrated or integration-tested. The [current guide](https://developers.openai.com/api/docs/guides/tools-computer-use) uses the `computer` tool with a supported model and requires an environment driver that executes actions and returns screenshots.
+## 1. Install Python dependencies
 
-For a working integration, follow the [official Computer Use guide](https://developers.openai.com/api/docs/guides/tools-computer-use), including the action/screenshot loop, or start from its linked sample app. Do not run these scripts expecting them to automate a browser; their API calls may incur charges.
+From \`Built-in-Tools/computer-use-agent/python/\`:
 
-## What is missing
+\`\`\`bash
+python -m venv .venv
+# Activate .venv according to your OS, then:
+python -m pip install -r requirements.txt
+python -m playwright install chromium
+\`\`\`
 
-1. A sandboxed, persistent browser or desktop driver.
-2. Execution of each returned `computer_call` action in order.
-3. A `computer_call_output` screenshot returned with the matching `call_id`, followed by additional Responses turns until completion.
-4. Step limits, user confirmation for consequential actions, and verification of the final UI state.
+Playwright requires its Chromium runtime (and on some Linux machines, system libraries). On Windows, \`py -3\` is an alternative to \`python\`.
 
-## Safety
+## 2. Free, offline browser smoke test (default)
 
-- Run computer actions only in an isolated environment with restricted access.
-- Never expose sensitive credentials or permit unapproved purchases, submissions, or destructive changes.
-- Treat page content as untrusted; verify actual UI state before reporting success.
+\`\`\`bash
+python main.py
+python -m unittest -v test_computer.py
+\`\`\`
 
-**Status:** Historical illustrative scaffold only. No successful end-to-end smoke test is claimed.
+These run a **real local Chromium browser**, capture a screenshot, click the permitted element and confirm it opened. They **never instantiate an OpenAI API client**, do not require a key or network access, and cannot validate model-driven behavior. The page has no external content or credentials. For a system-installed Chromium, you may set \`PLAYWRIGHT_CHROMIUM_EXECUTABLE\` to its full path instead of downloading Playwright's copy.
+
+## 3. Optional live model integration (billable; requires separate approval)
+
+**Do not use this in automated CI.** Ensure your API project has access to a [computer-capable model](https://developers.openai.com/api/docs/guides/tools-computer-use), check pricing and set \`OPENAI_API_KEY\` in your local environment. Then explicitly run:
+
+\`\`\`bash
+python main.py --live
+\`\`\`
+
+\`--live\` is **not** the default. The model in the example is \`gpt-6.1-sol\`, matching the current official guide; availability depends on project access and may change. There are at most six tool turns, but usage can still incur charges. A real API integration test has **not** been performed.
+
+## Boundaries and caveats
+
+- **Not a general web scraper or production browser agent.** There is no arbitrary navigation, login, form submission or external network request. Only a local fixture page is used.
+- Browser context is ephemeral. Page requests are blocked, and local credentials are never provided. This is application-level isolation; **use a secure container or separate OS sandbox for untrusted execution**, as browser sandboxing depends on platform configuration.
+- Only screenshots and a narrowly restricted left click are allowed; \`click()\` independently checks the target again. All other actions are rejected.
+- The SDK's computer toolset handles the action/screenshot/response loop in live mode. A test with the real OpenAI service and model has **not** been run.
+- For more complex interactions, add explicit per-action approval, URL policies and a controlled environment before enabling any real-world navigation or side effects.
