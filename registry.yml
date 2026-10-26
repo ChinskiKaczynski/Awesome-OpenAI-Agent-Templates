@@ -137,8 +137,8 @@ templates:
     languages: [javascript]
     difficulty: advanced
     tools: []
-    status: verified
-    description: Browser-based voice agent using WebRTC
+    status: scaffold
+    description: Browser WebRTC SDP-offer scaffold; session handshake not implemented
 
   # ============================================
   # AGENT PATTERNS
