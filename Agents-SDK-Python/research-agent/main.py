@@ -8,6 +8,7 @@ import asyncio
 from openai import OpenAI
 from dotenv import load_dotenv
 from datetime import datetime
+from urllib.parse import urlsplit
 
 load_dotenv()
 
@@ -53,7 +54,17 @@ class ResearchAgent:
                         for annotation in part.annotations:
                             if annotation.type == "url_citation":
                                 url = annotation.url
-                                if url.startswith(("https://", "http://")) and url not in cited_urls:
+                                try:
+                                    parsed = urlsplit(url)
+                                    _ = parsed.port  # Reject malformed ports.
+                                    valid = (
+                                        parsed.scheme in ("http", "https")
+                                        and bool(parsed.hostname)
+                                        and not any(char.isspace() for char in url)
+                                    )
+                                except (TypeError, ValueError):
+                                    valid = False
+                                if valid and url not in cited_urls:
                                     cited_urls.append(url)
 
         if not cited_urls:
