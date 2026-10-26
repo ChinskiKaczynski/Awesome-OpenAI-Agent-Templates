@@ -1,0 +1,26 @@
+name: Personal Assistant Offline Tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Agents-SDK-Python/personal-assistant-agent/**'
+      - '.github/workflows/personal-assistant-offline.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'Agents-SDK-Python/personal-assistant-agent/**'
+      - '.github/workflows/personal-assistant-offline.yml'
+
+jobs:
+  personal-assistant-offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test task state and interactive CLI without OpenAI API
+        env:
+          OPENAI_API_KEY: ''
+        run: python -m unittest discover -s Agents-SDK-Python/personal-assistant-agent -p 'test_offline.py' -v
