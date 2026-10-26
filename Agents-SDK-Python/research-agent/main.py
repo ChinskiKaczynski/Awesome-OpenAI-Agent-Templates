@@ -44,7 +44,8 @@ class ResearchAgent:
         if not response.output_text or not response.output_text.strip():
             raise RuntimeError("Web search returned no findings; refusing to synthesize.")
 
-        # Retain citation URLs supplied by the API, rather than inferred by synthesis.
+        # Collect citations for this search before accepting its findings.
+        cited_urls = []
         for item in response.output:
             if item.type == "message":
                 for part in item.content:
@@ -52,8 +53,14 @@ class ResearchAgent:
                         for annotation in part.annotations:
                             if annotation.type == "url_citation":
                                 url = annotation.url
-                                if url.startswith(("https://", "http://")) and url not in self.source_urls:
-                                    self.source_urls.append(url)
+                                if url.startswith(("https://", "http://")) and url not in cited_urls:
+                                    cited_urls.append(url)
+
+        if not cited_urls:
+            raise RuntimeError("Web search returned no cited source URLs; refusing to synthesize unsupported findings.")
+        for url in cited_urls:
+            if url not in self.source_urls:
+                self.source_urls.append(url)
 
         return response.output_text
     
