@@ -12,7 +12,15 @@ from urllib.parse import urlsplit
 
 load_dotenv()
 
-client = OpenAI()
+client = None
+
+
+def get_client():
+    """Initialize the API client only when research is requested."""
+    global client
+    if client is None:
+        client = OpenAI()
+    return client
 
 
 class ResearchAgent:
@@ -27,7 +35,7 @@ class ResearchAgent:
         """Search the web for information."""
         print(f"  🔍 Searching: {query}")
         
-        response = client.responses.create(
+        response = get_client().responses.create(
             model=self.model,
             input=f"Search for: {query}. Provide detailed findings with sources.",
             tools=[{"type": "web_search"}],
@@ -79,7 +87,7 @@ class ResearchAgent:
         """Break down the topic into sub-questions."""
         print(f"📋 Planning research for: {topic}")
         
-        response = client.responses.create(
+        response = get_client().responses.create(
             model=self.model,
             input=f"""You are a research planner. Break down this topic into 3-4 specific 
             sub-questions that would help create a comprehensive understanding.
@@ -102,7 +110,7 @@ class ResearchAgent:
         
         findings_text = "\n\n---\n\n".join(findings)
         
-        response = client.responses.create(
+        response = get_client().responses.create(
             model=self.model,
             input=f"""You are a research synthesizer. Create a comprehensive report from these findings.
             
@@ -163,26 +171,26 @@ class ResearchAgent:
 
 
 def main():
-    """Demo the research agent."""
+    """Run research only when an explicit topic is supplied."""
+    import sys
+
+    topic = " ".join(sys.argv[1:]).strip()
+    if not topic:
+        print('Usage: python main.py "research topic"')
+        return
+
     agent = ResearchAgent()
-    
-    topics = [
-        "What are the latest breakthroughs in quantum computing in 2025?",
-    ]
-    
-    for topic in topics:
-        report = agent.research(topic)
-        
-        print(f"\n{'='*50}")
-        print("📄 FINAL REPORT")
-        print(f"{'='*50}\n")
-        print(report)
-        
-        # Save report
-        filename = f"report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
-        with open(filename, 'w', encoding='utf-8') as f:
-            f.write(report)
-        print(f"\n✅ Report saved to: {filename}")
+    report = agent.research(topic)
+
+    print(f"\n{'='*50}")
+    print("📄 FINAL REPORT")
+    print(f"{'='*50}\n")
+    print(report)
+
+    filename = f"report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(report)
+    print(f"\n✅ Report saved to: {filename}")
 
 
 if __name__ == "__main__":
