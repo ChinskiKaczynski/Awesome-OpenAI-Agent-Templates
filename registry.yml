@@ -282,8 +282,8 @@ templates:
     languages: [python]
     difficulty: advanced
     tools: []
-    status: verified
-    description: Task management and scheduling agent
+    status: unverified
+    description: Task management demo; offline SDK tools tested, live model unverified
 
   - id: code-review-agent
     name: Code Review Agent
