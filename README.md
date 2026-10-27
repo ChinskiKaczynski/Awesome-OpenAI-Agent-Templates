@@ -102,7 +102,7 @@ This repository curates runnable templates and high-quality references so you ca
 | 📁 [File Search Agent](Built-in-Tools/file-search-agent/) | Built-in Tools | python, typescript | Intermediate | ✅ | Document search with vector stores |
 | 📁 [Code Interpreter Agent](Built-in-Tools/code-interpreter-agent/) | Built-in Tools | python, typescript | Intermediate | ✅ | Code execution in sandbox environment |
 | 📁 [Realtime WebSocket Minimal](Realtime-Voice/websocket-minimal/) | Realtime Voice | python, javascript | Intermediate | ✅ | Minimal WebSocket voice agent with gpt-realtime |
-| 📁 [Realtime WebRTC Browser](Realtime-Voice/webrtc-browser/) | Realtime Voice | javascript | Advanced | 🔄 | SDP-offer scaffold; session handshake not implemented |
+| 📁 [Realtime WebRTC Browser](Realtime-Voice/webrtc-browser/) | Realtime Voice | javascript | Advanced | 🔄 | Browser WebRTC SDP-offer scaffold; session handshake not implemented |
 | 📁 [Routing Agent](Agent-Patterns/routing-agent/) | Agent Patterns | python | Intermediate | ✅ | Multi-agent routing and delegation pattern |
 | 📁 [Input/Output Guardrails](Agent-Patterns/guardrails-io/) | Agent Patterns | python | Intermediate | ✅ | Input validation and output safety checks |
 | 📁 [Agents as Tools](Agent-Patterns/agents-as-tools/) | Agent Patterns | python | Advanced | ✅ | Agent composition - using agents as tools |
@@ -110,7 +110,7 @@ This repository curates runnable templates and high-quality references so you ca
 | 📁 [Assistants → Responses Migration](Migration/assistants-to-responses/) | Migration | python | Intermediate | ✅ | Before/after examples migrating from Assistants API |
 | 📁 [Tracing with OTLP](Observability/tracing-otlp/) | Observability | python | Intermediate | ✅ | OpenTelemetry integration for agent tracing |
 | 📁 [Starter Agent (Python)](Agents-SDK-Python/) | Agents SDK (Python) | python | Beginner | ✅ | Minimal "hello agent" with tools and tracing |
-| 📁 [Tool-calling Agent](Agents-SDK-Python/) | Agents SDK (Python) | python | Beginner | ✅ | Demonstrates function tools + input validation |
+| 📁 [Tool-calling Agent](Agents-SDK-Python/) | Agents SDK (Python) | python | Beginner | 🔄 | Reference to Agents SDK function tools; no runnable script |
 | 📁 [Research Agent](Agents-SDK-Python/research-agent/) | Agents SDK (Python) | python | Intermediate | 🔄 | Responses web search and API citation URLs; live search not verified |
 | 📁 [Customer Support Agent](Agents-SDK-Python/customer-support-agent/) | Agents SDK (Python) | python | Intermediate | 🔄 | Offline scripted-SDK handoff tested; live routing not verified |
 | 📁 [Data Analyst Agent](Agents-SDK-Python/data-analyst-agent/) | Agents SDK (Python) | python | Advanced | ✅ | Analyzes data and generates insights |
