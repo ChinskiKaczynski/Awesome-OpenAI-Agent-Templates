@@ -18,6 +18,8 @@ npm install
 npx tsx main.ts
 ```
 
+Requires Node.js 20.12+ for optional `.env` loading. Alternatively, set `OPENAI_API_KEY` in your shell.
+
 ## What it does
 
 1. Creates first response with `store=True` (persists on OpenAI servers)
