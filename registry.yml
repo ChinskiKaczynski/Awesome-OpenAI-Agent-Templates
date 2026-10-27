@@ -94,8 +94,8 @@ templates:
     languages: [python, typescript]
     difficulty: beginner
     tools: [web_search]
-    status: verified
-    description: Real-time web search using built-in web_search tool
+    status: unverified
+    description: Web search demo; live API integration not verified
     
   - id: file-search-agent
     name: File Search Agent
