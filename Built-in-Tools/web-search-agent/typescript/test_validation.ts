@@ -7,7 +7,7 @@ function fixture(overrides: Record<string, unknown> = {}) {
     status: "completed",
     output_text: "Sourced answer.",
     output: [
-      { type: "web_search_call", status: "completed" },
+      { type: "web_search_call", status: "completed", action: { type: "search" } },
       { type: "message", content: [
         { type: "output_text", annotations: [
           { type: "url_citation", url: "https://example.org/article" },
@@ -23,6 +23,14 @@ test("accepts completed, cited search and deduplicates sources", () => {
   assert.deepEqual(validateWebSearchResponse(fixture()), {
     answer: "Sourced answer.", sources: ["https://example.org/article"],
   });
+});
+
+test("rejects completed web tool calls without an actual search action", () => {
+  const message = fixture().output[1];
+  for (const action of ["open_page", "find_in_page", undefined]) {
+    const output = [{ type: "web_search_call", status: "completed", action: action && { type: action } }, message];
+    assert.throws(() => validateWebSearchResponse(fixture({ output })), /no search action/);
+  }
 });
 
 test("rejects incomplete response and failed or missing search calls", () => {
