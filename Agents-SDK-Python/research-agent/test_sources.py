@@ -6,10 +6,10 @@ from types import SimpleNamespace as Obj
 from unittest import TestCase, main, mock
 
 
-def response(text, urls=(), search_status="completed", response_status="completed"):
+def response(text, urls=(), search_status="completed", response_status="completed", action="search"):
     annotations = [Obj(type="url_citation", url=url) for url in urls]
     annotations.append(Obj(type="file_citation", url="https://ignored.example"))
-    return Obj(status=response_status, output_text=text, output=[Obj(type="web_search_call", status=search_status), Obj(type="message", content=[
+    return Obj(status=response_status, output_text=text, output=[Obj(type="web_search_call", status=search_status, action=Obj(type=action) if action else None), Obj(type="message", content=[
         Obj(type="output_text", annotations=annotations), Obj(type="refusal")
     ])])
 
@@ -119,6 +119,17 @@ class ResearchSourcesTests(TestCase):
                     self.agent.search("query")
                 self.assertEqual(self.agent.source_urls, [])
 
+
+    def test_search_rejects_completed_non_search_actions(self):
+        # A completed page open/find is not evidence of an actual web search.
+        for action in ("open_page", "find_in_page", None):
+            with self.subTest(action=action):
+                self.client.responses.create.return_value = response(
+                    "Cited but not searched", ["https://source.example/a"], action=action
+                )
+                with self.assertRaisesRegex(RuntimeError, "did not perform a search action"):
+                    self.agent.search("query")
+                self.assertEqual(self.agent.source_urls, [])
 
     def test_search_rejects_empty_findings_after_completed_search(self):
         for text in ("", "  \n  "):
