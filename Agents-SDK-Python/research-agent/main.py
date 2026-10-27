@@ -52,6 +52,12 @@ class ResearchAgent:
             or any(item.status != "completed" for item in search_calls)
         ):
             raise RuntimeError("Web search did not complete; refusing to use unverified findings.")
+        if not any(
+            getattr(getattr(item, "action", None), "type", None) == "search"
+            for item in search_calls
+        ):
+            raise RuntimeError("Web search did not perform a search action.")
+
         if not response.output_text or not response.output_text.strip():
             raise RuntimeError("Web search returned no findings; refusing to synthesize.")
 
