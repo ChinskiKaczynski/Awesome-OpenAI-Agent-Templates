@@ -2,7 +2,7 @@
 
 Complete migration guide with before/after examples.
 
-> ⚠️ **DEADLINE**: Assistants API shuts down **August 26, 2026**
+> **Status:** The Assistants API was shut down on **August 26, 2026** and is no longer available. The `before/` example is retained for historical comparison only. See the [official migration guide](https://developers.openai.com/api/docs/assistants/migration).
 
 ## Quick Comparison
 
@@ -19,7 +19,7 @@ Complete migration guide with before/after examples.
 
 | File | Description |
 |------|-------------|
-| [before/assistant_example.py](./before/assistant_example.py) | Original Assistants API code |
+| [before/assistant_example.py](./before/assistant_example.py) | Historical Assistants API code (no longer runnable) |
 | [after/responses_example.py](./after/responses_example.py) | Migrated Responses API code |
 | [MIGRATION_CHECKLIST.md](./MIGRATION_CHECKLIST.md) | Step-by-step checklist |
 
@@ -91,12 +91,8 @@ response = client.responses.create(
 ## Run the Examples
 
 ```bash
-# Before (Assistants API - still works until Aug 2026)
-cd before
-pip install openai python-dotenv
-python assistant_example.py
-
-# After (Responses API - recommended)
+# Historical `before/` example: reference only; the Assistants API is unavailable.
+# Run only the Responses API example (requires an API key; API usage may be billed):
 cd after
 pip install openai python-dotenv
 python responses_example.py
