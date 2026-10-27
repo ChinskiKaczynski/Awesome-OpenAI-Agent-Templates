@@ -46,7 +46,7 @@ test("rejects incomplete response and failed or missing search calls", () => {
 test("rejects missing, malformed or non-web citations", () => {
   for (const url of ["javascript:alert(1)", "https://", "https://bad domain.test"]) {
     const output = [
-      { type: "web_search_call", status: "completed" },
+      { type: "web_search_call", status: "completed", action: { type: "search" } },
       { type: "message", content: [{ type: "output_text", annotations: [
         { type: "url_citation", url },
       ] }] },
