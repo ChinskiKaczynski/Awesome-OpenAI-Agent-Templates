@@ -1,22 +1,12 @@
 # Tool-calling Agent (Python)
 
-## Overview
-Demonstrates function tools, input validation, and structured responses with the OpenAI Agents SDK for Python.
+## Status
 
-## Prerequisites
-- Python 3.10+
-- `OPENAI_API_KEY` set
+This entry is a reference page, not a runnable template. No `main.py` is provided here.
 
-## Setup
-```bash
-python -m venv .venv && source .venv/bin/activate
-pip install openai-agents
-```
+For an illustrative `@function_tool` pattern (not a standalone tested program), see the [Agents SDK Python quick example](./README.md#agents-sdk-core-concepts).
 
-## Run
-```bash
-python main.py
-```
+## Official documentation
 
-## Links
-- Tools guide: https://openai.github.io/openai-agents-python/examples/
+- [Function tools](https://openai.github.io/openai-agents-python/tools/#function-tools)
+- [Agents SDK Python examples](https://openai.github.io/openai-agents-python/examples/)
