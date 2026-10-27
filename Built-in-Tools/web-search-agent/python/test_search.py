@@ -36,7 +36,7 @@ class WebSearchOfflineTests(unittest.TestCase):
 
     def test_completed_cited_search_is_returned(self):
         self.mock_client.responses.create.return_value = fake_response()
-        self.assertEqual(self.module.search_web("question"), "Answer [1]")
+        self.assertEqual(self.module.search_web("question"), ("Answer [1]", ["https://example.org/source"]))
         kwargs = self.mock_client.responses.create.call_args.kwargs
         self.assertEqual(kwargs["tools"], [{"type": "web_search"}])
         self.assertEqual(kwargs["tool_choice"], "required")
@@ -79,9 +79,26 @@ class WebSearchOfflineTests(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, "no source citations"):
                     self.module.search_web("question")
 
+    def test_sources_are_deduplicated_and_printed_by_cli(self):
+        response = fake_response()
+        response.output[-1].content[0].annotations.extend([
+            Obj(type="url_citation", url="https://example.org/source"),
+            Obj(type="url_citation", url="https://example.org/second"),
+            Obj(type="url_citation", url="javascript:bad()"),
+        ])
+        self.mock_client.responses.create.return_value = response
+        answer, sources = self.module.search_web("question")
+        self.assertEqual(answer, "Answer [1]")
+        self.assertEqual(sources, ["https://example.org/source", "https://example.org/second"])
+
+        with patch.object(self.module, "search_web", return_value=(answer, sources)), patch("builtins.print") as output:
+            self.module.main()
+        printed = "\n".join(str(call.args[0]) for call in output.call_args_list if call.args)
+        self.assertIn("Sources:\n- https://example.org/source\n- https://example.org/second", printed)
+
     def test_http_source_url_is_accepted(self):
         self.mock_client.responses.create.return_value = fake_response(citation_url="http://example.org/article")
-        self.assertEqual(self.module.search_web("question"), "Answer [1]")
+        self.assertEqual(self.module.search_web("question"), ("Answer [1]", ["http://example.org/article"]))
 
 
 if __name__ == "__main__":
