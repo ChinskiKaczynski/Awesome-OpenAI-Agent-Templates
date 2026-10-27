@@ -252,8 +252,8 @@ templates:
     languages: [python]
     difficulty: intermediate
     tools: []
-    status: verified
-    description: Handles support tickets with intelligent routing
+    status: unverified
+    description: Offline scripted-SDK handoff tested; live routing not verified
 
   - id: data-analyst-agent
     name: Data Analyst Agent
