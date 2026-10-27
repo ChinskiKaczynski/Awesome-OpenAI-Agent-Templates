@@ -4,8 +4,6 @@
  */
 import OpenAI from "openai";
 
-const openai = new OpenAI();
-
 interface MCPServer {
     type: "mcp";
     server_label: string;
@@ -44,6 +42,7 @@ class RemoteMCPAgent {
         console.log(`🤖 Executing: ${prompt}`);
         console.log(`   MCP servers: ${this.mcpServers.length}`);
 
+        const openai = new OpenAI();
         const response = await openai.responses.create({
             model: this.model,
             input: prompt,
