@@ -30,7 +30,8 @@ def run_code_interpreter(query: str) -> str:
     # Check for code interpreter outputs
     for output in response.output:
         if hasattr(output, 'type') and output.type == "code_interpreter_call":
-            print(f"\n💻 Code executed:\n{output.code[:200]}...")
+            if output.code is not None:
+                print(f"\n💻 Code executed:\n{output.code[:200]}...")
     
     return response.output_text
 

@@ -23,7 +23,7 @@ async function runCodeInterpreter(query: string): Promise<string> {
 
     // Check for code interpreter outputs
     for (const output of response.output) {
-        if (output.type === "code_interpreter_call") {
+        if (output.type === "code_interpreter_call" && output.code !== null) {
             console.log(`\n💻 Code executed:\n${output.code.slice(0, 200)}...`);
         }
     }
