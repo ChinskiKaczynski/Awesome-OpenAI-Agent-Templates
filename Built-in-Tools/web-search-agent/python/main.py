@@ -47,6 +47,8 @@ def search_web(query: str) -> tuple[str, list[str]]:
         or any(call.status != "completed" for call in calls)
     ):
         raise RuntimeError("Web search did not complete; no answer will be shown.")
+    if not any(getattr(getattr(call, "action", None), "type", None) == "search" for call in calls):
+        raise RuntimeError("Web search did not perform a search action.")
     if not response.output_text or not response.output_text.strip():
         raise RuntimeError("Web search returned an empty answer.")
 
