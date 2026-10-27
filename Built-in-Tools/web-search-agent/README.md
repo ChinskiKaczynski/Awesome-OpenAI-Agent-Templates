@@ -26,7 +26,7 @@ See the [official web search guide](https://developers.openai.com/api/docs/guide
 
 1. Sends a query to the model with `web_search` tool enabled
 2. Model automatically searches the internet for current information
-3. Returns answer synthesized from web results
+3. Validates the completed search and citation metadata; prints the answer and deduplicated HTTP(S) source URLs (Python and TypeScript). This confirms URLs were cited, not that every claim is true.
 
 ## Example Queries
 
@@ -47,4 +47,6 @@ See the [official web search guide](https://developers.openai.com/api/docs/guide
 🔍 Query: Who is the current president of France?
 🌐 Searching the web...
 🤖 Answer: <answer with source citations>...
+Sources:
+- https://example.org/source
 ```
