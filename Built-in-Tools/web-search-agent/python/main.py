@@ -27,7 +27,7 @@ def has_valid_citation(annotation) -> bool:
         return False
 
 
-def search_web(query: str) -> str:
+def search_web(query: str) -> tuple[str, list[str]]:
     """Search the web for current information, requiring cited results."""
     print(f"🔍 Query: {query}")
     print("🌐 Searching the web...")
@@ -50,15 +50,20 @@ def search_web(query: str) -> str:
     if not response.output_text or not response.output_text.strip():
         raise RuntimeError("Web search returned an empty answer.")
 
-    cited = any(
-        has_valid_citation(annotation)
-        for item in response.output if item.type == "message"
-        for part in item.content if part.type == "output_text"
-        for annotation in part.annotations
-    )
-    if not cited:
+    # Keep the source URLs supplied by the API, not links invented by the model.
+    sources = []
+    for item in response.output:
+        if item.type != "message":
+            continue
+        for part in item.content:
+            if part.type != "output_text":
+                continue
+            for annotation in part.annotations or []:
+                if has_valid_citation(annotation) and annotation.url not in sources:
+                    sources.append(annotation.url)
+    if not sources:
         raise RuntimeError("Web search answer has no source citations.")
-    return response.output_text
+    return response.output_text, sources
 
 
 def main():
@@ -68,8 +73,9 @@ def main():
         "What are the latest developments in AI?",
     ]
     for query in queries:
-        answer = search_web(query)
+        answer, sources = search_web(query)
         print(f"🤖 Answer: {answer}\n")
+        print("Sources:\n" + "\n".join(f"- {url}" for url in sources))
         print("-" * 50 + "\n")
 
 
