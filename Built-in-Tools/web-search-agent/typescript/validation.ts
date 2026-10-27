@@ -28,6 +28,9 @@ export function validateWebSearchResponse(response: unknown): SearchResult {
   if (!calls.length || calls.some((item: unknown) => asObject(item)?.status !== "completed")) {
     throw new Error("Web search tool call did not complete.");
   }
+  if (!calls.some((item: unknown) => asObject(asObject(item)?.action)?.type === "search")) {
+    throw new Error("Web search tool call has no search action.");
+  }
   const answer = result.output_text;
   if (typeof answer !== "string" || !answer.trim()) {
     throw new Error("Web search returned an empty answer.");
