@@ -11,7 +11,7 @@
   <a href="https://github.com/ChinskiKaczynski/Awesome-OpenAI-Agent-Templates/pulls"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
 </p>
 
-> Production-ready templates, tutorials, and patterns for building agents with the **Responses API**, **Agents SDK**, **Realtime API**, and more.
+> Starter templates, tutorials, and patterns for building agents with the **Responses API**, **Agents SDK**, **Realtime API**, and more. Examples are educational and require testing and review before production use.
 
 ---
 
@@ -48,13 +48,13 @@ This repository curates runnable templates and high-quality references so you ca
 
 1. **Pick a category** under the repo root:
    - `Responses-API/` – Responses API starters (stateful, streaming, tools),
-   - `Built-in-Tools/` – web search, file search, code interpreter,
+   - `Built-in-Tools/` – web search, file search, code interpreter, computer use, MCP,
    - `Agent-Patterns/` – routing, guardrails, parallel agents,
    - `Realtime-Voice/` – WebSocket and WebRTC voice agents,
    - `Migration/` – migration guides (Assistants → Responses),
    - `Observability/` – tracing and monitoring,
    - `Agents-SDK-Python/` – Python SDK templates,
-   - `ChatKit/` – embeddable UI templates.
+   - `ChatKit/` – links to official ChatKit UI starters and documentation.
 
 2. **Install dependencies** as described by each template (Python venv / Node, etc.).
 
@@ -85,45 +85,52 @@ This repository curates runnable templates and high-quality references so you ca
 | **Migration** | API migration guides | 1 guide |
 | **Observability** | Tracing and monitoring | 1 template |
 | **Agents SDK** | Python/TypeScript SDK | 8 templates |
-| **ChatKit** | Embeddable chat UI | 1 template |
+| **ChatKit** | Official UI examples and docs | 1 reference |
 
 ## Template Registry
 
-> ✅ = Verified, 📁 = Local template, 🔗 = External link
+> ✅ = Legacy `verified` registry label (not evidence of live testing or production readiness), 🔄 = Reference or unverified, 📁 = Local template, 🔗 = External link
 
 <!-- REGISTRY_TABLE_START -->
 
 | Template | Category | Languages | Difficulty | Status | Description |
 |----------|----------|-----------|------------|--------|-------------|
-| 📁 [Responses Minimal](Responses-API/responses-minimal/) | Responses API | python, typescript | Beginner | ✅ | Basic Responses API starter |
-| 📁 [Responses Streaming](Responses-API/responses-streaming/) | Responses API | python, typescript | Beginner | ✅ | Streaming responses with SSE |
-| 📁 [Stateful Conversations](Responses-API/responses-store-conversation/) | Responses API | python, typescript | Intermediate | ✅ | Multi-turn with store=true |
-| 📁 [Web Search Agent](Built-in-Tools/web-search-agent/) | Built-in Tools | python, typescript | Beginner | ✅ | Real-time web search |
-| 📁 [File Search Agent](Built-in-Tools/file-search-agent/) | Built-in Tools | python, typescript | Intermediate | ✅ | RAG with vector stores |
-| 📁 [Code Interpreter Agent](Built-in-Tools/code-interpreter-agent/) | Built-in Tools | python, typescript | Intermediate | ✅ | Sandboxed code execution |
-| 📁 [Routing Agent](Agent-Patterns/routing-agent/) | Agent Patterns | python | Intermediate | ✅ | Multi-agent routing |
-| 📁 [Guardrails I/O](Agent-Patterns/guardrails-io/) | Agent Patterns | python | Intermediate | ✅ | Input/output validation |
-| 📁 [Agents as Tools](Agent-Patterns/agents-as-tools/) | Agent Patterns | python | Advanced | ✅ | Agent composition |
-| 📁 [Parallel Agents](Agent-Patterns/parallel-agents/) | Agent Patterns | python | Advanced | ✅ | Concurrent execution |
-| 📁 [WebSocket Minimal](Realtime-Voice/websocket-minimal/) | Realtime Voice | python, javascript | Intermediate | ✅ | WebSocket voice agent |
-| 📁 [WebRTC Browser](Realtime-Voice/webrtc-browser/) | Realtime Voice | javascript | Advanced | ✅ | Browser-based voice |
-| 📁 [Assistants → Responses](Migration/assistants-to-responses/) | Migration | python | Intermediate | ✅ | Migration guide & examples |
-| 📁 [Tracing OTLP](Observability/tracing-otlp/) | Observability | python | Intermediate | ✅ | OpenTelemetry tracing |
-| 📁 [Starter Agent](Agents-SDK-Python/) | Agents SDK | python | Beginner | ✅ | Minimal "hello agent" |
-| 📁 [ChatKit UI](ChatKit/) | ChatKit | javascript | Beginner | ✅ | Drop-in ChatKit embed |
+| 📁 [Responses API Minimal](Responses-API/responses-minimal/) | Responses API | python, typescript | Beginner | ✅ | Basic Responses API starter with simple input/output |
+| 📁 [Responses API Streaming](Responses-API/responses-streaming/) | Responses API | python, typescript | Beginner | ✅ | Streaming responses with SSE events |
+| 📁 [Stateful Conversations](Responses-API/responses-store-conversation/) | Responses API | python, typescript | Intermediate | ✅ | Multi-turn conversations with store=true and previous_response_id |
+| 📁 [Web Search Agent](Built-in-Tools/web-search-agent/) | Built-in Tools | python, typescript | Beginner | 🔄 | Web search demo; live API integration not verified |
+| 📁 [File Search Agent](Built-in-Tools/file-search-agent/) | Built-in Tools | python, typescript | Intermediate | ✅ | Document search with vector stores |
+| 📁 [Code Interpreter Agent](Built-in-Tools/code-interpreter-agent/) | Built-in Tools | python, typescript | Intermediate | ✅ | Code execution in sandbox environment |
+| 📁 [Realtime WebSocket Minimal](Realtime-Voice/websocket-minimal/) | Realtime Voice | python, javascript | Intermediate | ✅ | Minimal WebSocket voice agent with gpt-realtime |
+| 📁 [Realtime WebRTC Browser](Realtime-Voice/webrtc-browser/) | Realtime Voice | javascript | Advanced | 🔄 | Browser WebRTC SDP-offer scaffold; session handshake not implemented |
+| 📁 [Routing Agent](Agent-Patterns/routing-agent/) | Agent Patterns | python | Intermediate | ✅ | Multi-agent routing and delegation pattern |
+| 📁 [Input/Output Guardrails](Agent-Patterns/guardrails-io/) | Agent Patterns | python | Intermediate | ✅ | Input validation and output safety checks |
+| 📁 [Agents as Tools](Agent-Patterns/agents-as-tools/) | Agent Patterns | python | Advanced | ✅ | Agent composition - using agents as tools |
+| 📁 [Parallel Agents](Agent-Patterns/parallel-agents/) | Agent Patterns | python | Advanced | ✅ | Concurrent agent execution with result aggregation |
+| 📁 [Assistants → Responses Migration](Migration/assistants-to-responses/) | Migration | python | Intermediate | ✅ | Before/after examples migrating from Assistants API |
+| 📁 [Tracing with OTLP](Observability/tracing-otlp/) | Observability | python | Intermediate | ✅ | OpenTelemetry integration for agent tracing |
+| 📁 [Starter Agent (Python)](Agents-SDK-Python/) | Agents SDK (Python) | python | Beginner | ✅ | Minimal "hello agent" with tools and tracing |
+| 📁 [Tool-calling Agent](Agents-SDK-Python/) | Agents SDK (Python) | python | Beginner | 🔄 | Reference to Agents SDK function tools; no runnable script |
+| 📁 [Research Agent](Agents-SDK-Python/research-agent/) | Agents SDK (Python) | python | Intermediate | 🔄 | Responses web search and API citation URLs; live search not verified |
+| 📁 [Customer Support Agent](Agents-SDK-Python/customer-support-agent/) | Agents SDK (Python) | python | Intermediate | 🔄 | Offline scripted-SDK handoff tested; live routing not verified |
+| 📁 [Data Analyst Agent](Agents-SDK-Python/data-analyst-agent/) | Agents SDK (Python) | python | Advanced | ✅ | Analyzes data and generates insights |
+| 📁 [Content Writer Agent](Agents-SDK-Python/content-writer-agent/) | Agents SDK (Python) | python | Intermediate | ✅ | Writes blog posts, emails, and marketing copy |
+| 📁 [Personal Assistant Agent](Agents-SDK-Python/personal-assistant-agent/) | Agents SDK (Python) | python | Advanced | 🔄 | Task management demo; offline SDK tools tested, live model unverified |
+| 📁 [Code Review Agent](Agents-SDK-Python/code-review-agent/) | Agents SDK (Python) | python | Advanced | ✅ | Reviews code and suggests improvements |
+| 📁 [ChatKit UI References](ChatKit/) | ChatKit |  | Beginner | 🔄 | Links to official ChatKit docs and starters; no local runnable embed |
 
 ### External Resources
 
 | Resource | Category | Description |
 |----------|----------|-------------|
-| 🔗 [Realtime Voice Agents Demo](https://github.com/openai/openai-realtime-agents) | Realtime Voice | Advanced voice agent patterns |
-| 🔗 [Agents SDK Examples](https://openai.github.io/openai-agents-python/examples/) | Agents SDK | Official SDK examples |
-| 🔗 [Agents SDK TypeScript](https://openai.github.io/openai-agents-js/) | Agents SDK | TypeScript SDK docs |
-| 🔗 [Temporal Durable Agents](https://github.com/temporal-community/openai-agents-demos) | Agent Patterns | Durable execution patterns |
+| 🔗 [Realtime Voice Agents Demo](https://github.com/openai/openai-realtime-agents) | Realtime Voice | Advanced patterns for low-latency voice agents |
+| 🔗 [Agents SDK Python Examples](https://openai.github.io/openai-agents-python/examples/) | Agents SDK (Python) | Category-organized examples from OpenAI |
+| 🔗 [Agents SDK TypeScript](https://openai.github.io/openai-agents-js/) | Agents SDK (TypeScript) | TypeScript SDK docs & examples |
+| 🔗 [Temporal Durable Agents Demos](https://github.com/temporal-community/openai-agents-demos) | Agent Patterns | Durable execution patterns with Agents SDK |
 
 <!-- REGISTRY_TABLE_END -->
 
-**Verification date:** 2026-01-08
+**Registry table updated:** 2026-10-26 (not a runtime verification date; consult `registry.yml` for the current template inventory).
 
 ## Deprecated Templates
 
