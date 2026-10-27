@@ -7,13 +7,13 @@ import unittest
 from unittest.mock import Mock, patch
 
 
-def fake_response(*, status="completed", calls=("completed",), text="Answer [1]", cited=True, citation_url="https://example.org/source"):
+def fake_response(*, status="completed", calls=("completed",), text="Answer [1]", action="search", cited=True, citation_url="https://example.org/source"):
     annotations = [Obj(type="url_citation", url=citation_url)] if cited else []
     return Obj(
         status=status,
         output_text=text,
         output=[
-            *(Obj(type="web_search_call", status=call_status) for call_status in calls),
+            *(Obj(type="web_search_call", status=call_status, action=Obj(type=action)) for call_status in calls),
             Obj(type="message", content=[Obj(type="output_text", annotations=annotations)]),
         ],
     )
@@ -53,6 +53,13 @@ class WebSearchOfflineTests(unittest.TestCase):
             with self.subTest(response=response):
                 self.mock_client.responses.create.return_value = response
                 with self.assertRaisesRegex(RuntimeError, "did not complete"):
+                    self.module.search_web("question")
+
+    def test_completed_non_search_actions_are_rejected(self):
+        for action in ("open_page", "find_in_page", None):
+            with self.subTest(action=action):
+                self.mock_client.responses.create.return_value = fake_response(action=action)
+                with self.assertRaisesRegex(RuntimeError, "search action"):
                     self.module.search_web("question")
 
     def test_empty_or_uncited_answer_is_rejected(self):
