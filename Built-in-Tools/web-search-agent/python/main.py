@@ -33,7 +33,7 @@ def search_web(query: str) -> tuple[str, list[str]]:
     print("🌐 Searching the web...")
 
     response = client.responses.create(
-        model="gpt-4.1-mini",
+        model="gpt-6-luna",
         input=query,
         tools=[{"type": "web_search"}],
         tool_choice="required",

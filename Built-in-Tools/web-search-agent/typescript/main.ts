@@ -12,7 +12,7 @@ async function searchWeb(query: string): Promise<SearchResult> {
     console.log("🌐 Searching the web...");
 
     const response = await openai.responses.create({
-        model: "gpt-4.1-mini",
+        model: "gpt-6-luna",
         input: query,
         tools: [{ type: "web_search" }],
         tool_choice: "required",

@@ -38,6 +38,7 @@ class WebSearchOfflineTests(unittest.TestCase):
         self.mock_client.responses.create.return_value = fake_response()
         self.assertEqual(self.module.search_web("question"), ("Answer [1]", ["https://example.org/source"]))
         kwargs = self.mock_client.responses.create.call_args.kwargs
+        self.assertEqual(kwargs["model"], "gpt-6-luna")
         self.assertEqual(kwargs["tools"], [{"type": "web_search"}])
         self.assertEqual(kwargs["tool_choice"], "required")
         self.assertEqual(kwargs["input"], "question")

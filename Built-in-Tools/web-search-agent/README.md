@@ -18,7 +18,7 @@ npm install
 npx tsx main.ts
 ```
 
-The examples use `gpt-4.1-mini` and require `OPENAI_API_KEY`. Live API calls and web searches may incur usage charges.
+The examples use `gpt-6-luna` and require `OPENAI_API_KEY`. Live API calls and web searches may incur usage charges.
 
 See the [official web search guide](https://developers.openai.com/api/docs/guides/tools-web-search) for supported options.
 
