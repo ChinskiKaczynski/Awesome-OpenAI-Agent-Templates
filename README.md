@@ -115,7 +115,7 @@ This repository curates runnable templates and high-quality references so you ca
 | 📁 [Customer Support Agent](Agents-SDK-Python/customer-support-agent/) | Agents SDK (Python) | python | Intermediate | 🔄 | Offline scripted-SDK handoff tested; live routing not verified |
 | 📁 [Data Analyst Agent](Agents-SDK-Python/data-analyst-agent/) | Agents SDK (Python) | python | Advanced | ✅ | Analyzes data and generates insights |
 | 📁 [Content Writer Agent](Agents-SDK-Python/content-writer-agent/) | Agents SDK (Python) | python | Intermediate | ✅ | Writes blog posts, emails, and marketing copy |
-| 📁 [Personal Assistant Agent](Agents-SDK-Python/personal-assistant-agent/) | Agents SDK (Python) | python | Advanced | ✅ | Task management and scheduling agent |
+| 📁 [Personal Assistant Agent](Agents-SDK-Python/personal-assistant-agent/) | Agents SDK (Python) | python | Advanced | 🔄 | Task management demo; offline SDK tools tested, live model unverified |
 | 📁 [Code Review Agent](Agents-SDK-Python/code-review-agent/) | Agents SDK (Python) | python | Advanced | ✅ | Reviews code and suggests improvements |
 | 📁 [ChatKit UI References](ChatKit/) | ChatKit |  | Beginner | 🔄 | Links to official ChatKit docs and starters; no local runnable embed |
 
