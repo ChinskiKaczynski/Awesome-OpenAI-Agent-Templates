@@ -120,6 +120,7 @@ Be specific, constructive, and educational. Explain WHY each issue matters."""
 
         response = client.responses.create(
             model=self.model,
+            store=False,
             input=prompt,
         )
         
@@ -131,6 +132,7 @@ Be specific, constructive, and educational. Explain WHY each issue matters."""
         
         response = client.responses.create(
             model=self.model,
+            store=False,
             input=f"""Explain this {language} code clearly:
 
 ```{language}
@@ -152,6 +154,7 @@ Provide:
         
         response = client.responses.create(
             model=self.model,
+            store=False,
             input=f"""Suggest test cases for this {language} code:
 
 ```{language}
