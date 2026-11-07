@@ -20,17 +20,28 @@ async function main() {
         stream: true,
     });
 
+    let completed = false;
     for await (const event of stream) {
-        // Handle text delta events
         if (event.type === "response.output_text.delta") {
             process.stdout.write(event.delta);
+        } else if (event.type === "response.completed") {
+            completed = true;
+            const tokens = event.response.usage?.total_tokens;
+            console.log(tokens == null
+                ? "\n\n✅ Complete! Token usage unavailable."
+                : `\n\n✅ Complete! Total tokens: ${tokens}`);
+        } else if (event.type === "response.failed") {
+            throw new Error(`Response failed: ${event.response.error?.message ?? "Unknown error"}`);
+        } else if (event.type === "response.incomplete") {
+            throw new Error(`Response incomplete: ${event.response.incomplete_details?.reason ?? "Unknown reason"}`);
         }
-
-        // Handle completion
-        if (event.type === "response.completed") {
-            console.log(`\n\n✅ Complete! Total tokens: ${event.response.usage?.total_tokens}`);
-        }
+    }
+    if (!completed) {
+        throw new Error("Response stream ended without a completion event.");
     }
 }
 
-main();
+main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+});

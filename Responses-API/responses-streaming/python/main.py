@@ -34,7 +34,19 @@ def main():
         
         # Handle completion
         elif event.type == "response.completed":
-            print(f"\n\n✅ Complete! Total tokens: {event.response.usage.total_tokens}")
+            usage = event.response.usage
+            if usage is None:
+                print("\n\n✅ Complete! Token usage unavailable.")
+            else:
+                print(f"\n\n✅ Complete! Total tokens: {usage.total_tokens}")
+
+        elif event.type == "response.failed":
+            error = event.response.error
+            raise RuntimeError(f"Response failed: {error.message if error else 'Unknown error'}")
+
+        elif event.type == "response.incomplete":
+            details = event.response.incomplete_details
+            raise RuntimeError(f"Response incomplete: {details.reason if details else 'Unknown reason'}")
 
 
 if __name__ == "__main__":
