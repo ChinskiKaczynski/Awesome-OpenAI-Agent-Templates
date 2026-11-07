@@ -39,13 +39,21 @@ python main.py
 
 ## Customization
 
+Run this from the `content-writer-agent` directory after installing the requirements and setting `OPENAI_API_KEY`:
+
 ```python
+from main import ContentWriterAgent, ContentRequest, ContentType, Tone
+
+agent = ContentWriterAgent()
 result = agent.write(
-    content_type="blog_post",
-    topic="AI in Healthcare",
-    tone="professional",
-    length="long",
-    keywords=["AI", "healthcare", "diagnosis"],
-    audience="healthcare professionals"
+    ContentRequest(
+        topic="AI in Healthcare",
+        content_type=ContentType.BLOG_POST,
+        tone=Tone.PROFESSIONAL,
+        length="long",
+        keywords=["AI", "healthcare", "diagnosis"],
+        audience="healthcare professionals",
+    )
 )
+print(result)
 ```
