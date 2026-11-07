@@ -51,6 +51,7 @@ def run_follow_up(previous_id: str, follow_up_message: str) -> str:
     response = client.responses.create(
         model="gpt-4o-mini",
         previous_response_id=previous_id,  # Chain to previous
+        instructions="You are a helpful math tutor. Solve problems step by step.",
         input=[{"role": "user", "content": follow_up_message}],
         tools=[
             {
