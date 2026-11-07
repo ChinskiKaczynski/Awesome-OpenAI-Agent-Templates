@@ -60,15 +60,18 @@ def traced_response_create(model: str, prompt: str) -> str:
     
     This wraps the OpenAI call with a span that captures:
     - Model used
-    - Prompt (truncated)
     - Token usage
     - Duration
+
+    Raw prompt, query, and tool arguments are not explicitly added to spans.
     """
-    with tracer.start_as_current_span("llm_generation") as span:
+    with tracer.start_as_current_span(
+        "llm_generation", record_exception=False, set_status_on_exception=False
+    ) as span:
         # Add GenAI semantic attributes
         span.set_attribute("gen_ai.system", "openai")
         span.set_attribute("gen_ai.request.model", model)
-        span.set_attribute("gen_ai.prompt", prompt[:100])  # Truncate for safety
+        # Avoid exporting raw prompts, which may contain sensitive data.
         
         try:
             response = client.responses.create(
@@ -78,15 +81,16 @@ def traced_response_create(model: str, prompt: str) -> str:
             
             # Record response attributes
             span.set_attribute("gen_ai.response.id", response.id)
-            span.set_attribute("gen_ai.usage.total_tokens", response.usage.total_tokens)
-            span.set_attribute("gen_ai.usage.prompt_tokens", response.usage.input_tokens)
-            span.set_attribute("gen_ai.usage.completion_tokens", response.usage.output_tokens)
+            if response.usage is not None:
+                span.set_attribute("gen_ai.usage.total_tokens", response.usage.total_tokens)
+                span.set_attribute("gen_ai.usage.prompt_tokens", response.usage.input_tokens)
+                span.set_attribute("gen_ai.usage.completion_tokens", response.usage.output_tokens)
             
             return response.output_text
             
-        except Exception as e:
-            span.record_exception(e)
-            span.set_status(trace.StatusCode.ERROR, str(e))
+        except Exception:
+            # Mark failure without exporting exception text or stack traces.
+            span.set_status(trace.StatusCode.ERROR)
             raise
 
 
@@ -96,8 +100,7 @@ def traced_tool_call(tool_name: str, args: dict = None):
     """
     with tracer.start_as_current_span(f"tool_call.{tool_name}") as span:
         span.set_attribute("tool.name", tool_name)
-        if args:
-            span.set_attribute("tool.arguments", str(args))
+        # Tool arguments may contain sensitive data; do not export them.
         
         # Simulate tool execution
         import time
@@ -115,8 +118,10 @@ def run_traced_agent(user_query: str):
     """
     Run an agent with full tracing.
     """
-    with tracer.start_as_current_span("agent_run") as span:
-        span.set_attribute("agent.query", user_query)
+    with tracer.start_as_current_span(
+        "agent_run", record_exception=False, set_status_on_exception=False
+    ) as span:
+        # Keep the user query out of exported span attributes.
         
         print(f"🔍 Processing: {user_query}")
         
