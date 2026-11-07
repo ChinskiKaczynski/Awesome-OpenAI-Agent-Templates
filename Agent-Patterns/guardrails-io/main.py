@@ -7,7 +7,9 @@ Uses the OpenAI Agents SDK guardrails feature.
 import asyncio
 import re
 from pydantic import BaseModel
-from agents import Agent, Runner, InputGuardrail, OutputGuardrail, GuardrailRunContext
+from agents import (Agent, Runner, InputGuardrail, OutputGuardrail, GuardrailFunctionOutput,
+                    RunContextWrapper, InputGuardrailTripwireTriggered,
+                    OutputGuardrailTripwireTriggered)
 
 
 # ============================================
@@ -20,7 +22,7 @@ class PIIDetectionResult(BaseModel):
     pii_types: list[str] = []
 
 
-async def pii_detection_guardrail(ctx: GuardrailRunContext, agent: Agent, input_text: str) -> PIIDetectionResult:
+async def pii_detection_guardrail(ctx: RunContextWrapper, agent: Agent, input_text: str) -> GuardrailFunctionOutput:
     """
     Detect if input contains PII (Personally Identifiable Information).
     
@@ -41,15 +43,19 @@ async def pii_detection_guardrail(ctx: GuardrailRunContext, agent: Agent, input_
     if re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', input_text):
         pii_types.append("email")
     
-    return PIIDetectionResult(
+    result = PIIDetectionResult(
         contains_pii=len(pii_types) > 0,
         pii_types=pii_types
+    )
+    return GuardrailFunctionOutput(
+        output_info=result,
+        tripwire_triggered=result.contains_pii,
     )
 
 
 pii_guardrail = InputGuardrail(
     guardrail_function=pii_detection_guardrail,
-    tripwire_on_failure=True,  # Block if PII detected
+    run_in_parallel=False,  # Block before the agent receives sensitive input
 )
 
 
@@ -63,7 +69,7 @@ class ContentSafetyResult(BaseModel):
     reason: str = ""
 
 
-async def content_safety_guardrail(ctx: GuardrailRunContext, agent: Agent, output_text: str) -> ContentSafetyResult:
+async def content_safety_guardrail(ctx: RunContextWrapper, agent: Agent, output_text: str) -> GuardrailFunctionOutput:
     """
     Check if output is safe to return to user.
     
@@ -79,17 +85,20 @@ async def content_safety_guardrail(ctx: GuardrailRunContext, agent: Agent, outpu
     
     for pattern in unsafe_patterns:
         if re.search(pattern, output_text.lower()):
-            return ContentSafetyResult(
+            result = ContentSafetyResult(
                 is_safe=False,
                 reason=f"Contains potentially unsafe content: {pattern}"
             )
+            return GuardrailFunctionOutput(output_info=result, tripwire_triggered=True)
     
-    return ContentSafetyResult(is_safe=True)
+    return GuardrailFunctionOutput(
+        output_info=ContentSafetyResult(is_safe=True),
+        tripwire_triggered=False,
+    )
 
 
 safety_guardrail = OutputGuardrail(
     guardrail_function=content_safety_guardrail,
-    tripwire_on_failure=True,
 )
 
 
@@ -109,13 +118,13 @@ guarded_agent = Agent(
 
 async def handle_request(user_message: str):
     """Process a request through the guarded agent."""
-    print(f"\n👤 User: {user_message}")
+    print("\n👤 User input received (content not logged)")
     
     try:
         result = await Runner.run(guarded_agent, user_message)
         print(f"✅ Response: {result.final_output}")
-    except Exception as e:
-        print(f"🛡️ Blocked by guardrail: {e}")
+    except (InputGuardrailTripwireTriggered, OutputGuardrailTripwireTriggered):
+        print("🛡️ Blocked by guardrail")
 
 
 async def main():

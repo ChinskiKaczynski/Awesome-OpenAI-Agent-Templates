@@ -1,6 +1,10 @@
 # Guardrails I/O Pattern
 
-Validate inputs and sanitize outputs for safe agent interactions.
+Demonstrate Agents SDK input/output tripwires with basic PII and keyword checks.
+
+> This is an educational example, not a production safety filter. The checks block
+> matching text; they do not redact sensitive data or reliably detect prompt
+> injection or harmful content.
 
 ## Usage
 
@@ -15,7 +19,7 @@ python main.py
 User Input
      ↓
 ┌─────────────┐
-│   Input     │ ← Validate: no PII, no injection
+│   Input     │ ← Block matching PII patterns
 │  Guardrail  │
 └──────┬──────┘
        ↓
@@ -24,7 +28,7 @@ User Input
 └──────┬──────┘
        ↓
 ┌─────────────┐
-│   Output    │ ← Sanitize: remove PII, check safety
+│   Output    │ ← Block matching keywords
 │  Guardrail  │
 └──────┬──────┘
        ↓
@@ -33,21 +37,20 @@ User Input
 
 ## When to Use
 
-- Handling sensitive data (PII)
-- Preventing prompt injection
-- Enforcing output format
-- Content moderation
+- Learning how to block inputs matching simple PII patterns
+- Learning how to block outputs matching simple keywords
+- Understanding Agents SDK tripwire behavior
 
 ## Guardrail Types
 
 | Type | Direction | Purpose |
 |------|-----------|---------|
-| Input | User → Agent | Validate/sanitize input |
-| Output | Agent → User | Check/filter response |
+| Input | User → Agent | Block matching input |
+| Output | Agent → User | Block matching output |
 
 ## Example Guardrails
 
-1. **PII Detection**: Block SSN, credit cards
-2. **Prompt Injection**: Detect manipulation attempts
-3. **Format Validation**: Ensure JSON output
-4. **Content Safety**: Filter harmful content
+1. **PII Detection**: Block text matching SSN, credit card, or email patterns.
+2. **Output Keyword Check**: Block output containing a few example phrases.
+
+These are illustrative heuristics, not comprehensive PII, injection, or moderation checks.
