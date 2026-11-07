@@ -26,6 +26,7 @@ async function searchDocuments(query: string): Promise<string> {
                 vector_store_ids: [VECTOR_STORE_ID],
             },
         ],
+        tool_choice: "required",
     });
 
     return response.output_text;

@@ -32,7 +32,8 @@ def search_documents(query: str) -> str:
                 "type": "file_search",
                 "vector_store_ids": [VECTOR_STORE_ID]
             }
-        ]
+        ],
+        tool_choice="required",
     )
     
     return response.output_text
