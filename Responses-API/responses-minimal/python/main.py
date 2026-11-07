@@ -19,7 +19,10 @@ def main():
     )
     
     print(f"🤖 Response: {response.output_text}")
-    print(f"📊 Usage: {response.usage.total_tokens} tokens")
+    if response.usage is not None:
+        print(f"📊 Usage: {response.usage.total_tokens} tokens")
+    else:
+        print("📊 Usage: unavailable")
 
 
 if __name__ == "__main__":

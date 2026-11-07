@@ -13,7 +13,7 @@ async function main() {
     });
 
     console.log(`🤖 Response: ${response.output_text}`);
-    console.log(`📊 Usage: ${response.usage?.total_tokens} tokens`);
+    console.log(response.usage ? `📊 Usage: ${response.usage.total_tokens} tokens` : "📊 Usage: unavailable");
 }
 
 main();
