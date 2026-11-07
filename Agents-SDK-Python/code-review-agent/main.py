@@ -87,11 +87,12 @@ class CodeReviewAgent:
         
         focus_prompt = REVIEW_PROMPTS[request.review_type]
         
+        context_line = f"Context: {request.context}" if request.context else ""
         prompt = f"""You are an expert code reviewer. Review this {request.language} code.
 
 {focus_prompt}
 
-{f"Context: {request.context}" if request.context else ""}
+{context_line}
 
 CODE TO REVIEW:
 ```{request.language}
