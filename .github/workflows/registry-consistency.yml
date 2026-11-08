@@ -1,0 +1,50 @@
+name: Registry Table Consistency
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - README.md
+      - registry.yml
+      - scripts/generate-readme.py
+      - .github/workflows/registry-consistency.yml
+  push:
+    branches: [main]
+    paths:
+      - README.md
+      - registry.yml
+      - scripts/generate-readme.py
+      - .github/workflows/registry-consistency.yml
+
+jobs:
+  registry-table:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install registry parser
+        run: python -m pip install 'PyYAML==6.0.3'
+      - name: Check README table against registry.yml
+        run: |
+          cp README.md "$RUNNER_TEMP/readme-before.md"
+          python scripts/generate-readme.py
+          python - <<'PY'
+          import os
+          from pathlib import Path
+
+          start = "<!-- REGISTRY_TABLE_START -->"
+          end = "<!-- REGISTRY_TABLE_END -->"
+
+          def table(text):
+              if text.count(start) != 1 or text.count(end) != 1:
+                  raise SystemExit("README registry markers are missing or duplicated")
+              return text.split(start, 1)[1].split(end, 1)[0].strip()
+
+          original = Path(os.environ["RUNNER_TEMP"], "readme-before.md").read_text(encoding="utf-8")
+          generated = Path("README.md").read_text(encoding="utf-8")
+          if table(original) != table(generated):
+              raise SystemExit("README registry table is stale; run python scripts/generate-readme.py")
+          print("README registry table matches registry.yml")
+          PY

@@ -1,6 +1,6 @@
 # Responses API Templates
 
-Production-ready templates for OpenAI's **Responses API** - the recommended foundation for new projects (2025+).
+Learning examples for OpenAI's **Responses API**. These starters demonstrate API usage; they have not been validated as production-ready applications. Test behavior, error handling, and security before deployment.
 
 > 📚 **Official Docs**: [Responses API Guide](https://platform.openai.com/docs/guides/responses)
 

@@ -36,9 +36,11 @@ python scripts/generate-readme.py
      languages: [python]
      difficulty: beginner
      tools: []
-     status: verified
+     status: unverified
      description: Short description
    ```
+
+   New entries should stay `unverified` until the actual API behavior has been tested. Syntax checks, lint and mocked responses alone do not establish verification.
 
 2. Run the generator:
 

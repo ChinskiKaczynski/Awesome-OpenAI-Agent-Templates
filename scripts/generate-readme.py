@@ -45,7 +45,7 @@ def generate_table(registry: dict) -> str:
         category = categories.get(template['category'], template['category'])
         languages = ', '.join(template.get('languages', []))
         difficulty = template.get('difficulty', 'beginner').capitalize()
-        status = "✅" if template.get('status') == 'verified' else "🔄"
+        status = f"`{template.get('status', 'unverified')}`"
         description = template.get('description', '')
         
         # Create link if path exists

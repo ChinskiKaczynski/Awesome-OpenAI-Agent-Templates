@@ -6,7 +6,7 @@ Instructions for AI coding agents working with this repository.
 
 ## Repository Overview
 
-This is **Awesome OpenAI Agent Templates** - a collection of production-ready templates for building AI agents using OpenAI APIs.
+This is **Awesome OpenAI Agent Templates** - a collection of educational starter templates for building AI agents using OpenAI APIs. Do not assume examples are production-ready without testing and review.
 
 ## Project Structure
 

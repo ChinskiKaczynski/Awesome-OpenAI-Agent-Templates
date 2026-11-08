@@ -94,8 +94,8 @@ templates:
     languages: [python, typescript]
     difficulty: beginner
     tools: [web_search]
-    status: verified
-    description: Real-time web search using built-in web_search tool
+    status: unverified
+    description: Web search demo; live API integration not verified
     
   - id: file-search-agent
     name: File Search Agent
@@ -137,8 +137,8 @@ templates:
     languages: [javascript]
     difficulty: advanced
     tools: []
-    status: verified
-    description: Browser-based voice agent using WebRTC
+    status: scaffold
+    description: Browser WebRTC SDP-offer scaffold; session handshake not implemented
 
   # ============================================
   # AGENT PATTERNS
@@ -229,8 +229,8 @@ templates:
     languages: [python]
     difficulty: beginner
     tools: []
-    status: verified
-    description: Demonstrates function tools + input validation
+    status: reference
+    description: Reference to Agents SDK function tools; no runnable script
 
   # ============================================
   # EXAMPLE AGENTS
@@ -252,8 +252,8 @@ templates:
     languages: [python]
     difficulty: intermediate
     tools: []
-    status: verified
-    description: Handles support tickets with intelligent routing
+    status: unverified
+    description: Offline scripted-SDK handoff tested; live routing not verified
 
   - id: data-analyst-agent
     name: Data Analyst Agent
@@ -282,8 +282,8 @@ templates:
     languages: [python]
     difficulty: advanced
     tools: []
-    status: verified
-    description: Task management and scheduling agent
+    status: unverified
+    description: Task management demo; offline SDK tools tested, live model unverified
 
   - id: code-review-agent
     name: Code Review Agent
@@ -296,14 +296,14 @@ templates:
     description: Reviews code and suggests improvements
     
   - id: chatkit-ui-embed
-    name: ChatKit UI Embed
+    name: ChatKit UI References
     category: chatkit
     path: ChatKit
-    languages: [javascript]
+    languages: []
     difficulty: beginner
     tools: []
-    status: verified
-    description: Drop-in ChatKit with hosted integrations
+    status: reference
+    description: Links to official ChatKit docs and starters; no local runnable embed
 
 # External resources (links only)
 external_resources:
