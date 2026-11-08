@@ -89,35 +89,35 @@ This repository curates runnable templates and high-quality references so you ca
 
 ## Template Registry
 
-> ✅ = Legacy `verified` registry label (not evidence of live testing or production readiness), 🔄 = Reference or unverified, 📁 = Local template, 🔗 = External link
+> Status values are registry classifications, not evidence of live API testing or production readiness. `verified` is a legacy label; `reference` is non-runnable material; `scaffold` is incomplete; `unverified` has no confirmed live integration. 📁 = Local entry, 🔗 = External link
 
 <!-- REGISTRY_TABLE_START -->
 
 | Template | Category | Languages | Difficulty | Status | Description |
 |----------|----------|-----------|------------|--------|-------------|
-| 📁 [Responses API Minimal](Responses-API/responses-minimal/) | Responses API | python, typescript | Beginner | ✅ | Basic Responses API starter with simple input/output |
-| 📁 [Responses API Streaming](Responses-API/responses-streaming/) | Responses API | python, typescript | Beginner | ✅ | Streaming responses with SSE events |
-| 📁 [Stateful Conversations](Responses-API/responses-store-conversation/) | Responses API | python, typescript | Intermediate | ✅ | Multi-turn conversations with store=true and previous_response_id |
-| 📁 [Web Search Agent](Built-in-Tools/web-search-agent/) | Built-in Tools | python, typescript | Beginner | 🔄 | Web search demo; live API integration not verified |
-| 📁 [File Search Agent](Built-in-Tools/file-search-agent/) | Built-in Tools | python, typescript | Intermediate | ✅ | Document search with vector stores |
-| 📁 [Code Interpreter Agent](Built-in-Tools/code-interpreter-agent/) | Built-in Tools | python, typescript | Intermediate | ✅ | Code execution in sandbox environment |
-| 📁 [Realtime WebSocket Minimal](Realtime-Voice/websocket-minimal/) | Realtime Voice | python, javascript | Intermediate | ✅ | Minimal WebSocket voice agent with gpt-realtime |
-| 📁 [Realtime WebRTC Browser](Realtime-Voice/webrtc-browser/) | Realtime Voice | javascript | Advanced | 🔄 | Browser WebRTC SDP-offer scaffold; session handshake not implemented |
-| 📁 [Routing Agent](Agent-Patterns/routing-agent/) | Agent Patterns | python | Intermediate | ✅ | Multi-agent routing and delegation pattern |
-| 📁 [Input/Output Guardrails](Agent-Patterns/guardrails-io/) | Agent Patterns | python | Intermediate | ✅ | Input validation and output safety checks |
-| 📁 [Agents as Tools](Agent-Patterns/agents-as-tools/) | Agent Patterns | python | Advanced | ✅ | Agent composition - using agents as tools |
-| 📁 [Parallel Agents](Agent-Patterns/parallel-agents/) | Agent Patterns | python | Advanced | ✅ | Concurrent agent execution with result aggregation |
-| 📁 [Assistants → Responses Migration](Migration/assistants-to-responses/) | Migration | python | Intermediate | ✅ | Before/after examples migrating from Assistants API |
-| 📁 [Tracing with OTLP](Observability/tracing-otlp/) | Observability | python | Intermediate | ✅ | OpenTelemetry integration for agent tracing |
-| 📁 [Starter Agent (Python)](Agents-SDK-Python/) | Agents SDK (Python) | python | Beginner | ✅ | Minimal "hello agent" with tools and tracing |
-| 📁 [Tool-calling Agent](Agents-SDK-Python/) | Agents SDK (Python) | python | Beginner | 🔄 | Reference to Agents SDK function tools; no runnable script |
-| 📁 [Research Agent](Agents-SDK-Python/research-agent/) | Agents SDK (Python) | python | Intermediate | 🔄 | Responses web search and API citation URLs; live search not verified |
-| 📁 [Customer Support Agent](Agents-SDK-Python/customer-support-agent/) | Agents SDK (Python) | python | Intermediate | 🔄 | Offline scripted-SDK handoff tested; live routing not verified |
-| 📁 [Data Analyst Agent](Agents-SDK-Python/data-analyst-agent/) | Agents SDK (Python) | python | Advanced | ✅ | Analyzes data and generates insights |
-| 📁 [Content Writer Agent](Agents-SDK-Python/content-writer-agent/) | Agents SDK (Python) | python | Intermediate | ✅ | Writes blog posts, emails, and marketing copy |
-| 📁 [Personal Assistant Agent](Agents-SDK-Python/personal-assistant-agent/) | Agents SDK (Python) | python | Advanced | 🔄 | Task management demo; offline SDK tools tested, live model unverified |
-| 📁 [Code Review Agent](Agents-SDK-Python/code-review-agent/) | Agents SDK (Python) | python | Advanced | ✅ | Reviews code and suggests improvements |
-| 📁 [ChatKit UI References](ChatKit/) | ChatKit |  | Beginner | 🔄 | Links to official ChatKit docs and starters; no local runnable embed |
+| 📁 [Responses API Minimal](Responses-API/responses-minimal/) | Responses API | python, typescript | Beginner | `verified` | Basic Responses API starter with simple input/output |
+| 📁 [Responses API Streaming](Responses-API/responses-streaming/) | Responses API | python, typescript | Beginner | `verified` | Streaming responses with SSE events |
+| 📁 [Stateful Conversations](Responses-API/responses-store-conversation/) | Responses API | python, typescript | Intermediate | `verified` | Multi-turn conversations with store=true and previous_response_id |
+| 📁 [Web Search Agent](Built-in-Tools/web-search-agent/) | Built-in Tools | python, typescript | Beginner | `unverified` | Web search demo; live API integration not verified |
+| 📁 [File Search Agent](Built-in-Tools/file-search-agent/) | Built-in Tools | python, typescript | Intermediate | `verified` | Document search with vector stores |
+| 📁 [Code Interpreter Agent](Built-in-Tools/code-interpreter-agent/) | Built-in Tools | python, typescript | Intermediate | `verified` | Code execution in sandbox environment |
+| 📁 [Realtime WebSocket Minimal](Realtime-Voice/websocket-minimal/) | Realtime Voice | python, javascript | Intermediate | `verified` | Minimal WebSocket voice agent with gpt-realtime |
+| 📁 [Realtime WebRTC Browser](Realtime-Voice/webrtc-browser/) | Realtime Voice | javascript | Advanced | `scaffold` | Browser WebRTC SDP-offer scaffold; session handshake not implemented |
+| 📁 [Routing Agent](Agent-Patterns/routing-agent/) | Agent Patterns | python | Intermediate | `verified` | Multi-agent routing and delegation pattern |
+| 📁 [Input/Output Guardrails](Agent-Patterns/guardrails-io/) | Agent Patterns | python | Intermediate | `verified` | Input validation and output safety checks |
+| 📁 [Agents as Tools](Agent-Patterns/agents-as-tools/) | Agent Patterns | python | Advanced | `verified` | Agent composition - using agents as tools |
+| 📁 [Parallel Agents](Agent-Patterns/parallel-agents/) | Agent Patterns | python | Advanced | `verified` | Concurrent agent execution with result aggregation |
+| 📁 [Assistants → Responses Migration](Migration/assistants-to-responses/) | Migration | python | Intermediate | `verified` | Before/after examples migrating from Assistants API |
+| 📁 [Tracing with OTLP](Observability/tracing-otlp/) | Observability | python | Intermediate | `verified` | OpenTelemetry integration for agent tracing |
+| 📁 [Starter Agent (Python)](Agents-SDK-Python/) | Agents SDK (Python) | python | Beginner | `verified` | Minimal "hello agent" with tools and tracing |
+| 📁 [Tool-calling Agent](Agents-SDK-Python/) | Agents SDK (Python) | python | Beginner | `reference` | Reference to Agents SDK function tools; no runnable script |
+| 📁 [Research Agent](Agents-SDK-Python/research-agent/) | Agents SDK (Python) | python | Intermediate | `unverified` | Responses web search and API citation URLs; live search not verified |
+| 📁 [Customer Support Agent](Agents-SDK-Python/customer-support-agent/) | Agents SDK (Python) | python | Intermediate | `unverified` | Offline scripted-SDK handoff tested; live routing not verified |
+| 📁 [Data Analyst Agent](Agents-SDK-Python/data-analyst-agent/) | Agents SDK (Python) | python | Advanced | `verified` | Analyzes data and generates insights |
+| 📁 [Content Writer Agent](Agents-SDK-Python/content-writer-agent/) | Agents SDK (Python) | python | Intermediate | `verified` | Writes blog posts, emails, and marketing copy |
+| 📁 [Personal Assistant Agent](Agents-SDK-Python/personal-assistant-agent/) | Agents SDK (Python) | python | Advanced | `unverified` | Task management demo; offline SDK tools tested, live model unverified |
+| 📁 [Code Review Agent](Agents-SDK-Python/code-review-agent/) | Agents SDK (Python) | python | Advanced | `verified` | Reviews code and suggests improvements |
+| 📁 [ChatKit UI References](ChatKit/) | ChatKit |  | Beginner | `reference` | Links to official ChatKit docs and starters; no local runnable embed |
 
 ### External Resources
 
