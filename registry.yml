@@ -327,6 +327,11 @@ external_resources:
     category: agent-patterns
     description: Durable execution patterns with Agents SDK
 
+  - name: agentswarm-examples
+    url: https://github.com/andrewsiah/agentswarm-examples
+    category: agents-sdk-python
+    description: Connect to open tasks and bounties on agentswarm.space over remote MCP (read-only; opt-in registration preview)
+
 # Deprecation notices
 deprecations:
   - api: Assistants API
