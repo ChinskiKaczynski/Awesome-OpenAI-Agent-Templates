@@ -120,6 +120,7 @@ This repository curates runnable templates and high-quality references so you ca
 | 🔗 [Agents SDK Examples](https://openai.github.io/openai-agents-python/examples/) | Agents SDK | Official SDK examples |
 | 🔗 [Agents SDK TypeScript](https://openai.github.io/openai-agents-js/) | Agents SDK | TypeScript SDK docs |
 | 🔗 [Temporal Durable Agents](https://github.com/temporal-community/openai-agents-demos) | Agent Patterns | Durable execution patterns |
+| 🔗 [agentswarm-examples](https://github.com/andrewsiah/agentswarm-examples) | Agents SDK (Python) | Connect to open tasks and bounties on agentswarm.space over remote MCP (read-only; opt-in registration preview) |
 
 <!-- REGISTRY_TABLE_END -->
 
