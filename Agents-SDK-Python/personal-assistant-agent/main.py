@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from dataclasses import dataclass, asdict
 from typing import Optional
-from agents import Agent, Runner, function_tool
+from agents import Agent, Runner, SQLiteSession, function_tool
 
 
 # Data file for persistence
@@ -26,6 +26,7 @@ class Task:
     priority: str = "medium"  # low, medium, high
     status: str = "pending"  # pending, completed
     created_at: str = None
+    completed_at: Optional[str] = None
     
     def __post_init__(self):
         if self.created_at is None:
@@ -106,7 +107,10 @@ def complete_task(task_id: str) -> str:
     """
     for task in tasks:
         if task.id == task_id:
+            if task.status == "completed":
+                return f"Task already completed: '{task.title}'"
             task.status = "completed"
+            task.completed_at = datetime.now().isoformat()
             save_data()
             return f"✅ Completed: '{task.title}'"
     
@@ -200,7 +204,10 @@ def daily_summary() -> str:
     high_priority = [t for t in pending if t.priority == "high"]
     
     # Completed today
-    completed_today = [t for t in tasks if t.status == "completed"]
+    completed_today = [
+        t for t in tasks
+        if t.status == "completed" and t.completed_at and t.completed_at[:10] == today
+    ]
     
     lines = [
         f"📅 Daily Summary - {today}",
@@ -209,7 +216,7 @@ def daily_summary() -> str:
         f"  • Pending tasks: {len(pending)}",
         f"  • Due today: {len(due_today)}",
         f"  • High priority: {len(high_priority)}",
-        f"  • Completed: {len(completed_today)}",
+        f"  • Completed today: {len(completed_today)}",
     ]
     
     if due_today:
@@ -247,38 +254,36 @@ assistant_agent = Agent(
 )
 
 
-async def chat(message: str) -> str:
+async def chat(message: str, session: SQLiteSession) -> str:
     """Process a message through the assistant."""
-    result = await Runner.run(assistant_agent, message)
+    result = await Runner.run(assistant_agent, message, session=session)
     return result.final_output
 
 
 async def main():
-    """Interactive demo of the personal assistant."""
+    """Run the interactive personal assistant."""
     load_data()
-    
-    print("="*50)
+    session = SQLiteSession("personal-assistant")
+
+    print("=" * 50)
     print("🤖 PERSONAL ASSISTANT AGENT")
-    print("="*50)
+    print("=" * 50)
     print("Type 'quit' to exit\n")
-    
-    # Demo conversation
-    demo_messages = [
-        "Add a task: Review quarterly report, due 2026-01-15, high priority",
-        "Add a task: Send follow-up emails, medium priority",
-        "Add a task: Book team lunch, low priority",
-        "Show me my tasks",
-        "Give me today's summary",
-        "Take a note: Remember to update the documentation",
-    ]
-    
-    for message in demo_messages:
-        print(f"\n👤 You: {message}")
-        response = await chat(message)
+
+    while True:
+        try:
+            message = input("👤 You: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
+
+        if message.lower() in {"quit", "exit"}:
+            break
+        if not message:
+            continue
+
+        response = await chat(message, session)
         print(f"🤖 Assistant: {response}")
-    
-    print("\n" + "="*50)
-    print("Demo complete! Data saved to assistant_data.json")
 
 
 if __name__ == "__main__":
