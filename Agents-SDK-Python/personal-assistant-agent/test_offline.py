@@ -63,6 +63,28 @@ class PersonalAssistantOfflineTests(unittest.TestCase):
             completed_at,
         )
 
+    def test_load_legacy_json_without_completed_at(self):
+        import json
+
+        legacy = {
+            "tasks": [
+                {"id": "task_1", "title": "Old completed task", "status": "completed"},
+                {"id": "task_2", "title": "Old pending task", "status": "pending"},
+            ],
+            "notes": [],
+        }
+        self.example.DATA_FILE.write_text(json.dumps(legacy), encoding="utf-8")
+
+        self.example.load_data()
+
+        self.assertEqual(len(self.example.tasks), 2)
+        self.assertIsNone(self.example.tasks[0].completed_at)
+        self.assertIsNone(self.example.tasks[1].completed_at)
+        self.assertIn("Completed today: 0", self.example.daily_summary())
+        self.example.save_data()
+        saved = json.loads(self.example.DATA_FILE.read_text(encoding="utf-8"))
+        self.assertIsNone(saved["tasks"][0]["completed_at"])
+
     def test_daily_summary_counts_only_completions_from_today(self):
         from datetime import datetime, timedelta
         today = datetime.now().date()
