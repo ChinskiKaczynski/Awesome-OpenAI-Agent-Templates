@@ -165,7 +165,10 @@ class ResearchAgent:
         for i, question in enumerate(questions, 1):
             print(f"\n[{i}/{len(questions)}] Researching...")
             result = self.search(question)
-            findings.append(f"## {question}\n\n{result}")
+            findings.append(
+                f"## {question}\n\n{result}\n\nCited URLs for this search:\n"
+                + "\n".join(f"- <{url}>" for url in self.last_search_urls)
+            )
             evidence.append(
                 f"### {question}\n\n{result}\n\nCited URLs for this search:\n"
                 + "\n".join(f"- <{url}>" for url in self.last_search_urls)
