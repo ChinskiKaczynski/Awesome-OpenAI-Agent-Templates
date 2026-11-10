@@ -34,7 +34,7 @@ These run a **real local Chromium browser**, capture a screenshot, click the per
 python main.py --live
 ```
 
-`--live` is **not** the default. The model in the example is `gpt-6.1-sol`, matching the current official guide; availability depends on project access and may change. There are at most six tool turns, but usage can still incur charges. A real API integration test has **not** been performed.
+`--live` is **not** the default. The model in the example is `gpt-6.1-sol`, matching the current official guide; availability depends on project access and may change. `max_steps=6` limits Responses API requests in the SDK loop, not individual browser actions or monetary spending. Each request can incur charges. Offline browser tests do not verify live usage or billing. A real API integration test has **not** been performed.
 
 **Browser sandbox requirement:** `--live` enables Chromium's OS sandbox (`chromium_sandbox=True`) and stops before any API request if Chromium cannot start with sandboxing. Some Linux/CI environments disable unprivileged user namespaces; use an appropriately configured isolated host rather than disabling the sandbox for model-controlled actions. The free offline fixture test deliberately does not require the Chromium sandbox.
 
