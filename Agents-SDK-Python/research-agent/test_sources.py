@@ -6,10 +6,10 @@ from types import SimpleNamespace as Obj
 from unittest import TestCase, main, mock
 
 
-def response(text, urls=(), search_status="completed", response_status="completed"):
+def response(text, urls=(), search_status="completed", response_status="completed", action="search"):
     annotations = [Obj(type="url_citation", url=url) for url in urls]
     annotations.append(Obj(type="file_citation", url="https://ignored.example"))
-    return Obj(status=response_status, output_text=text, output=[Obj(type="web_search_call", status=search_status), Obj(type="message", content=[
+    return Obj(status=response_status, output_text=text, output=[Obj(type="web_search_call", status=search_status, action=Obj(type=action) if action else None), Obj(type="message", content=[
         Obj(type="output_text", annotations=annotations), Obj(type="refusal")
     ])])
 
@@ -66,19 +66,25 @@ class ResearchSourcesTests(TestCase):
                 self.assertEqual(self.agent.source_urls, [])
 
     def test_research_keeps_sources_with_each_original_search(self):
-        url = "https://source.example/shared"
+        first_url = "https://source.example/first"
+        second_url = "https://source.example/second"
         self.client.responses.create.side_effect = [
             response("First question?\nSecond question?"),
-            response("Finding one", [url]),
-            response("Finding two", [url]),
+            response("Finding one", [first_url]),
+            response("Finding two", [second_url]),
             response("Synthesis without claim-level citations"),
         ]
         report = self.agent.research("Topic")
         appendix = report.split("## Original search findings and citations", 1)[1]
-        self.assertIn("### First question?\n\nFinding one\n\nCited URLs for this search:\n- <" + url + ">", appendix)
-        self.assertIn("### Second question?\n\nFinding two\n\nCited URLs for this search:\n- <" + url + ">", appendix)
-        self.assertEqual(appendix.count("<" + url + ">"), 2)
-        self.assertEqual(self.agent.source_urls, [url])
+        first_evidence = "### First question?\n\nFinding one\n\nCited URLs for this search:\n- <" + first_url + ">"
+        second_evidence = "### Second question?\n\nFinding two\n\nCited URLs for this search:\n- <" + second_url + ">"
+        self.assertIn(first_evidence, appendix)
+        self.assertIn(second_evidence, appendix)
+        synthesis_input = self.client.responses.create.call_args.kwargs["input"]
+        self.assertIn("## First question?\n\nFinding one\n\nCited URLs for this search:\n- <" + first_url + ">", synthesis_input)
+        self.assertIn("## Second question?\n\nFinding two\n\nCited URLs for this search:\n- <" + second_url + ">", synthesis_input)
+        self.assertNotIn(second_url, synthesis_input.split("## Second question?", 1)[0])
+        self.assertEqual(self.agent.source_urls, [first_url, second_url])
         self.assertEqual(self.client.responses.create.call_count, 4)
 
     def test_research_rejects_empty_plan_without_synthesizing(self):
@@ -119,6 +125,17 @@ class ResearchSourcesTests(TestCase):
                     self.agent.search("query")
                 self.assertEqual(self.agent.source_urls, [])
 
+
+    def test_search_rejects_completed_non_search_actions(self):
+        # A completed page open/find is not evidence of an actual web search.
+        for action in ("open_page", "find_in_page", None):
+            with self.subTest(action=action):
+                self.client.responses.create.return_value = response(
+                    "Cited but not searched", ["https://source.example/a"], action=action
+                )
+                with self.assertRaisesRegex(RuntimeError, "did not perform a search action"):
+                    self.agent.search("query")
+                self.assertEqual(self.agent.source_urls, [])
 
     def test_search_rejects_empty_findings_after_completed_search(self):
         for text in ("", "  \n  "):

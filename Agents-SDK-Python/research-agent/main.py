@@ -52,6 +52,12 @@ class ResearchAgent:
             or any(item.status != "completed" for item in search_calls)
         ):
             raise RuntimeError("Web search did not complete; refusing to use unverified findings.")
+        if not any(
+            getattr(getattr(item, "action", None), "type", None) == "search"
+            for item in search_calls
+        ):
+            raise RuntimeError("Web search did not perform a search action.")
+
         if not response.output_text or not response.output_text.strip():
             raise RuntimeError("Web search returned no findings; refusing to synthesize.")
 
@@ -159,7 +165,10 @@ class ResearchAgent:
         for i, question in enumerate(questions, 1):
             print(f"\n[{i}/{len(questions)}] Researching...")
             result = self.search(question)
-            findings.append(f"## {question}\n\n{result}")
+            findings.append(
+                f"## {question}\n\n{result}\n\nCited URLs for this search:\n"
+                + "\n".join(f"- <{url}>" for url in self.last_search_urls)
+            )
             evidence.append(
                 f"### {question}\n\n{result}\n\nCited URLs for this search:\n"
                 + "\n".join(f"- <{url}>" for url in self.last_search_urls)
