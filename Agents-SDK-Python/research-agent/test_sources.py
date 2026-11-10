@@ -66,19 +66,25 @@ class ResearchSourcesTests(TestCase):
                 self.assertEqual(self.agent.source_urls, [])
 
     def test_research_keeps_sources_with_each_original_search(self):
-        url = "https://source.example/shared"
+        first_url = "https://source.example/first"
+        second_url = "https://source.example/second"
         self.client.responses.create.side_effect = [
             response("First question?\nSecond question?"),
-            response("Finding one", [url]),
-            response("Finding two", [url]),
+            response("Finding one", [first_url]),
+            response("Finding two", [second_url]),
             response("Synthesis without claim-level citations"),
         ]
         report = self.agent.research("Topic")
         appendix = report.split("## Original search findings and citations", 1)[1]
-        self.assertIn("### First question?\n\nFinding one\n\nCited URLs for this search:\n- <" + url + ">", appendix)
-        self.assertIn("### Second question?\n\nFinding two\n\nCited URLs for this search:\n- <" + url + ">", appendix)
-        self.assertEqual(appendix.count("<" + url + ">"), 2)
-        self.assertEqual(self.agent.source_urls, [url])
+        first_evidence = "### First question?\n\nFinding one\n\nCited URLs for this search:\n- <" + first_url + ">"
+        second_evidence = "### Second question?\n\nFinding two\n\nCited URLs for this search:\n- <" + second_url + ">"
+        self.assertIn(first_evidence, appendix)
+        self.assertIn(second_evidence, appendix)
+        synthesis_input = self.client.responses.create.call_args.kwargs["input"]
+        self.assertIn("## First question?\n\nFinding one\n\nCited URLs for this search:\n- <" + first_url + ">", synthesis_input)
+        self.assertIn("## Second question?\n\nFinding two\n\nCited URLs for this search:\n- <" + second_url + ">", synthesis_input)
+        self.assertNotIn(second_url, synthesis_input.split("## Second question?", 1)[0])
+        self.assertEqual(self.agent.source_urls, [first_url, second_url])
         self.assertEqual(self.client.responses.create.call_count, 4)
 
     def test_research_rejects_empty_plan_without_synthesizing(self):
