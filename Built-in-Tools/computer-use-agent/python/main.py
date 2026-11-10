@@ -1,137 +1,140 @@
+"""Bounded Computer Use demo on an isolated, network-blocked Playwright page.
+
+By default runs a free local browser smoke test. --live explicitly opts in to
+billable Responses calls, and is restricted to screenshots and one safe click.
 """
-Computer Use Agent
-Browser and desktop automation using the computer_use_preview built-in tool.
+import argparse
+import asyncio
+import base64
+import os
+from types import SimpleNamespace
 
-⚠️ Preview Feature: This API is in preview and may change.
-"""
-from openai import OpenAI
-from dotenv import load_dotenv
+from playwright.async_api import async_playwright
 
-load_dotenv()
+PAGE_HTML = """<!doctype html><html lang="en"><meta charset="utf-8">
+<title>Fictional parcel pickup</title><main>
+<h1>Fictional parcel pickup</h1><p>Order #1042 is ready.</p>
+<details><summary>Show pickup details</summary>
+<p>Locker 18. Pickup code: 6249.</p></details></main></html>"""
+PROMPT = (
+    "Use the computer tool to take a screenshot, then open 'Show pickup details' "
+    "and report the locker and pickup code. Only take screenshots or left-click "
+    "the 'Show pickup details' control. Never navigate or submit information."
+)
 
-client = OpenAI()
 
+class PickupDriver:
+    """Only permits screenshots and revalidated clicks on the local summary."""
 
-class ComputerUseAgent:
-    """Agent that automates browser/desktop tasks."""
-    
-    def __init__(self, model: str = "gpt-4o-mini"):
-        self.model = model
-    
-    def execute_task(self, task: str, environment: str = "browser") -> dict:
-        """
-        Execute a computer use task.
-        
-        Args:
-            task: Natural language description of what to do
-            environment: 'browser' or 'computer'
-        
-        Returns:
-            Dict with result and any extracted data
-        """
-        print(f"🖥️  Task: {task}")
-        print(f"   Environment: {environment}")
-        print("   Running...")
-        
-        response = client.responses.create(
-            model=self.model,
-            input=f"""You are a computer use assistant. Complete this task:
+    def __init__(self, page):
+        self.page = page
 
-Task: {task}
-
-Use the computer_use tool to:
-1. Navigate to the appropriate website/application
-2. Perform the necessary actions (click, type, scroll)
-3. Extract and return the requested information
-
-Be methodical and verify each step.""",
-            tools=[
-                {
-                    "type": "computer_use_preview",
-                    "display_width": 1024,
-                    "display_height": 768,
-                    "environment": environment,
-                }
-            ]
-        )
-        
-        # Parse the response
-        result = {
-            "task": task,
-            "output": response.output_text,
-            "steps": []
+    async def screenshot(self):
+        image = await self.page.screenshot(type="png")
+        return {
+            "type": "computer_screenshot",
+            "image_url": "data:image/png;base64," + base64.b64encode(image).decode("ascii"),
         }
-        
-        # Extract computer use steps
-        for output in response.output:
-            if hasattr(output, 'type') and output.type == "computer_call":
-                step = {
-                    "action": output.action.type if hasattr(output.action, 'type') else str(output.action),
-                }
-                result["steps"].append(step)
-                print(f"   📸 Action: {step['action']}")
-        
-        return result
-    
-    def scrape_page(self, url: str, extract: str) -> str:
-        """
-        Navigate to a URL and extract specific information.
-        
-        Args:
-            url: Website to visit
-            extract: What information to extract
-        
-        Returns:
-            Extracted information
-        """
-        task = f"Go to {url} and extract: {extract}"
-        result = self.execute_task(task)
-        return result["output"]
-    
-    def fill_form(self, url: str, form_data: dict) -> bool:
-        """
-        Navigate to a URL and fill out a form.
-        
-        Args:
-            url: Page with the form
-            form_data: Dict of field names to values
-        
-        Returns:
-            Success status
-        """
-        fields_str = ", ".join([f"{k}: {v}" for k, v in form_data.items()])
-        task = f"Go to {url} and fill the form with: {fields_str}. Do not submit."
-        result = self.execute_task(task)
-        return "error" not in result["output"].lower()
+
+    async def allowed(self, action):
+        if action.type == "screenshot":
+            return True
+        if (action.type != "click" or action.button != "left"
+                or getattr(action, "keys", None)):
+            return False
+        box = await self.page.locator("summary").bounding_box()
+        return bool(
+            box and box["x"] <= action.x < box["x"] + box["width"]
+            and box["y"] <= action.y < box["y"] + box["height"]
+        )
+
+    async def click(self, action):
+        # Recheck immediately before execution, not only at approval time.
+        if not await self.allowed(action):
+            raise RuntimeError("Click is outside the permitted local control")
+        await self.page.mouse.click(action.x, action.y)
+
+    async def refuse(self, action):
+        raise RuntimeError(f"Action not allowed in this demo: {action.type}")
+
+    double_click = drag = keypress = move = scroll = type = wait = refuse
+
+
+async def verify_details(page):
+    if await page.locator("details").get_attribute("open") is None:
+        raise RuntimeError("The pickup details were not opened")
+    return await page.locator("details p").inner_text()
+
+
+def browser_launch_options(live: bool) -> dict:
+    """Fail closed on live computer actions if Chromium sandboxing is unavailable."""
+    kwargs = {"headless": True, "env": {}, "chromium_sandbox": live}
+    executable = os.environ.get("PLAYWRIGHT_CHROMIUM_EXECUTABLE")
+    if executable:
+        kwargs["executable_path"] = executable
+    return kwargs
+
+
+async def run_demo(live=False):
+    if live and not os.environ.get("OPENAI_API_KEY"):
+        raise RuntimeError("Set OPENAI_API_KEY before explicitly using --live")
+
+    async with async_playwright() as playwright:
+        # Offline tests use a trusted fixture; model-driven actions require Chromium's sandbox.
+        browser = await playwright.chromium.launch(**browser_launch_options(live))
+        try:
+            page = await browser.new_page(viewport={"width": 1024, "height": 768})
+            # All attempted page/subresource requests are blocked.
+            await page.route("**/*", lambda route: route.abort())
+            await page.set_content(PAGE_HTML)
+            driver = PickupDriver(page)
+            if live:
+                from openai import AsyncComputerToolset, AsyncOpenAI
+
+                async with AsyncOpenAI(timeout=30.0, max_retries=0) as client:
+                    tools = AsyncComputerToolset(driver)
+                    try:
+                        response = await tools.run(
+                            client,
+                            {"model": "gpt-6.1-sol", "store": False, "input": PROMPT},
+                            before_action=driver.allowed,
+                            max_steps=6,
+                        )
+                    finally:
+                        tools.close()
+                    result = await verify_details(page)
+                    print("Verified local browser state:", result)
+                    print("Model response:", response.output_text)
+                    return result
+            else:
+                # The same real browser driver, with no SDK client or API request.
+                image = await driver.screenshot()
+                if not image["image_url"].startswith("data:image/png;base64,"):
+                    raise RuntimeError("Screenshot was not captured")
+                box = await page.locator("summary").bounding_box()
+                if not box:
+                    raise RuntimeError("Missing test control")
+                click = SimpleNamespace(
+                    type="click", button="left", keys=[],
+                    x=box["x"] + box["width"] / 2,
+                    y=box["y"] + box["height"] / 2,
+                )
+                await driver.click(click)
+                result = await verify_details(page)
+                print("Offline browser smoke PASS:", result)
+                return result
+        finally:
+            await browser.close()
 
 
 def main():
-    """Demo the computer use agent."""
-    agent = ComputerUseAgent()
-    
-    print("="*50)
-    print("🖥️  COMPUTER USE AGENT DEMO")
-    print("="*50)
-    print("\n⚠️  Note: This is a preview feature")
-    print("   Requires computer_use_preview access\n")
-    
-    # Demo 1: Simple scraping task
-    print("\n--- Task 1: Information Extraction ---\n")
-    result = agent.execute_task(
-        "Go to example.com and tell me what the main heading says"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--live", action="store_true",
+        help="Explicitly opt in to billable OpenAI API calls (never used by default)",
     )
-    print(f"✅ Result: {result['output']}")
-    
-    # Demo 2: Search task
-    print("\n--- Task 2: Search ---\n")
-    result = agent.execute_task(
-        "Use a search engine to find the current weather in New York"
-    )
-    print(f"✅ Result: {result['output']}")
-    
-    print("\n" + "="*50)
-    print("Demo complete!")
-    print("For production use, ensure proper sandboxing and monitoring.")
+    args = parser.parse_args()
+    asyncio.run(run_demo(live=args.live))
 
 
 if __name__ == "__main__":
